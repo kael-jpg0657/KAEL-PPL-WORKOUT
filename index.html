@@ -1064,7 +1064,7 @@ function renderSession() {
   if (!isDone) {
     html += `<button class="finish-btn ${type} ${allDone?'vis':''}" id="finish-btn" onclick="completeSession()">✓ TAPOS NA · SAVE SESSION</button>`;
   } else {
-    html += `<div style="margin-top:14px;padding:14px;background:var(--done);border:1px solid var(--doneb);border-radius:var(--r);text-align:center;font-size:.8rem;color:var(--legs)">✓ Session nai-save na. ${S.completedSessions[S.selectedDate].exercises ? S.completedSessions[S.selectedDate].exercises.length + ' exercises' : ''}</div>`;
+    html += `<div style="margin-top:14px;padding:14px;background:var(--done);border:1px solid var(--doneb);border-radius:var(--r);text-align:center;font-size:.8rem;color:var(--legs)">✓ Session nai-save na. ${S.completedSessions[S.selectedDate].exercises ? S.completedSessions[S.selectedDate].exercises.length + ' exercises' : ''}<br><button onclick="deleteSession('${S.selectedDate}')" style="margin-top:10px;background:rgba(255,61,92,.15);border:none;border-radius:10px;padding:7px 14px;color:var(--push);font-size:.72rem;font-weight:700;cursor:pointer">🗑 Tanggalin ang Session</button></div>`;
   }
 
   wrap.innerHTML = html;
@@ -1435,6 +1435,19 @@ function completeSession() {
   renderCalendar();
   renderSession();
   renderStats();
+}
+
+function deleteSession(iso) {
+  if (!confirm('Tanggalin ang naka-save na session ngayong araw? Mababawi ang sets/streak.')) return;
+  delete S.completedSessions[iso];
+  if (S.streak > 0) S.streak--;
+  // also clear set checks for that day so it's fully reset
+  Object.keys(S.setChecks).forEach(k => { if (k.startsWith(iso + '-')) delete S.setChecks[k]; });
+  save();
+  renderCalendar();
+  renderSession();
+  renderStats();
+  toast('🗑 Session natanggal.');
 }
 
 function clearHistory() {
