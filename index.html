@@ -92,6 +92,23 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .leg-item{display:flex;align-items:center;gap:5px;font-size:.63rem;color:var(--sub);font-weight:500}
 .leg-dot{width:7px;height:7px;border-radius:50%}
 
+/* ── SKIP / VACATION NOTE ── */
+.daynote-card{background:var(--s1);border-radius:var(--r2);padding:12px 14px;margin:10px 16px 0;border:1.5px solid var(--border)}
+.daynote-hdr{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.daynote-title{font-size:.72rem;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.6px}
+.daynote-toggle{background:var(--s2);border:none;border-radius:10px;padding:5px 10px;font-size:.65rem;font-weight:700;color:var(--accent);cursor:pointer}
+.daynote-body{display:none;margin-top:10px}
+.daynote-body.open{display:block}
+.daynote-tpls{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.daynote-tpl{background:var(--s2);border:none;border-radius:20px;padding:5px 11px;font-size:.62rem;font-weight:600;color:var(--sub);cursor:pointer}
+.daynote-fields{display:flex;flex-direction:column;gap:6px}
+.daynote-fields input{width:100%;background:var(--s2);border:none;border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;padding:9px 11px;outline:none;font-size:.76rem}
+.daynote-fields input::placeholder{color:var(--sub);opacity:.6}
+.daynote-save{margin-top:8px;width:100%;background:var(--accent);border:none;border-radius:10px;padding:9px 0;font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:1px;color:#000;cursor:pointer}
+.daynote-display{margin-top:8px;font-size:.74rem;color:var(--text2);line-height:1.5;background:var(--s2);border-radius:10px;padding:9px 11px;display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.daynote-display button{background:none;border:none;color:var(--sub);cursor:pointer;font-size:.7rem;flex-shrink:0}
+.cal-day.has-note::before{content:'';position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--warm)}
+
 /* ── SESSION AREA ── */
 .session-wrap{padding:14px 16px 0}
 
@@ -195,6 +212,21 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .rest-tips{margin-top:16px;display:flex;flex-direction:column;gap:7px;text-align:left}
 .rest-tip{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--s2);border-radius:14px;font-size:.78rem;color:var(--sub);font-weight:500}
 
+/* ── ACTUAL LOG (per-set kg/reps) ── */
+.actual-log-row{display:flex;gap:8px;margin:-2px 0 8px;padding:0 2px}
+.alog-field{flex:1;display:flex;flex-direction:column;gap:3px}
+.alog-field label{font-size:.56rem;text-transform:uppercase;letter-spacing:.8px;color:var(--sub);font-weight:700}
+.alog-input{width:100%;background:var(--s2);border:none;border-radius:10px;color:var(--text);font-size:.8rem;font-weight:700;font-family:'Inter',sans-serif;padding:7px 10px;outline:none;text-align:center;-webkit-appearance:none}
+.alog-input:focus{box-shadow:0 0 0 2px var(--accent)}
+.alog-input::placeholder{color:var(--sub);font-weight:500;opacity:.5}
+
+/* ── EXERCISE NOTES ── */
+.ex-notes-wrap{margin:10px 0}
+.ex-notes-lbl{font-size:.58rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--sub);font-weight:700;display:block;margin-bottom:5px}
+.ex-notes-input{width:100%;background:var(--s2);border:none;border-radius:12px;color:var(--text);font-family:'Inter',sans-serif;padding:10px 12px;outline:none;font-size:.78rem;line-height:1.5;resize:none;min-height:46px;-webkit-appearance:none}
+.ex-notes-input:focus{box-shadow:0 0 0 2px var(--accent)}
+.ex-notes-input::placeholder{color:var(--sub);opacity:.6}
+
 /* ── ADD/REMOVE SET BUTTONS ── */
 .add-set-btn,.rem-set-btn{border:none;border-radius:20px;font-family:'Inter',sans-serif;font-size:.72rem;font-weight:700;padding:8px 16px;cursor:pointer;margin-top:6px;transition:all .2s;letter-spacing:.3px}
 .add-set-btn{background:rgba(48,209,88,.12);color:var(--legs);margin-right:6px}
@@ -236,6 +268,11 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .aef-cancel{padding:12px 18px;background:var(--s2);border:none;border-radius:14px;color:var(--sub);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer}
 .ex-del-btn{background:transparent;border:none;color:var(--sub);font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;transition:all .2s}
 .ex-del-btn:hover{color:var(--push)}
+.restore-wrap{margin-top:10px;padding:12px;background:var(--s1);border-radius:var(--r2)}
+.restore-lbl{font-size:.58rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--sub);font-weight:700;margin-bottom:8px}
+.restore-chips{display:flex;flex-wrap:wrap;gap:6px}
+.restore-chip{background:var(--s2);border:1px solid var(--border2);border-radius:20px;color:var(--text);font-family:'Inter',sans-serif;font-size:.72rem;font-weight:600;padding:6px 12px;cursor:pointer;transition:all .2s}
+.restore-chip:active{background:var(--accent);color:#000;border-color:var(--accent)}
 
 /* ── PROGRESS TAB ── */
 .prog-filter{display:flex;gap:6px;padding:16px 16px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -301,6 +338,9 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .hi-exlist.open{display:flex}
 .hi-ex{font-size:.74rem;color:var(--sub);padding:8px 10px;background:var(--s2);border-radius:10px;display:flex;justify-content:space-between;font-weight:500}
 .hi-ex span{color:var(--accent);font-weight:600}
+.hi-ex-block{margin-bottom:6px}
+.hi-actual{font-size:.68rem;color:var(--legs);padding:5px 10px;font-weight:600}
+.hi-note{font-size:.68rem;color:var(--sub);padding:5px 10px;font-style:italic;background:var(--s2);border-radius:8px;margin-top:3px}
 .hist-clear-btn{width:100%;margin-top:12px;padding:13px;border:none;border-radius:14px;background:rgba(255,61,92,.1);color:var(--push);font-family:'Inter',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;letter-spacing:.3px}
 
 /* ── TOAST ── */
@@ -369,7 +409,30 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
       <div class="leg-item"><div class="leg-dot" style="background:var(--pull)"></div>Pull</div>
       <div class="leg-item"><div class="leg-dot" style="background:var(--legs)"></div>Legs</div>
       <div class="leg-item"><div class="leg-dot" style="background:var(--sub)"></div>Rest</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--warm)"></div>Note</div>
     </div>
+  </div>
+
+  <div class="daynote-card">
+    <div class="daynote-hdr">
+      <div class="daynote-title">📝 Skip / Vacation Note — <span id="dn-date"></span></div>
+      <button class="daynote-toggle" onclick="toggleDayNote()" id="dn-toggle-btn">Add Note</button>
+    </div>
+    <div class="daynote-body" id="dn-body">
+      <div class="daynote-tpls">
+        <button class="daynote-tpl" onclick="fillDayNoteTpl('sick')">🤒 Sick</button>
+        <button class="daynote-tpl" onclick="fillDayNoteTpl('busy')">⏰ Busy/Work</button>
+        <button class="daynote-tpl" onclick="fillDayNoteTpl('vacation')">✈️ Vacation</button>
+        <button class="daynote-tpl" onclick="fillDayNoteTpl('lazy')">😴 No Motivation</button>
+      </div>
+      <div class="daynote-fields">
+        <input id="dn-reason" placeholder="Reason (bakit na-skip)">
+        <input id="dn-rest" placeholder="Ilang days na pahinga (e.g. 2 days)">
+        <input id="dn-plan" placeholder="Adjustment plan (paano babalik)">
+      </div>
+      <button class="daynote-save" onclick="saveDayNote()">SAVE NOTE</button>
+    </div>
+    <div id="dn-display"></div>
   </div>
 
   <div class="session-wrap" id="session-wrap"></div>
@@ -610,6 +673,10 @@ const DEF_STATE = {
   weightOverrides: {},  // "push|0" etc -> kg (user-set base weight)
   showAddForm: null,
   extraSets: {},        // "type|ei" -> count of extra sets added
+  actualLogs: {},        // "YYYY-MM-DD-exIdx-setIdx" -> {kg, reps}
+  exerciseNotes: {},      // "YYYY-MM-DD-exIdx" -> note string
+  hiddenBaseEx: {},        // "push"|"pull"|"legs" -> [ei, ei, ...] hidden base exercise indices
+  dayNotes: {},            // "YYYY-MM-DD" -> {reason, rest, plan}
 };
 
 let S = (() => {
@@ -625,6 +692,10 @@ if (!S.programStart) {
 if (!S.customExercises) S.customExercises = {};
 if (!S.weightOverrides) S.weightOverrides = {};
 if (!S.extraSets) S.extraSets = {};
+if (!S.actualLogs) S.actualLogs = {};
+if (!S.exerciseNotes) S.exerciseNotes = {};
+if (!S.hiddenBaseEx) S.hiddenBaseEx = {};
+if (!S.dayNotes) S.dayNotes = {};
 if (!S.viewYear || !S.viewMonth) {
   const today = new Date();
   S.viewYear = today.getFullYear();
@@ -701,6 +772,7 @@ function render() {
   renderCalendar();
   renderSession();
   renderStats();
+  renderDayNote();
 }
 
 function renderHeader() {
@@ -730,6 +802,7 @@ function renderCalendar() {
     if (isToday) cls += ' today';
     if (isSelected) cls += ' selected';
     if (isDone) cls += ' done-dot';
+    if (S.dayNotes && S.dayNotes[iso]) cls += ' has-note';
     const label = type === 'rest' ? '—' : (type === 'future' ? '' : type.slice(0,1).toUpperCase());
     html += `<div class="${cls}" onclick="selectDate('${iso}')">${d}<br><span style="font-size:.5rem;opacity:.7">${label}</span></div>`;
   }
@@ -800,7 +873,9 @@ function renderSession() {
   const {sets, repsLo, repsHi, phase} = params;
 
   let totalSets = 0, doneSets = 0;
+  const hiddenSet = new Set((S.hiddenBaseEx && S.hiddenBaseEx[type]) || []);
   exs.forEach((ex,ei) => {
+    if (hiddenSet.has(ei)) return;
     const exSets = getExSets(type, ei, sets);
     totalSets += exSets;
     for (let s=0;s<exSets;s++) { if (S.setChecks[`${S.selectedDate}-${ei}-${s}`]) doneSets++; }
@@ -847,6 +922,7 @@ function renderSession() {
   // Exercises
   html += `<div class="slabel"><span>💪 Exercises</span></div><div class="${type}-s" id="ex-list-wrap">`;
   exs.forEach((ex, ei) => {
+    if (hiddenSet.has(ei)) return; // skip deleted/hidden exercise
     const expKey = `ex-${S.selectedDate}-${ei}`;
     const isOpen = !!S.expanded[expKey];
     const exSetCount = getExSets(type, ei, sets);
@@ -866,11 +942,26 @@ function renderSession() {
     for (let s=0;s<exSetCount;s++) {
       const sk = `${S.selectedDate}-${ei}-${s}`;
       const checked = !!S.setChecks[sk];
+      const log = (S.actualLogs && S.actualLogs[sk]) || {};
+      const logKg = log.kg != null ? log.kg : (kg != null ? kg : '');
+      const logReps = log.reps != null ? log.reps : '';
       setsHtml += `
         <div class="set-row ${checked?'done':''}" id="sr-${sk}">
           <div class="set-lbl">Set ${s+1}</div>
           <div class="set-detail">${repsLo}–${repsHi} reps${kg ? ` · ${kg}kg` : ''}</div>
           <button class="set-btn ${checked?'done':''}" id="sb-${sk}" onclick="toggleSet('${sk}')" ${isDone&&!checked?'disabled':''}>✓</button>
+        </div>
+        <div class="actual-log-row">
+          <div class="alog-field">
+            <label>Actual kg</label>
+            <input type="number" step="0.5" min="0" class="alog-input" value="${logKg}" placeholder="${kg||0}"
+              id="alk-${sk}" onclick="event.stopPropagation()" onchange="saveActualLog('${sk}','kg',this.value)">
+          </div>
+          <div class="alog-field">
+            <label>Actual reps</label>
+            <input type="number" step="1" min="0" class="alog-input" value="${logReps}" placeholder="${repsHi}"
+              id="alr-${sk}" onclick="event.stopPropagation()" onchange="saveActualLog('${sk}','reps',this.value)">
+          </div>
         </div>`;
     }
     // Add Set button
@@ -878,6 +969,10 @@ function renderSession() {
     if (exSetCount > sets) {
       setsHtml += `<button class="rem-set-btn" onclick="event.stopPropagation();removeExtraSet('${type}',${ei})" ${isDone?'disabled':''}>− Set</button>`;
     }
+
+    // Notes for this exercise
+    const noteKey = `${S.selectedDate}-${ei}`;
+    const noteVal = (S.exerciseNotes && S.exerciseNotes[noteKey]) || '';
 
     html += `
       <div class="ex-card ${type} ${isExDone?'done':''}" id="exc-${S.selectedDate}-${ei}">
@@ -919,17 +1014,39 @@ function renderSession() {
 
           ${kg ? `<div class="wt-badge">🏋️ Week ${week} weight: <strong>${kg}kg</strong><span class="next">${nextWeekKg&&nextWeekKg!==kg?` → ${nextWeekKg}kg sa Week ${week+2}`:' (max progression)'}</span></div>` : ''}
           <div class="sets-wrap">${setsHtml}</div>
+
+          <div class="ex-notes-wrap">
+            <label class="ex-notes-lbl">📝 Notes (optional)</label>
+            <textarea class="ex-notes-input" placeholder="e.g. mahirap sa set 3, baba ang energy, masakit kamay..."
+              onclick="event.stopPropagation()" onchange="saveExerciseNote('${type}',${ei},this.value)">${noteVal}</textarea>
+          </div>
+
           <div class="ol-note">🔥 <strong>Phase ${getPhase(week).phaseNum} — ${phase}:</strong> ${exSetCount} sets · ${repsLo}–${repsHi} reps · ${getPhase(week).note}
           </div>
-          ${isCustom ? `<button class="ex-del-btn" onclick="event.stopPropagation();deleteCustomEx('${type}',${ei})">🗑 Tanggalin</button>` : ''}
+          ${isCustom
+            ? `<button class="ex-del-btn" onclick="event.stopPropagation();deleteCustomEx('${type}',${ei})">🗑 Tanggalin</button>`
+            : `<button class="ex-del-btn" onclick="event.stopPropagation();hideBaseEx('${type}',${ei})">🗑 Tanggalin</button>`}
         </div>
       </div>`;
   });
 
   // Add exercise form
   const showForm = S.showAddForm === type;
+  const hiddenList = (S.hiddenBaseEx && S.hiddenBaseEx[type]) || [];
+  const allBaseExs = type === 'push' ? PUSH_EX : type === 'pull' ? PULL_EX : LEGS_EX;
+  const restoreHtml = hiddenList.length ? `
+  <div class="restore-wrap">
+    <div class="restore-lbl">Hidden exercises — tap para ibalik:</div>
+    <div class="restore-chips">
+      ${hiddenList.map(ei => {
+        const nameOv = (S.weightOverrides && S.weightOverrides[type+'|name|'+ei]) || (allBaseExs[ei] && allBaseExs[ei].name) || '';
+        return `<button class="restore-chip" onclick="event.stopPropagation();restoreBaseEx('${type}',${ei})">↩ ${nameOv}</button>`;
+      }).join('')}
+    </div>
+  </div>` : '';
   html += `</div>
   <button class="add-ex-btn" onclick="toggleAddForm('${type}')">+ Mag-dagdag ng Exercise</button>
+  ${restoreHtml}
   ${showForm ? `
   <div class="add-ex-form">
     <div><label>Exercise Name</label><input type="text" id="aef-name" placeholder="e.g. DB Fly, Push-Up..." onclick="event.stopPropagation()"></div>
@@ -996,7 +1113,19 @@ function renderHistory() {
             ${data.duration ? `<div class="hi-stat">${data.duration} min</div>` : ''}
           </div>
           <div class="hi-exlist ${isOpen?'open':''}">
-            ${exList.map(e=>`<div class="hi-ex"><span>${e.name}</span><span>${e.kg?e.kg+'kg ·':''} ${e.sets}×${e.repsLo}–${e.repsHi}</span></div>`).join('')}
+            ${exList.map(e=>{
+              const plannedTxt = `${e.kg?e.kg+'kg ·':''} ${e.sets}×${e.repsLo}–${e.repsHi}`;
+              let actualTxt = '';
+              if (e.actualSets && e.actualSets.some(a=>a.kg!=null||a.reps!=null)) {
+                const parts = e.actualSets.map((a,i)=> {
+                  if (a.kg==null && a.reps==null) return null;
+                  return `S${i+1}: ${a.kg!=null?a.kg+'kg':''}${a.kg!=null&&a.reps!=null?'×':''}${a.reps!=null?a.reps+'r':''}`;
+                }).filter(Boolean).join('  ');
+                actualTxt = `<div class="hi-actual">✓ Actual: ${parts}</div>`;
+              }
+              const noteTxt = e.note ? `<div class="hi-note">📝 ${e.note}</div>` : '';
+              return `<div class="hi-ex-block"><div class="hi-ex"><span>${e.name}</span><span>${plannedTxt}</span></div>${actualTxt}${noteTxt}</div>`;
+            }).join('')}
           </div>
         </div>`;
     });
@@ -1193,7 +1322,7 @@ function changeMonth(dir) {
 }
 
 function selectDate(iso) {
-  S.selectedDate = iso; save(); renderCalendar(); renderSession(); renderStats();
+  S.selectedDate = iso; save(); renderCalendar(); renderSession(); renderStats(); renderDayNote();
 }
 
 function toggleWu() {
@@ -1278,12 +1407,22 @@ function completeSession() {
       const ovKey = type + '|' + ei;
       const baseKgOv = (S.weightOverrides && S.weightOverrides[ovKey] != null) ? S.weightOverrides[ovKey] : ex.baseKg;
       const nameOv = (S.weightOverrides && S.weightOverrides[type+'|name|'+ei]) || ex.name;
+      const setCount = getExSets(type, ei, params.sets);
+      const actualSets = [];
+      for (let s=0; s<setCount; s++) {
+        const sk = `${S.selectedDate}-${ei}-${s}`;
+        const log = (S.actualLogs && S.actualLogs[sk]) || {};
+        actualSets.push({ kg: log.kg != null ? log.kg : null, reps: log.reps != null ? log.reps : null });
+      }
+      const noteKey = `${S.selectedDate}-${ei}`;
       return {
         name: nameOv,
         kg: calcWeight(ex, week, baseKgOv),
-        sets: getExSets(type, ei, params.sets),
+        sets: setCount,
         repsLo: params.repsLo,
         repsHi: params.repsHi,
+        actualSets,
+        note: (S.exerciseNotes && S.exerciseNotes[noteKey]) || '',
       };
     }),
     completedAt: new Date().toISOString(),
@@ -1309,6 +1448,100 @@ function clearHistory() {
 // ══════════════════════════════════════════════════════════════════
 // EDITABLE EXERCISES & WEIGHT
 // ══════════════════════════════════════════════════════════════════
+
+function saveActualLog(sk, field, val) {
+  if (!S.actualLogs) S.actualLogs = {};
+  if (!S.actualLogs[sk]) S.actualLogs[sk] = {};
+  const num = parseFloat(val);
+  if (!isNaN(num) && num >= 0) {
+    S.actualLogs[sk][field] = num;
+  } else {
+    delete S.actualLogs[sk][field];
+    if (Object.keys(S.actualLogs[sk]).length === 0) delete S.actualLogs[sk];
+  }
+  save();
+}
+
+function saveExerciseNote(type, ei, val) {
+  if (!S.exerciseNotes) S.exerciseNotes = {};
+  const noteKey = `${S.selectedDate}-${ei}`;
+  const v = val.trim();
+  if (v) S.exerciseNotes[noteKey] = v;
+  else delete S.exerciseNotes[noteKey];
+  save();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// SKIP / VACATION DAY NOTE
+// ══════════════════════════════════════════════════════════════════
+const DAYNOTE_TPLS = {
+  sick:      { reason: 'sick',            rest: '2 days', plan: 'light cardio next session, full workout after' },
+  busy:      { reason: 'work/overtime',   rest: '1 day',  plan: 'resume tomorrow, same plan' },
+  vacation:  { reason: 'vacation/travel', rest: '5 days', plan: 'bodyweight exercises 15 min/day, full routine after' },
+  lazy:      { reason: 'low motivation',  rest: '1 day',  plan: 'resume tomorrow, lighter intensity first set' },
+};
+
+function fillDayNoteTpl(key) {
+  const t = DAYNOTE_TPLS[key];
+  if (!t) return;
+  document.getElementById('dn-reason').value = t.reason;
+  document.getElementById('dn-rest').value = t.rest;
+  document.getElementById('dn-plan').value = t.plan;
+}
+
+function toggleDayNote() {
+  const body = document.getElementById('dn-body');
+  body.classList.toggle('open');
+}
+
+function saveDayNote() {
+  const reason = document.getElementById('dn-reason').value.trim();
+  const rest = document.getElementById('dn-rest').value.trim();
+  const plan = document.getElementById('dn-plan').value.trim();
+  if (!reason && !rest && !plan) { toast('⚠️ Lagyan ng reason, rest days, o plan.'); return; }
+  if (!S.dayNotes) S.dayNotes = {};
+  S.dayNotes[S.selectedDate] = { reason, rest, plan };
+  save();
+  document.getElementById('dn-body').classList.remove('open');
+  renderDayNote();
+  renderCalendar();
+  toast('📝 Note na-save.');
+}
+
+function deleteDayNote(iso) {
+  if (!S.dayNotes) return;
+  delete S.dayNotes[iso];
+  save();
+  renderDayNote();
+  renderCalendar();
+}
+
+function renderDayNote() {
+  const dateLbl = document.getElementById('dn-date');
+  const display = document.getElementById('dn-display');
+  const toggleBtn = document.getElementById('dn-toggle-btn');
+  if (!dateLbl || !display) return;
+  dateLbl.textContent = S.selectedDate;
+
+  const note = S.dayNotes && S.dayNotes[S.selectedDate];
+  if (note) {
+    toggleBtn.textContent = 'Edit';
+    const parts = [];
+    if (note.reason) parts.push(`Reason: ${note.reason}`);
+    if (note.rest) parts.push(`Rest: ${note.rest}`);
+    if (note.plan) parts.push(`Plan: ${note.plan}`);
+    display.innerHTML = `<div class="daynote-display"><span>${parts.join(' | ')}</span><button onclick="deleteDayNote('${S.selectedDate}')">🗑</button></div>`;
+    document.getElementById('dn-reason').value = note.reason || '';
+    document.getElementById('dn-rest').value = note.rest || '';
+    document.getElementById('dn-plan').value = note.plan || '';
+  } else {
+    toggleBtn.textContent = 'Add Note';
+    display.innerHTML = '';
+    document.getElementById('dn-reason').value = '';
+    document.getElementById('dn-rest').value = '';
+    document.getElementById('dn-plan').value = '';
+  }
+}
 
 function saveExName(type, ei, val) {
   if (!S.weightOverrides) S.weightOverrides = {};
@@ -1401,6 +1634,8 @@ function getWeightSuggestion(type, ei) {
 
 function addExtraSet(type, ei) {
   if (!S.extraSets) S.extraSets = {};
+if (!S.actualLogs) S.actualLogs = {};
+if (!S.exerciseNotes) S.exerciseNotes = {};
   const key = type + '|' + ei;
   S.extraSets[key] = (S.extraSets[key] || 0) + 1;
   save();
@@ -1410,6 +1645,8 @@ function addExtraSet(type, ei) {
 
 function removeExtraSet(type, ei) {
   if (!S.extraSets) S.extraSets = {};
+if (!S.actualLogs) S.actualLogs = {};
+if (!S.exerciseNotes) S.exerciseNotes = {};
   const key = type + '|' + ei;
   if (!S.extraSets[key] || S.extraSets[key] <= 0) return;
   // Uncheck the last set's checkbox before removing
@@ -1452,6 +1689,28 @@ function saveNewExercise(type) {
   save();
   toast(`✅ "${name}" naidagdag na!`);
   renderSession();
+}
+
+function hideBaseEx(type, ei) {
+  const exs = getExercises(type);
+  const ex = exs[ei];
+  if (!ex) return;
+  const nameOv = (S.weightOverrides && S.weightOverrides[type+'|name|'+ei]) || ex.name;
+  if (!confirm(`Tanggalin ang "${nameOv}" sa ${type.toUpperCase()} day? Pwede mo pa rin ito ibalik later.`)) return;
+  if (!S.hiddenBaseEx) S.hiddenBaseEx = {};
+  if (!S.hiddenBaseEx[type]) S.hiddenBaseEx[type] = [];
+  if (!S.hiddenBaseEx[type].includes(ei)) S.hiddenBaseEx[type].push(ei);
+  save();
+  renderSession();
+  toast('🗑 Exercise natanggal sa list.');
+}
+
+function restoreBaseEx(type, ei) {
+  if (!S.hiddenBaseEx || !S.hiddenBaseEx[type]) return;
+  S.hiddenBaseEx[type] = S.hiddenBaseEx[type].filter(i => i !== ei);
+  save();
+  renderSession();
+  toast('↩️ Exercise naibalik na.');
 }
 
 function deleteCustomEx(type, ei) {
