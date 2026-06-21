@@ -1,7 +1,7 @@
-// KAEL PPL — Service Worker v2
-// Caches everything for full offline use
+// KAEL PPL — Service Worker v8
+// Network-first for HTML (always fresh), cache-first for static assets, full offline fallback
 
-const CACHE = 'kael-ppl-v7';
+const CACHE = 'kael-ppl-v8';
 
 const PRECACHE = [
   './',
@@ -12,7 +12,7 @@ const PRECACHE = [
   'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap',
 ];
 
-// ── Install: cache all assets ──
+// ── Install: cache all assets, activate immediately ──
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE).then(cache => {
@@ -23,7 +23,7 @@ self.addEventListener('install', e => {
   );
 });
 
-// ── Activate: remove old caches ──
+// ── Activate: remove old caches, take control immediately ──
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -32,12 +32,24 @@ self.addEventListener('activate', e => {
   );
 });
 
-// ── Fetch: cache-first for local, network-first for Google Fonts ──
+// ── Fetch ──
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
-
-  // Skip non-GET
   if (e.request.method !== 'GET') return;
+
+  // HTML / navigation — network-first so updates show up immediately
+  if (e.request.mode === 'navigate' || url.pathname.endsWith('index.html') || url.pathname === '/' || url.pathname.endsWith('/')) {
+    e.respondWith(
+      fetch(e.request)
+        .then(res => {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+          return res;
+        })
+        .catch(() => caches.match(e.request).then(c => c || caches.match('./index.html')))
+    );
+    return;
+  }
 
   // Google Fonts — network first, fallback to cache
   if (url.hostname.includes('fonts.g')) {
@@ -53,7 +65,7 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Everything else — cache first
+  // Everything else (manifest, icons, sw itself) — cache-first
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
@@ -64,9 +76,13 @@ self.addEventListener('fetch', e => {
         }
         return res;
       }).catch(() => {
-        // If offline and no cache, return index.html for navigation
         if (e.request.mode === 'navigate') return caches.match('./index.html');
       });
     })
   );
+});
+
+// ── Allow page to trigger immediate update ──
+self.addEventListener('message', e => {
+  if (e.data === 'SKIP_WAITING') self.skipWaiting();
 });
