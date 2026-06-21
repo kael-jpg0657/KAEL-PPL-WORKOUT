@@ -79,35 +79,16 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .cal-day{aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .15s;background:var(--s1);color:var(--sub);position:relative;border:1.5px solid transparent}
 .cal-day.today{border-color:var(--accent);color:var(--accent)}
 .cal-day.selected{background:var(--accent);color:#000;border-color:var(--accent)}
-.cal-day.has-push{background:rgba(255,61,92,.15);color:var(--push)}
-.cal-day.has-pull{background:rgba(56,182,240,.15);color:var(--pull)}
-.cal-day.has-legs{background:rgba(48,209,88,.15);color:var(--legs)}
-.cal-day.has-rest{background:var(--s1);color:var(--sub)}
-.cal-day.selected.has-push{background:var(--push);border-color:var(--push);color:#fff}
-.cal-day.selected.has-pull{background:var(--pull);border-color:var(--pull);color:#000}
-.cal-day.selected.has-legs{background:var(--legs);border-color:var(--legs);color:#000}
-.cal-day.done-dot::after{content:'';position:absolute;bottom:4px;width:4px;height:4px;border-radius:50%;background:var(--legs)}
+.cal-day.status-done{background:rgba(48,209,88,.22);color:var(--legs);border-color:rgba(48,209,88,.4)}
+.cal-day.status-skip{background:rgba(255,61,92,.22);color:var(--push);border-color:rgba(255,61,92,.4)}
+.cal-day.status-rest{background:rgba(255,214,10,.18);color:var(--accent);border-color:rgba(255,214,10,.35)}
+.cal-day.selected.status-done{background:var(--legs);border-color:var(--legs);color:#000}
+.cal-day.selected.status-skip{background:var(--push);border-color:var(--push);color:#fff}
+.cal-day.selected.status-rest{background:var(--accent);border-color:var(--accent);color:#000}
 .cal-day.empty{background:transparent;border-color:transparent;cursor:default}
 .cal-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;padding:0 2px}
 .leg-item{display:flex;align-items:center;gap:5px;font-size:.63rem;color:var(--sub);font-weight:500}
 .leg-dot{width:7px;height:7px;border-radius:50%}
-
-/* ── SKIP / VACATION NOTE ── */
-.daynote-card{background:var(--s1);border-radius:var(--r2);padding:12px 14px;margin:10px 16px 0;border:1.5px solid var(--border)}
-.daynote-hdr{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.daynote-title{font-size:.72rem;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.6px}
-.daynote-toggle{background:var(--s2);border:none;border-radius:10px;padding:5px 10px;font-size:.65rem;font-weight:700;color:var(--accent);cursor:pointer}
-.daynote-body{display:none;margin-top:10px}
-.daynote-body.open{display:block}
-.daynote-tpls{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.daynote-tpl{background:var(--s2);border:none;border-radius:20px;padding:5px 11px;font-size:.62rem;font-weight:600;color:var(--sub);cursor:pointer}
-.daynote-fields{display:flex;flex-direction:column;gap:6px}
-.daynote-fields input{width:100%;background:var(--s2);border:none;border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;padding:9px 11px;outline:none;font-size:.76rem}
-.daynote-fields input::placeholder{color:var(--sub);opacity:.6}
-.daynote-save{margin-top:8px;width:100%;background:var(--accent);border:none;border-radius:10px;padding:9px 0;font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:1px;color:#000;cursor:pointer}
-.daynote-display{margin-top:8px;font-size:.74rem;color:var(--text2);line-height:1.5;background:var(--s2);border-radius:10px;padding:9px 11px;display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
-.daynote-display button{background:none;border:none;color:var(--sub);cursor:pointer;font-size:.7rem;flex-shrink:0}
-.cal-day.has-note::before{content:'';position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--warm)}
 
 /* ── SESSION AREA ── */
 .session-wrap{padding:14px 16px 0}
@@ -117,13 +98,15 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .hero.push{background:linear-gradient(135deg,rgba(255,61,92,.2),rgba(255,61,92,.05));border:1.5px solid rgba(255,61,92,.3)}
 .hero.pull{background:linear-gradient(135deg,rgba(56,182,240,.2),rgba(56,182,240,.05));border:1.5px solid rgba(56,182,240,.3)}
 .hero.legs{background:linear-gradient(135deg,rgba(48,209,88,.2),rgba(48,209,88,.05));border:1.5px solid rgba(48,209,88,.3)}
+.hero.fullbody{background:linear-gradient(135deg,rgba(255,214,10,.2),rgba(255,214,10,.05));border:1.5px solid rgba(255,214,10,.3)}
 .hero.rest{background:var(--s1);border:1.5px solid var(--border)}
 .hero::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;opacity:.07}
 .hero.push::before{background:var(--push)}
 .hero.pull::before{background:var(--pull)}
 .hero.legs::before{background:var(--legs)}
+.hero.fullbody::before{background:var(--accent)}
 .hero-type{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:5px;line-height:1}
-.hero-type.push{color:var(--push)}.hero-type.pull{color:var(--pull)}.hero-type.legs{color:var(--legs)}.hero-type.rest{color:var(--sub)}
+.hero-type.push{color:var(--push)}.hero-type.pull{color:var(--pull)}.hero-type.legs{color:var(--legs)}.hero-type.fullbody{color:var(--accent)}.hero-type.rest{color:var(--sub)}
 .hero-sub{font-size:.72rem;color:var(--sub);margin-top:4px;font-weight:500}
 .hero-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .htag{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,.06);color:var(--sub)}
@@ -137,6 +120,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .prog-fill.push{background:linear-gradient(90deg,var(--push),#ff6b84)}
 .prog-fill.pull{background:linear-gradient(90deg,var(--pull),#72ccf5)}
 .prog-fill.legs{background:linear-gradient(90deg,var(--legs),#66e899)}
+.prog-fill.fullbody{background:linear-gradient(90deg,var(--accent),#ffe55c)}
 
 /* section label */
 .slabel{display:flex;align-items:center;gap:10px;margin:16px 0 10px}
@@ -167,6 +151,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .push .ex-num{background:rgba(255,61,92,.18);color:var(--push)}
 .pull .ex-num{background:rgba(56,182,240,.18);color:var(--pull)}
 .legs .ex-num{background:rgba(48,209,88,.18);color:var(--legs)}
+.fullbody .ex-num{background:rgba(255,214,10,.18);color:var(--accent)}
 .ex-info{flex:1;min-width:0}
 .ex-name{font-size:.9rem;font-weight:700;letter-spacing:-.2px}
 .ex-meta{font-size:.67rem;color:var(--sub);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
@@ -194,6 +179,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .push-s .set-btn.done{background:var(--push);border-color:var(--push);color:#fff}
 .pull-s .set-btn.done{background:var(--pull);border-color:var(--pull);color:#000}
 .legs-s .set-btn.done{background:var(--legs);border-color:var(--legs);color:#000}
+.fullbody-s .set-btn.done{background:var(--accent);border-color:var(--accent);color:#000}
 
 /* overload note */
 .ol-note{margin-top:10px;padding:10px 12px;background:var(--s2);border-radius:var(--r3);font-size:.73rem;color:var(--sub);line-height:1.6}
@@ -211,6 +197,45 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .rest-card h3{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;color:var(--sub);margin-top:10px}
 .rest-tips{margin-top:16px;display:flex;flex-direction:column;gap:7px;text-align:left}
 .rest-tip{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--s2);border-radius:14px;font-size:.78rem;color:var(--sub);font-weight:500}
+
+/* ── DAY TYPE SELECTOR ROW ── */
+.daytype-wrap{padding:0 16px 4px}
+.daytype-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.daytype-pill{padding:12px 6px;border-radius:14px;background:var(--s1);border:1.5px solid transparent;text-align:center;cursor:pointer;transition:all .2s}
+.daytype-pill-label{font-size:.68rem;font-weight:800;letter-spacing:.3px}
+.daytype-pill-sub{font-size:.52rem;color:var(--sub);font-weight:600;margin-top:2px}
+.daytype-pill.push{color:var(--push)}
+.daytype-pill.pull{color:var(--pull)}
+.daytype-pill.legs{color:var(--legs)}
+.daytype-pill.fullbody{color:var(--accent)}
+.daytype-pill.active.push{background:rgba(255,61,92,.16);border-color:var(--push)}
+.daytype-pill.active.pull{background:rgba(56,182,240,.16);border-color:var(--pull)}
+.daytype-pill.active.legs{background:rgba(48,209,88,.16);border-color:var(--legs)}
+.daytype-pill.active.fullbody{background:rgba(255,214,10,.16);border-color:var(--accent)}
+
+/* ── DAY STATUS NOTES (SKIP/REST/BREAK) ── */
+.daystat-card{background:var(--s1);border:1.5px solid var(--border2);border-radius:var(--r);padding:14px 16px;margin-bottom:14px}
+.daystat-card.empty{text-align:center}
+.daystat-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--sub);font-weight:700;margin-bottom:10px}
+.daystat-btns{display:flex;gap:8px;justify-content:center}
+.daystat-btn{flex:1;padding:11px 8px;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-size:.74rem;font-weight:800;cursor:pointer;letter-spacing:.4px;background:var(--s2);color:var(--sub)}
+.daystat-btn.skip{background:rgba(255,61,92,.12);color:var(--push)}
+.daystat-btn.rest{background:rgba(255,214,10,.12);color:var(--accent)}
+.daystat-btn.break{background:rgba(255,214,10,.12);color:var(--accent)}
+.daystat-btn:active{opacity:.7}
+.daystat-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.daystat-code{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px}
+.daystat-clear{background:transparent;border:none;color:var(--sub);font-size:.68rem;font-weight:600;cursor:pointer;padding:4px 8px}
+.daystat-line{font-size:.78rem;color:var(--text2);line-height:1.6;margin-top:4px}
+.daystat-line strong{color:var(--text);font-weight:700}
+.daystat-form{margin-top:12px;text-align:left}
+.daystat-form-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;margin-bottom:10px}
+.daystat-form label{font-size:.58rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--sub);font-weight:700;display:block;margin-bottom:5px;margin-top:8px}
+.daystat-form input{width:100%;background:var(--s2);border:none;border-radius:12px;color:var(--text);font-family:'Inter',sans-serif;padding:10px 12px;outline:none;font-size:.82rem;-webkit-appearance:none}
+.daystat-form input:focus{box-shadow:0 0 0 2px var(--accent)}
+.daystat-form-actions{display:flex;gap:8px;margin-top:12px}
+.daystat-save{flex:1;padding:11px;background:var(--accent);border:none;border-radius:14px;color:#000;font-family:'Inter',sans-serif;font-size:.84rem;font-weight:800;cursor:pointer}
+.daystat-cancel{padding:11px 16px;background:var(--s2);border:none;border-radius:14px;color:var(--sub);font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer}
 
 /* ── ACTUAL LOG (per-set kg/reps) ── */
 .actual-log-row{display:flex;gap:8px;margin:-2px 0 8px;padding:0 2px}
@@ -405,34 +430,14 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
   <div class="cal-wrap">
     <div class="cal-grid" id="cal-grid"></div>
     <div class="cal-legend">
-      <div class="leg-item"><div class="leg-dot" style="background:var(--push)"></div>Push</div>
-      <div class="leg-item"><div class="leg-dot" style="background:var(--pull)"></div>Pull</div>
-      <div class="leg-item"><div class="leg-dot" style="background:var(--legs)"></div>Legs</div>
-      <div class="leg-item"><div class="leg-dot" style="background:var(--sub)"></div>Rest</div>
-      <div class="leg-item"><div class="leg-dot" style="background:var(--warm)"></div>Note</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--legs)"></div>Workout Done</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--push)"></div>Skipped</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--accent)"></div>Rest Day</div>
     </div>
   </div>
 
-  <div class="daynote-card">
-    <div class="daynote-hdr">
-      <div class="daynote-title">📝 Skip / Vacation Note — <span id="dn-date"></span></div>
-      <button class="daynote-toggle" onclick="toggleDayNote()" id="dn-toggle-btn">Add Note</button>
-    </div>
-    <div class="daynote-body" id="dn-body">
-      <div class="daynote-tpls">
-        <button class="daynote-tpl" onclick="fillDayNoteTpl('sick')">🤒 Sick</button>
-        <button class="daynote-tpl" onclick="fillDayNoteTpl('busy')">⏰ Busy/Work</button>
-        <button class="daynote-tpl" onclick="fillDayNoteTpl('vacation')">✈️ Vacation</button>
-        <button class="daynote-tpl" onclick="fillDayNoteTpl('lazy')">😴 No Motivation</button>
-      </div>
-      <div class="daynote-fields">
-        <input id="dn-reason" placeholder="Reason (bakit na-skip)">
-        <input id="dn-rest" placeholder="Ilang days na pahinga (e.g. 2 days)">
-        <input id="dn-plan" placeholder="Adjustment plan (paano babalik)">
-      </div>
-      <button class="daynote-save" onclick="saveDayNote()">SAVE NOTE</button>
-    </div>
-    <div id="dn-display"></div>
+  <div class="daytype-wrap">
+    <div class="daytype-row" id="daytype-row"></div>
   </div>
 
   <div class="session-wrap" id="session-wrap"></div>
@@ -618,6 +623,43 @@ const LEGS_EX = [
   },
 ];
 
+const FULLBODY_EX = [
+  {
+    name:'DB Thruster (squat to press)',
+    guide:'Hawak ang DB sa shoulder level. Squat pababa — full depth, 2 sec down. Mula sa baba, explode pataas habang itinutulak ang DB overhead sa parehong galaw. Buong katawan ang gumagana — legs, core, shoulders.',
+    baseKg:14, cat:'compound', restSec:75, sets:3, repsLo:10, repsHi:10,
+  },
+  {
+    name:'Renegade Row (plank position)',
+    guide:'Plank position, kamay sa DB. Hilahin ang isang DB pataas papunta sa baywang habang nakatayo ang katawan — wag mag-twist. Ibaba mabagal, ulitin sa kabilang braso. Core tight buong oras.',
+    baseKg:10, cat:'compound', restSec:75, sets:3, repsLo:10, repsHi:10,
+  },
+  {
+    name:'Plank with DB Drag',
+    guide:'Plank position, DB sa tabi ng isang kamay. Hilahin/i-drag ang DB papunta sa kabilang gilid sa ilalim ng katawan, tapos pabalik. Huwag babaan ang balakang. Core at obliques ang target.',
+    baseKg:6, cat:'core', restSec:60, sets:3, repsLo:null, repsHi:null, durationSec:[30,45],
+  },
+  {
+    name:'Burpees',
+    guide:'Mula tayo, squat-thrust pababa papunta sa plank, push-up (optional), jump feet pabalik sa squat, explode jump pataas. Full body cardio + strength finisher. Mabilis pero controlled.',
+    baseKg:null, cat:'bodyweight', restSec:75, sets:3, repsLo:10, repsHi:12,
+  },
+  {
+    name:'Mountain Climbers (cardio finisher)',
+    guide:'Plank position. Mabilis na palitan ang tuhod papunta sa dibdib, parang tumatakbo habang naka-plank. Core tight, balakang stable — huwag itaas ng masyado. Cardio finisher — go fast.',
+    baseKg:null, cat:'cardio', restSec:60, sets:3, repsLo:null, repsHi:null, durationSec:[30,45],
+  },
+];
+
+const FULLBODY_WARMUP = [
+  {name:'Jumping Jacks', detail:'30 sec — full body activation'},
+  {name:'Arm Circles', detail:'20 sec forward + 20 sec backward'},
+  {name:'Bodyweight Squat', detail:'10 reps — mabagal, full depth'},
+  {name:'Hip Circle', detail:'10 reps bawat direksyon'},
+  {name:'High Knees', detail:'20 sec — light cardio warm-up'},
+  {name:'Cat-Cow', detail:'8 reps — spine mobility'},
+];
+
 const WARMUPS = {
   push:[
     {name:'Arm Circles', detail:'30s forward + 30s backward'},
@@ -643,6 +685,7 @@ const WARMUPS = {
     {name:'Glute Bridge Pulse', detail:'20 reps — bodyweight, fast'},
     {name:'Calf Raise Warm-Up', detail:'20 reps — bodyweight'},
   ],
+  fullbody: FULLBODY_WARMUP,
 };
 
 const MOTIVATIONS = [
@@ -676,7 +719,8 @@ const DEF_STATE = {
   actualLogs: {},        // "YYYY-MM-DD-exIdx-setIdx" -> {kg, reps}
   exerciseNotes: {},      // "YYYY-MM-DD-exIdx" -> note string
   hiddenBaseEx: {},        // "push"|"pull"|"legs" -> [ei, ei, ...] hidden base exercise indices
-  dayNotes: {},            // "YYYY-MM-DD" -> {reason, rest, plan}
+  dayStatus: {},           // "YYYY-MM-DD" -> {status:'skip'|'rest'|'break', reason, comeback}
+  selectedDayType: {},     // "YYYY-MM-DD" -> 'push'|'pull'|'legs'|'fullbody' manual override
 };
 
 let S = (() => {
@@ -695,7 +739,8 @@ if (!S.extraSets) S.extraSets = {};
 if (!S.actualLogs) S.actualLogs = {};
 if (!S.exerciseNotes) S.exerciseNotes = {};
 if (!S.hiddenBaseEx) S.hiddenBaseEx = {};
-if (!S.dayNotes) S.dayNotes = {};
+if (!S.dayStatus) S.dayStatus = {};
+if (!S.selectedDayType) S.selectedDayType = {};
 if (!S.viewYear || !S.viewMonth) {
   const today = new Date();
   S.viewYear = today.getFullYear();
@@ -725,12 +770,50 @@ function getDayType(dateISO) {
   return DOW_SCHEDULE[d.getDay()] || 'rest';
 }
 
+function getActiveDayType(dateISO) {
+  const scheduled = getDayType(dateISO);
+  if (scheduled === 'future') return 'future';
+  const override = S.selectedDayType && S.selectedDayType[dateISO];
+  return override || scheduled;
+}
+
+function selectDayType(dateISO, type) {
+  if (!S.selectedDayType) S.selectedDayType = {};
+  S.selectedDayType[dateISO] = type;
+  save();
+  renderDaytypeRow();
+  renderSession();
+  renderStats();
+}
+
+function renderDaytypeRow() {
+  const row = document.getElementById('daytype-row');
+  if (!row) return;
+  const iso = S.selectedDate;
+  const scheduled = getDayType(iso);
+  if (scheduled === 'future') { row.innerHTML = ''; return; }
+  const active = getActiveDayType(iso);
+
+  const items = [
+    { type:'push', label:'PUSH', sub:'Chest/Sh/Tri' },
+    { type:'pull', label:'PULL', sub:'Back/Bi' },
+    { type:'legs', label:'LEGS', sub:'Quads/Glutes' },
+    { type:'fullbody', label:'FULL BODY', sub:'Core+Cond' },
+  ];
+
+  row.innerHTML = items.map(it => `
+    <div class="daytype-pill ${it.type} ${active===it.type?'active':''}" onclick="selectDayType('${iso}','${it.type}')">
+      <div class="daytype-pill-label">${it.label}</div>
+      <div class="daytype-pill-sub">${it.sub}</div>
+    </div>`).join('');
+}
+
 function getWeekNumber(dateISO) {
   return Math.floor(daysSinceStart(dateISO) / 7) + 1;
 }
 
 function getExercises(type) {
-  const base = type === 'push' ? PUSH_EX : type === 'pull' ? PULL_EX : type === 'legs' ? LEGS_EX : [];
+  const base = type === 'push' ? PUSH_EX : type === 'pull' ? PULL_EX : type === 'legs' ? LEGS_EX : type === 'fullbody' ? FULLBODY_EX : [];
   const custom = (S.customExercises && S.customExercises[type]) || [];
   return [...base, ...custom];
 }
@@ -772,7 +855,6 @@ function render() {
   renderCalendar();
   renderSession();
   renderStats();
-  renderDayNote();
 }
 
 function renderHeader() {
@@ -793,18 +875,21 @@ function renderCalendar() {
 
   for (let d=1; d<=daysInMonth; d++) {
     const iso = `${S.viewYear}-${String(S.viewMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const type = getDayType(iso);
     const isToday = iso === today;
     const isSelected = iso === S.selectedDate;
     const isDone = !!S.completedSessions[iso];
+    const statusEntry = S.dayStatus && S.dayStatus[iso];
+    const status = statusEntry ? statusEntry.status : null; // 'skip'|'rest'|'break'
+
     let cls = 'cal-day';
-    if (type && type !== 'future') cls += ` has-${type}`;
+    if (isDone) cls += ' status-done';
+    else if (status === 'skip') cls += ' status-skip';
+    else if (status === 'rest' || status === 'break') cls += ' status-rest';
     if (isToday) cls += ' today';
     if (isSelected) cls += ' selected';
-    if (isDone) cls += ' done-dot';
-    if (S.dayNotes && S.dayNotes[iso]) cls += ' has-note';
-    const label = type === 'rest' ? '—' : (type === 'future' ? '' : type.slice(0,1).toUpperCase());
-    html += `<div class="${cls}" onclick="selectDate('${iso}')">${d}<br><span style="font-size:.5rem;opacity:.7">${label}</span></div>`;
+
+    const mark = isDone ? '✓' : status === 'skip' ? '✕' : (status === 'rest' || status === 'break') ? '–' : '';
+    html += `<div class="${cls}" onclick="selectDate('${iso}')">${d}<br><span style="font-size:.5rem;opacity:.7">${mark}</span></div>`;
   }
 
   grid.innerHTML = html;
@@ -823,7 +908,7 @@ function renderStats() {
   document.getElementById('s-streak').textContent = S.streak || 0;
 
   // Today sets
-  const type = getDayType(S.selectedDate);
+  const type = getActiveDayType(S.selectedDate);
   if (type && type !== 'rest' && type !== 'future') {
     const exs = getExercises(type);
     const week = getWeekNumber(S.selectedDate);
@@ -840,12 +925,93 @@ function renderStats() {
   }
 }
 
+// ══════════════════════════════════════════════════════════════════
+// DAY STATUS NOTES — SKIP / REST / BREAK
+// ══════════════════════════════════════════════════════════════════
+
+const STATUS_CODES = {
+  skip:  { label:'SKIP',  emoji:'✕', color:'var(--push)' },
+  rest:  { label:'REST',  emoji:'–', color:'var(--accent)' },
+  break: { label:'BREAK', emoji:'■', color:'var(--accent)' },
+};
+
+function renderDayStatusWidget() {
+  const iso = S.selectedDate;
+  const entry = (S.dayStatus && S.dayStatus[iso]) || null;
+  const isDone = !!S.completedSessions[iso];
+
+  if (isDone) return ''; // completed sessions don't need status notes
+
+  if (entry) {
+    const sc = STATUS_CODES[entry.status] || STATUS_CODES.skip;
+    return `
+    <div class="daystat-card" style="border-color:${sc.color}">
+      <div class="daystat-hdr">
+        <span class="daystat-code" style="color:${sc.color}">[${sc.label}]</span>
+        <button class="daystat-clear" onclick="clearDayStatus()">✕ alisin</button>
+      </div>
+      ${entry.reason ? `<div class="daystat-line"><strong>Reason:</strong> ${entry.reason}</div>` : ''}
+      ${entry.comeback ? `<div class="daystat-line"><strong>Comeback:</strong> ${entry.comeback}</div>` : ''}
+    </div>`;
+  }
+
+  return `
+  <div class="daystat-card empty">
+    <div class="daystat-lbl">Mark this day:</div>
+    <div class="daystat-btns">
+      <button class="daystat-btn skip" onclick="openDayStatusForm('skip')">✕ SKIP</button>
+      <button class="daystat-btn rest" onclick="openDayStatusForm('rest')">– REST</button>
+      <button class="daystat-btn break" onclick="openDayStatusForm('break')">■ BREAK</button>
+    </div>
+    <div id="daystat-form-wrap"></div>
+  </div>`;
+}
+
+function openDayStatusForm(status) {
+  const wrap = document.getElementById('daystat-form-wrap');
+  if (!wrap) return;
+  const sc = STATUS_CODES[status];
+  wrap.innerHTML = `
+    <div class="daystat-form">
+      <div class="daystat-form-title" style="color:${sc.color}">[${sc.label}]</div>
+      <label>Reason</label>
+      <input type="text" id="ds-reason" placeholder="e.g. shoulder pain, trabaho, biyahe...">
+      <label>Comeback Plan</label>
+      <input type="text" id="ds-comeback" placeholder="e.g. bukas same time, light sets muna...">
+      <div class="daystat-form-actions">
+        <button class="daystat-cancel" onclick="document.getElementById('daystat-form-wrap').innerHTML=''">Cancel</button>
+        <button class="daystat-save" onclick="saveDayStatus('${status}')">SAVE</button>
+      </div>
+    </div>`;
+}
+
+function saveDayStatus(status) {
+  const reason = document.getElementById('ds-reason')?.value?.trim() || '';
+  const comeback = document.getElementById('ds-comeback')?.value?.trim() || '';
+  if (!S.dayStatus) S.dayStatus = {};
+  S.dayStatus[S.selectedDate] = { status, reason, comeback };
+  save();
+  renderCalendar();
+  renderSession();
+  toast(`${STATUS_CODES[status].emoji} ${STATUS_CODES[status].label} naka-save.`);
+}
+
+function clearDayStatus() {
+  if (!S.dayStatus) return;
+  delete S.dayStatus[S.selectedDate];
+  save();
+  renderCalendar();
+  renderSession();
+}
+
 function renderSession() {
   const wrap = document.getElementById('session-wrap');
-  const type = getDayType(S.selectedDate);
+  const type = getActiveDayType(S.selectedDate);
   const week = getWeekNumber(S.selectedDate);
   const params = getWeekParams(week);
   const isDone = !!S.completedSessions[S.selectedDate];
+
+  renderDaytypeRow();
 
   if (!type || type === 'future') {
     wrap.innerHTML = `<div class="rest-card"><div style="font-size:2rem">📅</div><h3>HINDI PA SIMULA</h3><div class="rest-tips"><div class="rest-tip">Ang program ay nagsimula sa ${S.programStart}. Piliin ang isang araw na kasama sa programa.</div></div></div>`;
@@ -855,6 +1021,7 @@ function renderSession() {
   if (type === 'rest') {
     wrap.innerHTML = `
       <div class="hero rest"><div class="hero-type rest">REST DAY</div><div class="hero-sub">Recovery is where growth happens.</div></div>
+      ${renderDayStatusWidget()}
       <div class="rest-card">
         <div style="font-size:2.2rem">😴</div>
         <h3>ACTIVE RECOVERY</h3>
@@ -883,8 +1050,8 @@ function renderSession() {
   const pct = totalSets ? Math.round(doneSets/totalSets*100) : 0;
   const allDone = doneSets === totalSets;
 
-  const typeLabel = type === 'push' ? 'PUSH DAY' : type === 'pull' ? 'PULL DAY' : 'LEG DAY';
-  const typeSub = type === 'push' ? 'Chest · Shoulders · Triceps' : type === 'pull' ? 'Back · Biceps · Rear Delts' : 'Quads · Hamstrings · Glutes · Calves';
+  const typeLabel = type === 'push' ? 'PUSH DAY' : type === 'pull' ? 'PULL DAY' : type === 'legs' ? 'LEG DAY' : 'FULL BODY';
+  const typeSub = type === 'push' ? 'Chest · Shoulders · Triceps' : type === 'pull' ? 'Back · Biceps · Rear Delts' : type === 'legs' ? 'Quads · Hamstrings · Glutes · Calves' : 'Core · Conditioning · Full Body';
 
   let html = `
     <div class="hero ${type}">
@@ -898,6 +1065,7 @@ function renderSession() {
         ${isDone ? '<span class="htag accent">✓ COMPLETED</span>' : ''}
       </div>
     </div>
+    ${renderDayStatusWidget()}
     <div class="prog">
       <div class="prog-row"><span>Session Progress</span><span>${pct}%</span></div>
       <div class="prog-track"><div class="prog-fill ${type}" id="prog-fill" style="width:${pct}%"></div></div>
@@ -1064,7 +1232,7 @@ function renderSession() {
   if (!isDone) {
     html += `<button class="finish-btn ${type} ${allDone?'vis':''}" id="finish-btn" onclick="completeSession()">✓ TAPOS NA · SAVE SESSION</button>`;
   } else {
-    html += `<div style="margin-top:14px;padding:14px;background:var(--done);border:1px solid var(--doneb);border-radius:var(--r);text-align:center;font-size:.8rem;color:var(--legs)">✓ Session nai-save na. ${S.completedSessions[S.selectedDate].exercises ? S.completedSessions[S.selectedDate].exercises.length + ' exercises' : ''}<br><button onclick="deleteSession('${S.selectedDate}')" style="margin-top:10px;background:rgba(255,61,92,.15);border:none;border-radius:10px;padding:7px 14px;color:var(--push);font-size:.72rem;font-weight:700;cursor:pointer">🗑 Tanggalin ang Session</button></div>`;
+    html += `<div style="margin-top:14px;padding:14px;background:var(--done);border:1px solid var(--doneb);border-radius:var(--r);text-align:center;font-size:.8rem;color:var(--legs)">✓ Session nai-save na. ${S.completedSessions[S.selectedDate].exercises ? S.completedSessions[S.selectedDate].exercises.length + ' exercises' : ''}</div>`;
   }
 
   wrap.innerHTML = html;
@@ -1322,7 +1490,7 @@ function changeMonth(dir) {
 }
 
 function selectDate(iso) {
-  S.selectedDate = iso; save(); renderCalendar(); renderSession(); renderStats(); renderDayNote();
+  S.selectedDate = iso; save(); renderCalendar(); renderSession(); renderStats();
 }
 
 function toggleWu() {
@@ -1348,7 +1516,7 @@ function toggleSet(sk) {
   const ei = parseInt(parts.pop());
   const dateISO = parts.join('-');
 
-  const type = getDayType(dateISO);
+  const type = getActiveDayType(dateISO);
   const exs = getExercises(type);
   const week = getWeekNumber(dateISO);
   const {sets, repsLo, repsHi} = getWeekParams(week);
@@ -1393,7 +1561,7 @@ function toggleSet(sk) {
 }
 
 function completeSession() {
-  const type = getDayType(S.selectedDate);
+  const type = getActiveDayType(S.selectedDate);
   const exs = getExercises(type);
   const week = getWeekNumber(S.selectedDate);
   const params = getWeekParams(week);
@@ -1437,19 +1605,6 @@ function completeSession() {
   renderStats();
 }
 
-function deleteSession(iso) {
-  if (!confirm('Tanggalin ang naka-save na session ngayong araw? Mababawi ang sets/streak.')) return;
-  delete S.completedSessions[iso];
-  if (S.streak > 0) S.streak--;
-  // also clear set checks for that day so it's fully reset
-  Object.keys(S.setChecks).forEach(k => { if (k.startsWith(iso + '-')) delete S.setChecks[k]; });
-  save();
-  renderCalendar();
-  renderSession();
-  renderStats();
-  toast('🗑 Session natanggal.');
-}
-
 function clearHistory() {
   if (!confirm('I-clear lahat ng history? Hindi na ito mababalik.')) return;
   S.completedSessions = {};
@@ -1482,78 +1637,6 @@ function saveExerciseNote(type, ei, val) {
   if (v) S.exerciseNotes[noteKey] = v;
   else delete S.exerciseNotes[noteKey];
   save();
-}
-
-// ══════════════════════════════════════════════════════════════════
-// SKIP / VACATION DAY NOTE
-// ══════════════════════════════════════════════════════════════════
-const DAYNOTE_TPLS = {
-  sick:      { reason: 'sick',            rest: '2 days', plan: 'light cardio next session, full workout after' },
-  busy:      { reason: 'work/overtime',   rest: '1 day',  plan: 'resume tomorrow, same plan' },
-  vacation:  { reason: 'vacation/travel', rest: '5 days', plan: 'bodyweight exercises 15 min/day, full routine after' },
-  lazy:      { reason: 'low motivation',  rest: '1 day',  plan: 'resume tomorrow, lighter intensity first set' },
-};
-
-function fillDayNoteTpl(key) {
-  const t = DAYNOTE_TPLS[key];
-  if (!t) return;
-  document.getElementById('dn-reason').value = t.reason;
-  document.getElementById('dn-rest').value = t.rest;
-  document.getElementById('dn-plan').value = t.plan;
-}
-
-function toggleDayNote() {
-  const body = document.getElementById('dn-body');
-  body.classList.toggle('open');
-}
-
-function saveDayNote() {
-  const reason = document.getElementById('dn-reason').value.trim();
-  const rest = document.getElementById('dn-rest').value.trim();
-  const plan = document.getElementById('dn-plan').value.trim();
-  if (!reason && !rest && !plan) { toast('⚠️ Lagyan ng reason, rest days, o plan.'); return; }
-  if (!S.dayNotes) S.dayNotes = {};
-  S.dayNotes[S.selectedDate] = { reason, rest, plan };
-  save();
-  document.getElementById('dn-body').classList.remove('open');
-  renderDayNote();
-  renderCalendar();
-  toast('📝 Note na-save.');
-}
-
-function deleteDayNote(iso) {
-  if (!S.dayNotes) return;
-  delete S.dayNotes[iso];
-  save();
-  renderDayNote();
-  renderCalendar();
-}
-
-function renderDayNote() {
-  const dateLbl = document.getElementById('dn-date');
-  const display = document.getElementById('dn-display');
-  const toggleBtn = document.getElementById('dn-toggle-btn');
-  if (!dateLbl || !display) return;
-  dateLbl.textContent = S.selectedDate;
-
-  const note = S.dayNotes && S.dayNotes[S.selectedDate];
-  if (note) {
-    toggleBtn.textContent = 'Edit';
-    const parts = [];
-    if (note.reason) parts.push(`Reason: ${note.reason}`);
-    if (note.rest) parts.push(`Rest: ${note.rest}`);
-    if (note.plan) parts.push(`Plan: ${note.plan}`);
-    display.innerHTML = `<div class="daynote-display"><span>${parts.join(' | ')}</span><button onclick="deleteDayNote('${S.selectedDate}')">🗑</button></div>`;
-    document.getElementById('dn-reason').value = note.reason || '';
-    document.getElementById('dn-rest').value = note.rest || '';
-    document.getElementById('dn-plan').value = note.plan || '';
-  } else {
-    toggleBtn.textContent = 'Add Note';
-    display.innerHTML = '';
-    document.getElementById('dn-reason').value = '';
-    document.getElementById('dn-rest').value = '';
-    document.getElementById('dn-plan').value = '';
-  }
 }
 
 function saveExName(type, ei, val) {
