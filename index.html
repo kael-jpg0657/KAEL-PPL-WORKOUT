@@ -46,7 +46,9 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .app{max-width:430px;margin:0 auto;padding-bottom:100px;position:relative}
 
 /* ── THEME BUTTON ── */
-.theme-btn{position:fixed;top:14px;right:16px;z-index:400;background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:.72rem;font-weight:600;color:var(--sub);cursor:pointer;transition:all .2s;letter-spacing:.3px}
+.topbar-actions{position:fixed;top:14px;right:16px;z-index:400;display:flex;gap:8px}
+.icon-btn{background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--border2);border-radius:20px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.85rem;cursor:pointer;transition:all .2s}
+.theme-btn{background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--border2);border-radius:20px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:600;color:var(--sub);cursor:pointer;transition:all .2s}
 
 /* ── TAB BAR — iOS bottom nav style ── */
 .tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:300;background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border-top:1px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -392,7 +394,12 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 </style>
 </head>
 <body>
-<button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀️</button>
+<div class="topbar-actions">
+  <button class="icon-btn" id="export-btn" onclick="exportData()" title="Export backup">⬇️</button>
+  <button class="icon-btn" id="import-btn" onclick="document.getElementById('import-file').click()" title="Import backup">⬆️</button>
+  <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀️</button>
+</div>
+<input type="file" id="import-file" accept="application/json" style="display:none" onchange="importData(event)">
 <div class="app">
 
 <div class="tab-bar">
@@ -752,6 +759,52 @@ if (!S.selectedDate) {
 }
 
 function save() { try { localStorage.setItem('kael_ppl_v1', JSON.stringify(S)); } catch(e){} }
+
+// ══════════════════════════════════════════════════════════════════
+// BACKUP — EXPORT / IMPORT
+// ══════════════════════════════════════════════════════════════════
+
+function exportData() {
+  try {
+    const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const dateStr = toISO(new Date());
+    a.href = url;
+    a.download = `kael-ppl-backup-${dateStr}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast('⬇️ Backup na-download!');
+  } catch(e) {
+    toast('❌ Export failed.');
+  }
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (!parsed || typeof parsed !== 'object') throw new Error('Invalid format');
+      if (!confirm('I-replace ang current data ng imported backup? Hindi na ito pwede i-undo.')) {
+        event.target.value = '';
+        return;
+      }
+      S = Object.assign(JSON.parse(JSON.stringify(DEF_STATE)), parsed);
+      save();
+      toast('⬆️ Backup na-restore! Nire-reload...');
+      setTimeout(() => location.reload(), 800);
+    } catch(err) {
+      toast('❌ Invalid backup file.');
+    }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
 
 // ── Date helpers ──
 function toISO(d) { return d.toISOString().slice(0,10); }
@@ -1916,7 +1969,29 @@ applyTheme(S.theme || 'dark');
 // ── PWA: Service Worker ──
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
+    navigator.serviceWorker.register('./sw.js').then(reg => {
+      // Force check for updates every load
+      reg.update().catch(()=>{});
+
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        if (!newWorker) return;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            // New version ready — activate it immediately
+            newWorker.postMessage('SKIP_WAITING');
+          }
+        });
+      });
+    }).catch(() => {});
+
+    // Auto-reload once when the new service worker takes control
+    let refreshed = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshed) return;
+      refreshed = true;
+      location.reload();
+    });
   });
 }
 
