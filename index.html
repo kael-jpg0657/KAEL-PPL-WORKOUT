@@ -86,6 +86,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .cal-day.selected.status-skip{background:var(--push);border-color:var(--push);color:#fff}
 .cal-day.selected.status-rest{background:var(--accent);border-color:var(--accent);color:#000}
 .cal-day.empty{background:transparent;border-color:transparent;cursor:default}
+.cal-day-mark{font-size:.42rem;font-weight:800;letter-spacing:.2px;opacity:.85}
 .cal-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;padding:0 2px}
 .leg-item{display:flex;align-items:center;gap:5px;font-size:.63rem;color:var(--sub);font-weight:500}
 .leg-dot{width:7px;height:7px;border-radius:50%}
@@ -871,13 +872,16 @@ function renderCalendar() {
   const daysInMonth = new Date(S.viewYear, S.viewMonth+1, 0).getDate();
   const today = todayISO();
 
+  const typeAbbr = { push:'PUSH', pull:'PULL', legs:'LEGS', fullbody:'FULL' };
+
   for (let i=0;i<firstDay;i++) html += `<div class="cal-day empty"></div>`;
 
   for (let d=1; d<=daysInMonth; d++) {
     const iso = `${S.viewYear}-${String(S.viewMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const isToday = iso === today;
     const isSelected = iso === S.selectedDate;
-    const isDone = !!S.completedSessions[iso];
+    const session = S.completedSessions[iso];
+    const isDone = !!session;
     const statusEntry = S.dayStatus && S.dayStatus[iso];
     const status = statusEntry ? statusEntry.status : null; // 'skip'|'rest'|'break'
 
@@ -888,8 +892,13 @@ function renderCalendar() {
     if (isToday) cls += ' today';
     if (isSelected) cls += ' selected';
 
-    const mark = isDone ? '✓' : status === 'skip' ? '✕' : (status === 'rest' || status === 'break') ? '–' : '';
-    html += `<div class="${cls}" onclick="selectDate('${iso}')">${d}<br><span style="font-size:.5rem;opacity:.7">${mark}</span></div>`;
+    let mark = '';
+    if (isDone) mark = typeAbbr[session.type] || '✓';
+    else if (status === 'skip') mark = 'SKIP';
+    else if (status === 'rest') mark = 'REST';
+    else if (status === 'break') mark = 'BREAK';
+
+    html += `<div class="${cls}" onclick="selectDate('${iso}')">${d}<br><span class="cal-day-mark">${mark}</span></div>`;
   }
 
   grid.innerHTML = html;
