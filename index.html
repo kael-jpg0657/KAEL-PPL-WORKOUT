@@ -772,10 +772,10 @@ function getDayType(dateISO) {
 }
 
 function getActiveDayType(dateISO) {
-  const scheduled = getDayType(dateISO);
-  if (scheduled === 'future') return 'future';
+  const n = daysSinceStart(dateISO);
+  if (n < 0) return 'future';
   const override = S.selectedDayType && S.selectedDayType[dateISO];
-  return override || scheduled;
+  return override || null;
 }
 
 function selectDayType(dateISO, type) {
@@ -791,8 +791,8 @@ function renderDaytypeRow() {
   const row = document.getElementById('daytype-row');
   if (!row) return;
   const iso = S.selectedDate;
-  const scheduled = getDayType(iso);
-  if (scheduled === 'future') { row.innerHTML = ''; return; }
+  const n = daysSinceStart(iso);
+  if (n < 0) { row.innerHTML = ''; return; }
   const active = getActiveDayType(iso);
 
   const items = [
@@ -1022,26 +1022,16 @@ function renderSession() {
 
   renderDaytypeRow();
 
-  if (!type || type === 'future') {
+  if (type === 'future') {
     wrap.innerHTML = `<div class="rest-card"><div style="font-size:2rem">📅</div><h3>HINDI PA SIMULA</h3><div class="rest-tips"><div class="rest-tip">Ang program ay nagsimula sa ${S.programStart}. Piliin ang isang araw na kasama sa programa.</div></div></div>`;
     return;
   }
 
-  if (type === 'rest') {
+  if (!type) {
+    const statusEntry = S.dayStatus && S.dayStatus[S.selectedDate];
     wrap.innerHTML = `
-      <div class="hero rest"><div class="hero-type rest">REST DAY</div><div class="hero-sub">Recovery is where growth happens.</div></div>
       ${renderDayStatusWidget()}
-      <div class="rest-card">
-        <div style="font-size:2.2rem">😴</div>
-        <h3>ACTIVE RECOVERY</h3>
-        <div class="rest-tips">
-          <div class="rest-tip">💧 2.5–3L na tubig ngayon</div>
-          <div class="rest-tip">🥩 Target: 150g protein — kumpleto ba?</div>
-          <div class="rest-tip">😴 7–9 oras na tulog para sa max muscle growth</div>
-          <div class="rest-tip">🚶 Light walk o 10-min stretching para sa blood flow</div>
-          <div class="rest-tip">📊 50kg dumbbells mo — lahat ng muscle groups na covered!</div>
-        </div>
-      </div>`;
+      ${!statusEntry ? `<div class="rest-card"><div style="font-size:2.2rem">🏋️</div><h3>PUMILI NG WORKOUT</h3><div class="rest-tips"><div class="rest-tip">Pindutin ang PUSH, PULL, LEGS, o FULL BODY sa itaas kung ano ang ginawa mo ngayong araw — o mark as Skip/Rest/Break.</div></div></div>` : ''}`;
     return;
   }
 
