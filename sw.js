@@ -1,7 +1,7 @@
 // KAEL PPL — Service Worker v2
 // Caches everything for full offline use
 
-const CACHE = 'kael-ppl-v6';
+const CACHE = 'kael-ppl-v7';
 
 const PRECACHE = [
   './',
