@@ -1399,23 +1399,23 @@ function getAiInsights(sessions) {
   // ── 1. PLATEAU DETECTOR ──
   Object.keys(exHist).forEach(name => {
     const hist = exHist[name].filter(h => h.effKg != null);
-    if (hist.length < 3) return;
-    const last3 = hist.slice(-3);
-    const allSame = last3.every(h => h.effKg === last3[0].effKg);
-    const allSame4 = hist.length >= 4 && hist.slice(-4).every(h => h.effKg === hist.slice(-4)[0].effKg);
-    if (allSame4) {
+    if (hist.length < 2) return;
+    const last2 = hist.slice(-2);
+    const allSame2 = last2.every(h => h.effKg === last2[0].effKg);
+    const allSame3 = hist.length >= 3 && hist.slice(-3).every(h => h.effKg === hist.slice(-3)[0].effKg);
+    if (allSame3) {
       insights.push({
         level: 'warn',
         icon: '🔴',
         title: `Plateau: ${name}`,
-        message: `Naka-stuck ka sa ${last3[0].effKg}kg for 4+ sessions. Oras na para taasan ang weight, dagdag ng set, o baguhin ang tempo.`,
+        message: `Naka-stuck ka sa ${last2[0].effKg}kg for 3+ sessions. Oras na para taasan ang weight, dagdag ng set, o baguhin ang tempo.`,
       });
-    } else if (allSame) {
+    } else if (allSame2) {
       insights.push({
         level: 'caution',
         icon: '🟡',
         title: `Watch: ${name}`,
-        message: `Same weight (${last3[0].effKg}kg) for 3 sessions na. Kapag kaya mo na ang max reps sa lahat ng sets next time, taas na ng weight.`,
+        message: `Same weight (${last2[0].effKg}kg) sa last 2 sessions. Kapag kaya mo na ang max reps sa lahat ng sets next time, taas na ng weight.`,
       });
     }
   });
@@ -1423,28 +1423,30 @@ function getAiInsights(sessions) {
   // ── 2. NOTE PATTERN FLAG (injury/discomfort watch) ──
   Object.keys(exHist).forEach(name => {
     const notes = exHist[name].filter(h => h.note).slice(-6); // last 6 notes
-    if (notes.length < 2) return;
+    if (notes.length < 1) return;
     // Simple keyword clustering: count repeated significant words across notes
     const painWords = ['sakit','masakit','pain','hirap','mahirap','pananakit','pigsa','pilay','inju','sprain'];
     const flagged = notes.filter(n => painWords.some(w => n.note.includes(w)));
-    if (flagged.length >= 2) {
+    if (flagged.length >= 1) {
       insights.push({
-        level: 'warn',
+        level: flagged.length >= 2 ? 'warn' : 'caution',
         icon: '⚠️',
-        title: `Recurring note: ${name}`,
-        message: `${flagged.length} beses mong nabanggit ang discomfort/pain sa exercise na ito. Baka kailangan i-check ang form, bawasan ang weight, o magpahinga muna dito.`,
+        title: `Note flag: ${name}`,
+        message: flagged.length >= 2
+          ? `${flagged.length} beses mong nabanggit ang discomfort/pain sa exercise na ito. Baka kailangan i-check ang form, bawasan ang weight, o magpahinga muna dito.`
+          : `Nabanggit mo ang discomfort/pain sa exercise na ito. I-monitor sa susunod na session.`,
       });
     }
   });
 
   // ── 3. CONSISTENCY PATTERN (skip pattern by weekday) ──
   const dayStatusEntries = Object.entries(S.dayStatus || {}).filter(([,v]) => v.status === 'skip');
-  if (dayStatusEntries.length >= 3) {
+  if (dayStatusEntries.length >= 2) {
     const dowCounts = [0,0,0,0,0,0,0];
     dayStatusEntries.forEach(([iso]) => { dowCounts[fromISO(iso).getDay()]++; });
     const maxCount = Math.max(...dowCounts);
     const maxDow = dowCounts.indexOf(maxCount);
-    if (maxCount >= 3) {
+    if (maxCount >= 2) {
       const dowNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
       insights.push({
         level: 'caution',
@@ -1506,8 +1508,8 @@ function renderProgress() {
 
   // ── AI Insights (Plateau Detector + Note Pattern Flag) ──
   const insights = getAiInsights(sessions);
+  html += `<div class="prog-section"><div class="prog-section-title">🤖 AI Insights</div>`;
   if (insights.length) {
-    html += `<div class="prog-section"><div class="prog-section-title">🤖 AI Insights</div>`;
     insights.forEach(ins => {
       html += `<div class="insight-card ${ins.level}">
         <div class="insight-icon">${ins.icon}</div>
@@ -1517,8 +1519,16 @@ function renderProgress() {
         </div>
       </div>`;
     });
-    html += `</div>`;
+  } else {
+    html += `<div class="insight-card">
+      <div class="insight-icon">✅</div>
+      <div class="insight-body">
+        <div class="insight-title">Walang detected issues</div>
+        <div class="insight-msg">Wala pang plateau, recurring pain notes, o skip pattern na na-detect. Kailangan pa ng ilang sessions bago lumabas ang mga insight — patuloy lang sa pag-log.</div>
+      </div>
+    </div>`;
   }
+  html += `</div>`;
 
   // ── Filter buttons ──
   html += `<div class="prog-filter">
