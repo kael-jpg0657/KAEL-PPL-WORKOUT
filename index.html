@@ -332,6 +332,13 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .prog-trend.down{background:rgba(255,61,92,.08);color:var(--push)}
 .prog-trend.same{background:var(--s2);color:var(--sub)}
 .prog-empty{text-align:center;padding:70px 24px;color:var(--sub);font-size:.88rem;line-height:2.2;font-weight:500}
+.insight-card{display:flex;gap:12px;background:var(--s1);border-radius:var(--r2);padding:13px 15px;margin-bottom:8px;border-left:3px solid var(--sub)}
+.insight-card.warn{border-left-color:var(--push);background:rgba(255,61,92,.06)}
+.insight-card.caution{border-left-color:var(--accent);background:rgba(255,214,10,.06)}
+.insight-icon{font-size:1.1rem;flex-shrink:0;line-height:1.3}
+.insight-body{flex:1;min-width:0}
+.insight-title{font-size:.78rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.insight-msg{font-size:.74rem;color:var(--sub);line-height:1.6;font-weight:500}
 .prog-overview{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px}
 .prog-ov-card{background:var(--s1);border-radius:var(--r);padding:16px}
 .prog-ov-title{font-size:.58rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--sub);font-weight:700;margin-bottom:7px}
@@ -1367,6 +1374,90 @@ let activeTab = 'workout';
 
 let progFilter = 'all'; // 'all' | 'push' | 'pull' | 'legs'
 
+// ══════════════════════════════════════════════════════════════════
+// AI INSIGHTS — Plateau Detector + Note Pattern Flag (local, rule-based)
+// ══════════════════════════════════════════════════════════════════
+
+function getAiInsights(sessions) {
+  const insights = [];
+
+  // Build per-exercise history: name -> [{date, effKg, note}]
+  const exHist = {};
+  sessions.forEach(([date, data]) => {
+    (data.exercises || []).forEach(ex => {
+      if (!exHist[ex.name]) exHist[ex.name] = [];
+      // Effective weight: highest actual kg logged this session, fallback to planned kg
+      let effKg = ex.kg || null;
+      if (ex.actualSets && ex.actualSets.length) {
+        const loggedKgs = ex.actualSets.map(s => s.kg).filter(k => k != null);
+        if (loggedKgs.length) effKg = Math.max(...loggedKgs);
+      }
+      exHist[ex.name].push({ date, effKg, note: (ex.note || '').trim().toLowerCase() });
+    });
+  });
+
+  // ── 1. PLATEAU DETECTOR ──
+  Object.keys(exHist).forEach(name => {
+    const hist = exHist[name].filter(h => h.effKg != null);
+    if (hist.length < 3) return;
+    const last3 = hist.slice(-3);
+    const allSame = last3.every(h => h.effKg === last3[0].effKg);
+    const allSame4 = hist.length >= 4 && hist.slice(-4).every(h => h.effKg === hist.slice(-4)[0].effKg);
+    if (allSame4) {
+      insights.push({
+        level: 'warn',
+        icon: '🔴',
+        title: `Plateau: ${name}`,
+        message: `Naka-stuck ka sa ${last3[0].effKg}kg for 4+ sessions. Oras na para taasan ang weight, dagdag ng set, o baguhin ang tempo.`,
+      });
+    } else if (allSame) {
+      insights.push({
+        level: 'caution',
+        icon: '🟡',
+        title: `Watch: ${name}`,
+        message: `Same weight (${last3[0].effKg}kg) for 3 sessions na. Kapag kaya mo na ang max reps sa lahat ng sets next time, taas na ng weight.`,
+      });
+    }
+  });
+
+  // ── 2. NOTE PATTERN FLAG (injury/discomfort watch) ──
+  Object.keys(exHist).forEach(name => {
+    const notes = exHist[name].filter(h => h.note).slice(-6); // last 6 notes
+    if (notes.length < 2) return;
+    // Simple keyword clustering: count repeated significant words across notes
+    const painWords = ['sakit','masakit','pain','hirap','mahirap','pananakit','pigsa','pilay','inju','sprain'];
+    const flagged = notes.filter(n => painWords.some(w => n.note.includes(w)));
+    if (flagged.length >= 2) {
+      insights.push({
+        level: 'warn',
+        icon: '⚠️',
+        title: `Recurring note: ${name}`,
+        message: `${flagged.length} beses mong nabanggit ang discomfort/pain sa exercise na ito. Baka kailangan i-check ang form, bawasan ang weight, o magpahinga muna dito.`,
+      });
+    }
+  });
+
+  // ── 3. CONSISTENCY PATTERN (skip pattern by weekday) ──
+  const dayStatusEntries = Object.entries(S.dayStatus || {}).filter(([,v]) => v.status === 'skip');
+  if (dayStatusEntries.length >= 3) {
+    const dowCounts = [0,0,0,0,0,0,0];
+    dayStatusEntries.forEach(([iso]) => { dowCounts[fromISO(iso).getDay()]++; });
+    const maxCount = Math.max(...dowCounts);
+    const maxDow = dowCounts.indexOf(maxCount);
+    if (maxCount >= 3) {
+      const dowNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      insights.push({
+        level: 'caution',
+        icon: '📅',
+        title: 'Skip Pattern Detected',
+        message: `${maxCount} beses mo nang na-skip ang workout tuwing ${dowNames[maxDow]}. Baka kailangan ibang schedule o mas maagang oras sa araw na ito.`,
+      });
+    }
+  }
+
+  return insights;
+}
+
 function renderProgress() {
   const wrap = document.getElementById('prog-wrap');
   const sessions = Object.entries(S.completedSessions).sort((a,b)=>a[0].localeCompare(b[0]));
@@ -1412,6 +1503,22 @@ function renderProgress() {
       <div class="prog-ov-sub">${volChange===null?'need more data':volChange>0?'Progressive Overload! 🔥':volChange===0?'Same volume':'Volume dropped'}</div>
     </div>
   </div>`;
+
+  // ── AI Insights (Plateau Detector + Note Pattern Flag) ──
+  const insights = getAiInsights(sessions);
+  if (insights.length) {
+    html += `<div class="prog-section"><div class="prog-section-title">🤖 AI Insights</div>`;
+    insights.forEach(ins => {
+      html += `<div class="insight-card ${ins.level}">
+        <div class="insight-icon">${ins.icon}</div>
+        <div class="insight-body">
+          <div class="insight-title">${ins.title}</div>
+          <div class="insight-msg">${ins.message}</div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
 
   // ── Filter buttons ──
   html += `<div class="prog-filter">
