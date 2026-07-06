@@ -317,6 +317,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .prog-bar.push{background:var(--push)}
 .prog-bar.pull{background:var(--pull)}
 .prog-bar.legs{background:var(--legs)}
+.prog-bar.fullbody{background:var(--accent)}
 .prog-bar.up{opacity:1}
 .prog-bar-lbl{font-size:.52rem;color:var(--sub);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;font-weight:600}
 .prog-bar-val{font-size:.6rem;color:var(--text);font-weight:700;text-align:center}
@@ -350,6 +351,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .prog-week-dot.push{background:var(--push)}
 .prog-week-dot.pull{background:var(--pull)}
 .prog-week-dot.legs{background:var(--legs)}
+.prog-week-dot.fullbody{background:var(--accent)}
 .prog-vol-change{font-weight:700;font-size:.72rem;padding:3px 9px;border-radius:8px}
 .prog-vol-change.up{background:rgba(48,209,88,.12);color:var(--legs)}
 .prog-vol-change.down{background:rgba(255,61,92,.1);color:var(--push)}
@@ -1533,20 +1535,28 @@ function renderProgress() {
   // ── Filter buttons ──
   html += `<div class="prog-filter">
     <button class="prog-filter-btn ${progFilter==='all'?'active':''}" onclick="setProgFilter('all')">All</button>
-    <button class="prog-filter-btn ${progFilter==='push'?'active':''}" onclick="setProgFilter('push')" style="${progFilter==='push'?'':''}">Push</button>
+    <button class="prog-filter-btn ${progFilter==='push'?'active':''}" onclick="setProgFilter('push')">Push</button>
     <button class="prog-filter-btn ${progFilter==='pull'?'active':''}" onclick="setProgFilter('pull')">Pull</button>
     <button class="prog-filter-btn ${progFilter==='legs'?'active':''}" onclick="setProgFilter('legs')">Legs</button>
+    <button class="prog-filter-btn ${progFilter==='fullbody'?'active':''}" onclick="setProgFilter('fullbody')">Full Body</button>
   </div>`;
 
   // ── Per-exercise progression ──
-  // Collect all unique exercises from filtered sessions
-  const exMap = {}; // exName -> [{date, kg, sets, repsLo, repsHi, volume, type}]
+  // Collect all unique exercises from filtered sessions (weighted AND bodyweight)
+  const exMap = {}; // exName -> [{date, kg, sets, repsLo, repsHi, volume, type, actualSets}]
   filtered.forEach(([date, data]) => {
     (data.exercises||[]).forEach(ex => {
-      if (!ex.kg) return; // skip bodyweight
       if (!exMap[ex.name]) exMap[ex.name] = [];
-      const vol = ex.kg * ex.sets * ((ex.repsLo + ex.repsHi) / 2);
-      exMap[ex.name].push({ date, kg: ex.kg, sets: ex.sets, repsLo: ex.repsLo, repsHi: ex.repsHi, vol, type: data.type });
+      const isBW = !ex.kg;
+      const vol = isBW ? 0 : ex.kg * ex.sets * ((ex.repsLo + ex.repsHi) / 2);
+      // Count actual completed sets (from actualSets log) for bodyweight tracking
+      let setsCompleted = ex.sets;
+      let repsLogged = null;
+      if (ex.actualSets && ex.actualSets.length) {
+        const withReps = ex.actualSets.filter(s => s.reps != null);
+        if (withReps.length) repsLogged = Math.max(...withReps.map(s=>s.reps));
+      }
+      exMap[ex.name].push({ date, kg: ex.kg || 0, isBW, sets: ex.sets, repsLo: ex.repsLo, repsHi: ex.repsHi, vol, type: data.type, repsLogged, setsCompleted });
     });
   });
 
@@ -1562,18 +1572,66 @@ function renderProgress() {
   exNames.forEach(name => {
     const entries = exMap[name].slice(-8); // last 8 sessions with this exercise
     const type = entries[0].type;
-    const maxVol = Math.max(...entries.map(e=>e.vol));
-    const first = entries[0];
+    const isBW = entries[0].isBW;
     const last = entries[entries.length-1];
+    const first = entries[0];
+
+    if (isBW) {
+      // ── BODYWEIGHT EXERCISE CARD (track reps/sets, no weight) ──
+      const maxReps = Math.max(...entries.map(e => e.repsLogged || e.repsHi || 1));
+      const bars = entries.map(e => {
+        const repVal = e.repsLogged || e.repsHi;
+        const pct = maxReps > 0 ? Math.max(8, Math.round(repVal / maxReps * 100)) : 8;
+        return `<div class="prog-bar-wrap">
+          <div class="prog-bar-val">${e.repsLogged ? e.repsLogged+'r' : '~'+e.repsHi+'r'}</div>
+          <div class="prog-bar ${type}" style="height:${pct}%" title="${e.date}: ${e.sets} sets"></div>
+          <div class="prog-bar-lbl">${e.date.slice(5)}</div>
+        </div>`;
+      }).join('');
+
+      const repChange = (last.repsLogged || 0) - (first.repsLogged || 0);
+      let trendText = '', trendClass = 'same';
+      if (last.repsLogged == null) { trendText = `I-log ang actual reps mo sa set inputs para makita ang progression dito.`; trendClass = 'same'; }
+      else if (repChange > 0) { trendText = `+${repChange} reps vs unang session! 🔥 Lumalakas ka.`; trendClass = 'up'; }
+      else if (repChange < 0) { trendText = `Bumaba ng ${Math.abs(repChange)} reps. Baka pagod o kailangan ng dagdag rest — ok lang yan.`; trendClass = 'down'; }
+      else if (entries.length === 1) { trendText = `Unang session pa lang — mag-log ng isa pa para makita ang trend.`; trendClass = 'same'; }
+      else { trendText = `Consistent ang reps mo. Pag kaya mo nang lampasan ang ${last.repsHi} reps, dagdagan ng set o gawing mas mahirap ang variation.`; trendClass = 'same'; }
+
+      html += `<div class="prog-card">
+        <div class="prog-card-name">${name} <span style="font-weight:400;color:var(--sub);font-size:.75rem">(${entries.length} sessions · bodyweight)</span></div>
+        <div class="prog-chart" style="align-items:flex-end">${bars}</div>
+        <div class="prog-summary">
+          <div class="prog-stat">
+            <div class="prog-stat-val ${repChange>0?'up':repChange<0?'down':'same'}">${last.repsLogged || last.repsHi}</div>
+            <div class="prog-stat-lbl">Reps</div>
+          </div>
+          <div class="prog-stat">
+            <div class="prog-stat-val ${repChange>0?'up':repChange<0?'down':'same'}">${repChange>0?'+':''}${last.repsLogged!=null&&first.repsLogged!=null?repChange:'—'}</div>
+            <div class="prog-stat-lbl">Reps Δ</div>
+          </div>
+          <div class="prog-stat">
+            <div class="prog-stat-val">${last.sets}</div>
+            <div class="prog-stat-lbl">Sets</div>
+          </div>
+          <div class="prog-stat">
+            <div class="prog-stat-val">${last.repsLo}-${last.repsHi}</div>
+            <div class="prog-stat-lbl">Target</div>
+          </div>
+        </div>
+        <div class="prog-trend ${trendClass}">${trendText}</div>
+      </div>`;
+      return;
+    }
+
+    // ── WEIGHTED EXERCISE CARD (existing logic) ──
+    const maxVol = Math.max(...entries.map(e=>e.vol));
     const kgChange = last.kg - first.kg;
     const volChange = entries.length > 1 ? last.vol - entries[entries.length-2].vol : 0;
     const isUp = kgChange > 0 || (kgChange === 0 && volChange > 0);
     const isDown = kgChange < 0 || (kgChange === 0 && volChange < 0);
 
-    // Mini bar chart (volume per session)
     const bars = entries.map((e, i) => {
       const pct = maxVol > 0 ? Math.max(8, Math.round(e.vol / maxVol * 100)) : 8;
-      const isLast = i === entries.length - 1;
       const isUp2 = i > 0 && e.vol > entries[i-1].vol;
       return `<div class="prog-bar-wrap">
         <div class="prog-bar-val">${e.kg}kg</div>
@@ -1582,7 +1640,6 @@ function renderProgress() {
       </div>`;
     }).join('');
 
-    // Trend text
     let trendText = '', trendClass = 'same';
     if (kgChange > 0) { trendText = `+${kgChange}kg na ang weight mo vs unang session! 🔥 Progressive overload confirmed.`; trendClass = 'up'; }
     else if (kgChange < 0) { trendText = `Bumaba ng ${Math.abs(kgChange)}kg ang weight. Baka deload week o injury prevention — ok lang yan.`; trendClass = 'down'; }
