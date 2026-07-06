@@ -1,7 +1,7 @@
 // KAEL PPL — Service Worker v8
 // Network-first for HTML (always fresh), cache-first for static assets, full offline fallback
 
-const CACHE = 'kael-ppl-v8';
+const CACHE = 'kael-ppl-v9';
 
 const PRECACHE = [
   './',
