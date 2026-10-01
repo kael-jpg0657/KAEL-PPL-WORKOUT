@@ -1118,7 +1118,7 @@ function renderStats() {
       if (hiddenSetRS.has(ei)) return;
       const sc = getExSets(type, ei, sets);
       total += sc;
-      for (let s=0;s<sc;s++) { if (S.setChecks[`${S.selectedDate}-${ei}-${s}`]) done++; }
+      for (let s=0;s<sc;s++) { if (S.setChecks[`${S.selectedDate}-${type}-${ei}-${s}`]) done++; }
     });
     document.getElementById('s-sets').textContent = `${done}/${total}`;
   } else {
@@ -1240,7 +1240,7 @@ function renderSession() {
     if (hiddenSet.has(ei)) return;
     const exSets = getExSets(type, ei, sets);
     totalSets += exSets;
-    for (let s=0;s<exSets;s++) { if (S.setChecks[`${S.selectedDate}-${ei}-${s}`]) doneSets++; }
+    for (let s=0;s<exSets;s++) { if (S.setChecks[`${S.selectedDate}-${type}-${ei}-${s}`]) doneSets++; }
   });
   const pct = totalSets ? Math.round(doneSets/totalSets*100) : 0;
   const allDone = doneSets === totalSets;
@@ -1305,7 +1305,7 @@ function renderSession() {
     const isOpen = !!S.expanded[expKey];
     const exSetCount = getExSets(type, ei, sets);
     let exDone = 0;
-    for (let s=0;s<exSetCount;s++) { if (S.setChecks[`${S.selectedDate}-${ei}-${s}`]) exDone++; }
+    for (let s=0;s<exSetCount;s++) { if (S.setChecks[`${S.selectedDate}-${type}-${ei}-${s}`]) exDone++; }
     const isExDone = exDone === exSetCount;
     const nameOv = (S.weightOverrides && S.weightOverrides[type+'|name|'+ei]) || ex.name;
     const hasWeight = ex.baseKg !== null;
@@ -1313,7 +1313,7 @@ function renderSession() {
 
     let setsHtml = '';
     for (let s=0;s<exSetCount;s++) {
-      const sk = `${S.selectedDate}-${ei}-${s}`;
+      const sk = `${S.selectedDate}-${type}-${ei}-${s}`;
       const checked = !!S.setChecks[sk];
       const log = (S.actualLogs && S.actualLogs[sk]) || {};
       const logKg = log.kg != null ? log.kg : '';
@@ -1344,7 +1344,7 @@ function renderSession() {
     }
 
     // Notes for this exercise
-    const noteKey = `${S.selectedDate}-${ei}`;
+    const noteKey = `${S.selectedDate}-${type}-${ei}`;
     const noteVal = (S.exerciseNotes && S.exerciseNotes[noteKey]) || '';
 
     html += `
@@ -1869,12 +1869,14 @@ function toggleHistItem(date) {
 function toggleSet(sk) {
   S.setChecks[sk] = !S.setChecks[sk]; save();
 
+  // sk = "YYYY-MM-DD-type-ei-si" — type is embedded so logs never bleed
+  // across day types sharing the same date.
   const parts = sk.split('-');
   const si = parseInt(parts.pop());
   const ei = parseInt(parts.pop());
+  const type = parts.pop();
   const dateISO = parts.join('-');
 
-  const type = getActiveDayType(dateISO);
   const exs = getExercises(type);
   const week = getWeekNumber(dateISO);
   const {sets, repsLo, repsHi} = getSessionParams(type, week);
@@ -1888,7 +1890,7 @@ function toggleSet(sk) {
   // Exercise done?
   const exSetCountTS = getExSets(type, ei, sets);
   let exDone = true;
-  for (let s=0;s<exSetCountTS;s++) { if (!S.setChecks[`${dateISO}-${ei}-${s}`]) { exDone = false; break; } }
+  for (let s=0;s<exSetCountTS;s++) { if (!S.setChecks[`${dateISO}-${type}-${ei}-${s}`]) { exDone = false; break; } }
   const card = document.getElementById(`exc-${dateISO}-${ei}`);
   if (card) {
     card.classList.toggle('done', exDone);
@@ -1901,7 +1903,7 @@ function toggleSet(sk) {
   let totalSets = 0;
   let doneSets = 0;
   const hiddenSetTS = new Set((S.hiddenBaseEx && S.hiddenBaseEx[type]) || []);
-  exs.forEach((_,i2) => { if (hiddenSetTS.has(i2)) return; const sc = getExSets(type, i2, sets); totalSets += sc; for (let s=0;s<sc;s++) { if (S.setChecks[`${dateISO}-${i2}-${s}`]) doneSets++; } });
+  exs.forEach((_,i2) => { if (hiddenSetTS.has(i2)) return; const sc = getExSets(type, i2, sets); totalSets += sc; for (let s=0;s<sc;s++) { if (S.setChecks[`${dateISO}-${type}-${i2}-${s}`]) doneSets++; } });
   const pct = Math.round(doneSets/totalSets*100);
   const pf = document.getElementById('prog-fill');
   if (pf) pf.style.width = pct + '%';
@@ -1937,11 +1939,11 @@ function completeSession() {
       const setCount = getExSets(type, ei, params.sets);
       const actualSets = [];
       for (let s=0; s<setCount; s++) {
-        const sk = `${S.selectedDate}-${ei}-${s}`;
+        const sk = `${S.selectedDate}-${type}-${ei}-${s}`;
         const log = (S.actualLogs && S.actualLogs[sk]) || {};
         actualSets.push({ kg: log.kg != null ? log.kg : null, reps: log.reps != null ? log.reps : null });
       }
-      const noteKey = `${S.selectedDate}-${ei}`;
+      const noteKey = `${S.selectedDate}-${type}-${ei}`;
       return {
         name: nameOv,
         kg: actualSets.find(a=>a.kg!=null)?.kg ?? null,
@@ -2029,22 +2031,22 @@ function saveActualLog(sk, field, val) {
   }
   save();
 
-  // Parse sk = "YYYY-MM-DD-ei-si"
+  // Parse sk = "YYYY-MM-DD-type-ei-si"
   const parts = sk.split('-');
   const si = parseInt(parts.pop());
   const ei = parseInt(parts.pop());
+  const type = parts.pop();
   const dateISO = parts.join('-');
 
   // Only Set 1 (si === 0) auto-fills the rest
   if (si !== 0) return;
 
-  const type = getActiveDayType(dateISO);
   const week = getWeekNumber(dateISO);
   const { sets } = getSessionParams(type, week);
   const exSetCount = getExSets(type, ei, sets);
 
   for (let s = 1; s < exSetCount; s++) {
-    const otherSk = `${dateISO}-${ei}-${s}`;
+    const otherSk = `${dateISO}-${type}-${ei}-${s}`;
     if (!S.actualLogs) S.actualLogs = {};
     if (!S.actualLogs[otherSk]) S.actualLogs[otherSk] = {};
     if (valid) S.actualLogs[otherSk][field] = num;
@@ -2060,7 +2062,7 @@ function saveActualLog(sk, field, val) {
 
 function saveExerciseNote(type, ei, val) {
   if (!S.exerciseNotes) S.exerciseNotes = {};
-  const noteKey = `${S.selectedDate}-${ei}`;
+  const noteKey = `${S.selectedDate}-${type}-${ei}`;
   const v = val.trim();
   if (v) S.exerciseNotes[noteKey] = v;
   else delete S.exerciseNotes[noteKey];
@@ -2104,7 +2106,7 @@ function removeExtraSet(type, ei) {
   const week = getWeekNumber(S.selectedDate);
   const baseSets = getSessionParams(type, week).sets;
   const total = baseSets + S.extraSets[key];
-  const lastSk = `${S.selectedDate}-${ei}-${total - 1}`;
+  const lastSk = `${S.selectedDate}-${type}-${ei}-${total - 1}`;
   delete S.setChecks[lastSk];
   S.extraSets[key]--;
   if (S.extraSets[key] === 0) delete S.extraSets[key];
