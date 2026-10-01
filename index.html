@@ -1064,6 +1064,15 @@ function renderCalendar() {
 
   const typeAbbr = { push:'PUSH', pull:'PULL', legs:'LEGS', fullbody:'FULL' };
 
+  function abbreviateLabel(name) {
+    if (!name) return '✓';
+    const words = name.toUpperCase().split(/\s+/).map(w => w.replace(/[^A-Z0-9]/g,'')).filter(Boolean);
+    if (!words.length) return '✓';
+    let first = words[0];
+    if (/^[0-9]+$/.test(first) && words[1]) first = first + words[1];
+    return first.length <= 5 ? first : first.slice(0,5);
+  }
+
   for (let i=0;i<firstDay;i++) html += `<div class="cal-day empty"></div>`;
 
   for (let d=1; d<=daysInMonth; d++) {
@@ -1083,7 +1092,15 @@ function renderCalendar() {
     if (isSelected) cls += ' selected';
 
     let mark = '';
-    if (isDone) mark = typeAbbr[session.type] || '✓';
+    if (isDone) {
+      if (typeAbbr[session.type]) {
+        mark = typeAbbr[session.type];
+      } else {
+        const pidCal = customProgramId(session.type);
+        const liveName = pidCal ? S.customPrograms[pidCal]?.name : null;
+        mark = abbreviateLabel(session.programName || liveName);
+      }
+    }
     else if (status === 'skip') mark = 'SKIP';
     else if (status === 'rest') mark = 'REST';
     else if (status === 'break') mark = 'BREAK';
@@ -1928,9 +1945,11 @@ function completeSession() {
   const params = getSessionParams(type, week);
   const hiddenSetCS = new Set((S.hiddenBaseEx && S.hiddenBaseEx[type]) || []);
   const visibleExs = exs.map((ex,ei)=>({ex,ei})).filter(o=>!hiddenSetCS.has(o.ei));
+  const pidCS = customProgramId(type);
 
   const sessionData = {
     type,
+    programName: pidCS ? (S.customPrograms[pidCS]?.name || null) : null,
     week,
     phase: params.phase,
     totalSets: visibleExs.reduce((acc,{ei})=>acc+getExSets(type,ei,params.sets),0),
