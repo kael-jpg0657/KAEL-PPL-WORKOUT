@@ -21,7 +21,7 @@
 ═══════════════════════════════════════ */
 :root {
   --r:20px; --r2:14px; --r3:10px;
-  --push:#ff3d5c; --pull:#38b6f0; --legs:#30d158; --warm:#ff9f0a; --accent:#ffd60a;
+  --push:#ff3d5c; --pull:#38b6f0; --legs:#30d158; --warm:#ff9f0a; --accent:#ffd60a; --custom:#bf5af2;
 }
 [data-theme="dark"],:root {
   --bg:#000000; --bg2:#0a0a0a;
@@ -111,6 +111,10 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .hero-type{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:5px;line-height:1}
 .hero-type.push{color:var(--push)}.hero-type.pull{color:var(--pull)}.hero-type.legs{color:var(--legs)}.hero-type.fullbody{color:var(--accent)}.hero-type.rest{color:var(--sub)}
 .hero-sub{font-size:.72rem;color:var(--sub);margin-top:4px;font-weight:500}
+.hero-sub-row{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap}
+.hero-sub-input{background:transparent;border:none;border-bottom:1.5px dashed rgba(128,128,128,.4);color:var(--sub);font-size:.72rem;font-weight:500;font-family:'Inter',sans-serif;outline:none;padding:0 0 2px;min-width:70px;max-width:160px}
+.hero-sub-input:focus{border-bottom-color:var(--custom)}
+.hero-sub-date{font-size:.72rem;color:var(--sub);font-weight:500}
 .hero-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .htag{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,.06);color:var(--sub)}
 .htag.accent{background:rgba(255,214,10,.12);color:var(--accent)}
@@ -203,18 +207,37 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 
 /* ── DAY TYPE SELECTOR ROW ── */
 .daytype-wrap{padding:0 16px 4px}
-.daytype-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.daytype-pill{padding:12px 6px;border-radius:14px;background:var(--s1);border:1.5px solid transparent;text-align:center;cursor:pointer;transition:all .2s}
+.daytype-flex{display:flex;gap:8px;align-items:stretch}
+.daytype-flex .daytype-row{flex:1}
+.program-create-form{background:var(--s1);border:1.5px solid rgba(191,90,242,.35);border-radius:var(--r);padding:16px;margin-top:10px}
+.program-create-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;color:var(--custom);margin-bottom:12px}
+.program-create-form label{font-size:.58rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--sub);font-weight:700;display:block;margin-bottom:5px;margin-top:10px}
+.program-create-form label:first-of-type{margin-top:0}
+.program-create-form input{width:100%;background:var(--s2);border:none;border-radius:12px;color:var(--text);font-family:'Inter',sans-serif;padding:11px 13px;outline:none;font-size:.84rem;-webkit-appearance:none}
+.program-create-form input:focus{box-shadow:0 0 0 2px var(--custom)}
+.program-create-actions{display:flex;gap:8px;margin-top:14px}
+.daytype-add-btn{width:44px;flex-shrink:0;border-radius:14px;border:1.5px dashed var(--border2);background:transparent;color:var(--sub);font-size:1.4rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1}
+.daytype-add-btn:hover,.daytype-add-btn:active{border-color:var(--custom);color:var(--custom);background:rgba(191,90,242,.1)}
+.daytype-row{display:flex;flex-wrap:wrap;gap:8px}
+.daytype-pill{position:relative;flex:1 1 72px;min-width:72px;padding:12px 6px;border-radius:14px;background:var(--s1);border:1.5px solid transparent;text-align:center;cursor:pointer;transition:all .2s}
+.daytype-pill-del{position:absolute;top:4px;right:4px;width:17px;height:17px;border-radius:50%;background:rgba(0,0,0,.15);border:none;color:inherit;font-size:.55rem;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:all .15s}
+[data-theme="light"] .daytype-pill-del{background:rgba(0,0,0,.08)}
+.daytype-pill-del:hover{background:var(--push);color:#fff}
+.daytype-pill-del.confirming{background:var(--push);color:#fff;animation:pulse-del 1s infinite}
+@keyframes pulse-del{0%,100%{opacity:1}50%{opacity:.55}}
+.program-del-btn.confirming{background:var(--push);color:#fff}
 .daytype-pill-label{font-size:.68rem;font-weight:800;letter-spacing:.3px}
 .daytype-pill-sub{font-size:.52rem;color:var(--sub);font-weight:600;margin-top:2px}
 .daytype-pill.push{color:var(--push)}
 .daytype-pill.pull{color:var(--pull)}
 .daytype-pill.legs{color:var(--legs)}
 .daytype-pill.fullbody{color:var(--accent)}
+.daytype-pill.customprog{color:var(--custom)}
 .daytype-pill.active.push{background:rgba(255,61,92,.16);border-color:var(--push)}
 .daytype-pill.active.pull{background:rgba(56,182,240,.16);border-color:var(--pull)}
 .daytype-pill.active.legs{background:rgba(48,209,88,.16);border-color:var(--legs)}
 .daytype-pill.active.fullbody{background:rgba(255,214,10,.16);border-color:var(--accent)}
+.daytype-pill.active.customprog{background:rgba(191,90,242,.16);border-color:var(--custom)}
 
 /* ── DAY STATUS NOTES (SKIP/REST/BREAK) ── */
 .daystat-card{background:var(--s1);border:1.5px solid var(--border2);border-radius:var(--r);padding:14px 16px;margin-bottom:14px}
@@ -292,15 +315,36 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .aef-row{display:flex;gap:8px}
 .aef-row>div{flex:1}
 .aef-actions{display:flex;gap:8px;margin-top:6px}
-.aef-save{flex:1;padding:12px;background:var(--accent);border:none;border-radius:14px;color:#000;font-family:'Inter',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;letter-spacing:.3px}
+.aef-save{flex:1;padding:12px;background:var(--accent);border:none;border-radius:14px;color:#000;font-family:'Inter',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer}
 .aef-cancel{padding:12px 18px;background:var(--s2);border:none;border-radius:14px;color:var(--sub);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer}
 .ex-del-btn{background:transparent;border:none;color:var(--sub);font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;transition:all .2s}
 .ex-del-btn:hover{color:var(--push)}
+.ex-del-btn.confirming{background:var(--push);color:#fff;animation:pulse-del 1s infinite}
 .restore-wrap{margin-top:10px;padding:12px;background:var(--s1);border-radius:var(--r2)}
 .restore-lbl{font-size:.58rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--sub);font-weight:700;margin-bottom:8px}
 .restore-chips{display:flex;flex-wrap:wrap;gap:6px}
 .restore-chip{background:var(--s2);border:1px solid var(--border2);border-radius:20px;color:var(--text);font-family:'Inter',sans-serif;font-size:.72rem;font-weight:600;padding:6px 12px;cursor:pointer;transition:all .2s}
 .restore-chip:active{background:var(--accent);color:#000;border-color:var(--accent)}
+
+/* ── CUSTOM PROGRAMS (user-defined workouts, e.g. "40 min Dumbbell") ── */
+/* These behave exactly like Push/Pull/Legs/Full Body but with a custom
+   accent color since the type string isn't one of the 4 built-ins. */
+.hero.customprog{background:linear-gradient(135deg,rgba(191,90,242,.2),rgba(191,90,242,.05));border:1.5px solid rgba(191,90,242,.3)}
+.hero.customprog::before{background:var(--custom)}
+.hero-type.customprog{color:var(--custom)}
+.customprog .ex-num{background:rgba(191,90,242,.18);color:var(--custom)}
+.prog-fill.customprog{background:linear-gradient(90deg,var(--custom),#dca3f0)}
+.customprog-s .set-btn.done{background:var(--custom);border-color:var(--custom);color:#fff}
+.prog-bar.customprog{background:var(--custom)}
+.hi-dot.fullbody{background:var(--accent)}
+.hi-dot.customprog{background:var(--custom)}
+.prog-week-dot.customprog{background:var(--custom)}
+.program-del-btn{background:rgba(255,61,92,.08);border:none;border-radius:12px;color:var(--push);font-family:'Inter',sans-serif;font-size:.72rem;font-weight:700;padding:9px 14px;cursor:pointer;letter-spacing:.3px;margin-top:8px}
+.wu-add-row{display:flex;gap:6px;margin-top:8px}
+.wu-add-row input{flex:1;background:var(--s2);border:none;border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;padding:8px 10px;outline:none;font-size:.75rem;-webkit-appearance:none}
+.wu-add-row input:focus{box-shadow:0 0 0 2px var(--custom)}
+.wu-add-btn{background:rgba(191,90,242,.12);border:none;border-radius:10px;color:var(--custom);font-family:'Inter',sans-serif;font-size:.72rem;font-weight:700;padding:8px 14px;cursor:pointer;white-space:nowrap}
+.wu-item-del{background:transparent;border:none;color:var(--sub);font-size:.75rem;cursor:pointer;padding:2px 6px;margin-left:auto}
 
 /* ── PROGRESS TAB ── */
 .prog-filter{display:flex;gap:6px;padding:16px 16px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -318,6 +362,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .prog-bar.pull{background:var(--pull)}
 .prog-bar.legs{background:var(--legs)}
 .prog-bar.fullbody{background:var(--accent)}
+.prog-bar.challenge{background:var(--accent)}
 .prog-bar.up{opacity:1}
 .prog-bar-lbl{font-size:.52rem;color:var(--sub);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;font-weight:600}
 .prog-bar-val{font-size:.6rem;color:var(--text);font-weight:700;text-align:center}
@@ -379,6 +424,48 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .hi-actual{font-size:.68rem;color:var(--legs);padding:5px 10px;font-weight:600}
 .hi-note{font-size:.68rem;color:var(--sub);padding:5px 10px;font-style:italic;background:var(--s2);border-radius:8px;margin-top:3px}
 .hist-clear-btn{width:100%;margin-top:12px;padding:13px;border:none;border-radius:14px;background:rgba(255,61,92,.1);color:var(--push);font-family:'Inter',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;letter-spacing:.3px}
+.hist-clear-btn.confirming{background:var(--push);color:#fff}
+.hi-del-btn{background:transparent;border:none;color:var(--sub);font-size:.78rem;cursor:pointer;padding:4px 6px;border-radius:8px;margin-left:4px;flex-shrink:0}
+.hi-del-btn:hover{color:var(--push)}
+.hi-del-btn.confirming{background:var(--push);color:#fff;animation:pulse-del 1s infinite}
+
+/* ── CHALLENGE TAB ── */
+.chal-wrap{padding:14px 16px}
+.chal-empty{text-align:center;padding:60px 20px;color:var(--sub);font-size:.88rem;font-weight:500;line-height:2}
+.chal-card{background:var(--s1);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.chal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.chal-name{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:1px;color:var(--accent)}
+.chal-del{background:transparent;border:none;color:var(--sub);font-size:.8rem;cursor:pointer;padding:4px 8px}
+.chal-del:hover{color:var(--push)}
+.chal-del.confirming{background:var(--push);color:#fff;animation:pulse-del 1s infinite}
+.chal-sub{font-size:.68rem;color:var(--sub);font-weight:500;margin-bottom:12px}
+.chal-today-row{display:flex;gap:8px;align-items:flex-end;margin-bottom:12px}
+.chal-today-field{flex:1}
+.chal-today-field label{font-size:.56rem;text-transform:uppercase;letter-spacing:1px;color:var(--sub);font-weight:700;display:block;margin-bottom:5px}
+.chal-today-field input{width:100%;background:var(--s2);border:none;border-radius:12px;color:var(--text);font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;padding:10px 12px;outline:none;text-align:center;-webkit-appearance:none}
+.chal-today-field input:focus{box-shadow:0 0 0 2px var(--accent)}
+.chal-log-btn{background:var(--accent);border:none;border-radius:12px;color:#000;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:800;padding:10px 16px;cursor:pointer;white-space:nowrap}
+.chal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.chal-stat{background:var(--s2);border-radius:12px;padding:9px 6px;text-align:center}
+.chal-stat-val{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:1px;color:var(--text)}
+.chal-stat-lbl{font-size:.5rem;color:var(--sub);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:2px}
+.chal-log-list{margin-top:10px;display:none;flex-direction:column;gap:5px}
+.chal-log-list.open{display:flex}
+.chal-log-item{display:flex;justify-content:space-between;font-size:.72rem;color:var(--sub);padding:7px 10px;background:var(--s2);border-radius:8px;font-weight:500}
+.chal-log-item span{color:var(--accent);font-weight:700}
+.chal-toggle-log{background:transparent;border:none;color:var(--sub);font-size:.68rem;font-weight:700;cursor:pointer;padding:6px 0;text-decoration:underline;text-underline-offset:2px}
+.chal-new-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border:1.5px dashed var(--border2);border-radius:var(--r);background:transparent;color:var(--sub);font-family:'Inter',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:all .2s;margin-top:4px}
+.chal-new-btn:hover{border-color:var(--accent);color:var(--accent)}
+.chal-new-form{background:var(--s1);border-radius:var(--r);padding:16px;margin-top:8px}
+.chal-new-form input,.chal-new-form select{width:100%;background:var(--s2);border:none;border-radius:12px;color:var(--text);font-family:'Inter',sans-serif;padding:11px 13px;outline:none;margin-bottom:8px;font-size:.84rem;-webkit-appearance:none}
+.chal-new-form input:focus,.chal-new-form select:focus{box-shadow:0 0 0 2px var(--accent)}
+.chal-new-form label{font-size:.58rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--sub);font-weight:700;display:block;margin-bottom:5px}
+.chal-new-row{display:flex;gap:8px}
+.chal-new-row>div{flex:1}
+.chal-new-actions{display:flex;gap:8px;margin-top:6px}
+.chal-new-save{flex:1;padding:12px;background:var(--accent);border:none;border-radius:14px;color:#000;font-family:'Inter',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer}
+.chal-new-cancel{padding:12px 18px;background:var(--s2);border:none;border-radius:14px;color:var(--sub);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer}
+.chal-goal-note{font-size:.7rem;color:var(--sub);padding:8px 10px;background:rgba(255,214,10,.06);border-radius:10px;margin-top:8px;line-height:1.6}
 
 /* ── TOAST ── */
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--s3);border-radius:20px;padding:11px 22px;font-size:.8rem;font-weight:700;z-index:900;transition:all .3s cubic-bezier(.4,0,.2,1);white-space:nowrap;pointer-events:none;color:var(--text);opacity:0;letter-spacing:.2px}
@@ -415,6 +502,10 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
   <div class="tab active" id="tab-workout" onclick="switchTab('workout')">
     <span class="tab-icon">🏋️</span>
     <span class="tab-lbl">Workout</span>
+  </div>
+  <div class="tab" id="tab-challenge" onclick="switchTab('challenge')">
+    <span class="tab-icon">🎯</span>
+    <span class="tab-lbl">Challenge</span>
   </div>
   <div class="tab" id="tab-history" onclick="switchTab('history')">
     <span class="tab-icon">📋</span>
@@ -454,10 +545,19 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
   </div>
 
   <div class="daytype-wrap">
-    <div class="daytype-row" id="daytype-row"></div>
+    <div class="daytype-flex">
+      <div class="daytype-row" id="daytype-row"></div>
+      <button class="daytype-add-btn" id="daytype-add-btn" onclick="toggleAddProgram()" title="Create a new program">+</button>
+    </div>
   </div>
+  <div id="program-top-wrap"></div>
 
   <div class="session-wrap" id="session-wrap"></div>
+</div>
+
+<!-- ══ CHALLENGE TAB ══ -->
+<div id="pane-challenge" style="display:none">
+  <div class="chal-wrap" id="chal-wrap"></div>
 </div>
 
 <!-- ══ HISTORY TAB ══ -->
@@ -486,10 +586,10 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
     </svg>
     <div class="t-center">
       <div class="t-digits" id="t-disp">1:30</div>
-      <div class="t-sub">mag-pahinga</div>
+      <div class="t-sub">resting</div>
     </div>
   </div>
-  <div class="t-msg" id="t-msg">Huminga. Kaya mo ang susunod na set! 💪</div>
+  <div class="t-msg" id="t-msg">Breathe. You've got the next set! 💪</div>
   <div class="preset-row">
     <button class="p-btn" onclick="setPreset(45)">45s</button>
     <button class="p-btn" onclick="setPreset(60)">1 min</button>
@@ -509,11 +609,6 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 // ══════════════════════════════════════════════════════════════════
 
 // 50kg adjustable dumbbell set
-// Per dumbbell loadable: handle ~2kg + plates up to 25kg per side
-// Usable range per DB: 2kg to 40kg in practical increments
-// Realistic increments: 2,4,5,6,7,8,9,10,11,12,13,14,15,16,18,20,22,24,25,28,30,32,35,38,40kg per DB
-// We'll use: [2,4,5,6,7,8,9,10,11,12,13,14,15,16,18,20,22,24,25] per DB
-
 const AVAIL = [2,4,5,6,7,8,9,10,11,12,13,14,15,16,18,20,22,24,25,28,30,32,35,38,40];
 
 function nearestAvail(kg) {
@@ -524,50 +619,82 @@ function nearestAvail(kg) {
 // Mon=Push, Tue=Pull, Wed=Legs, Thu=Push, Fri=Pull, Sat=Legs, Sun=Rest
 const DOW_SCHEDULE = { 0:'rest', 1:'push', 2:'pull', 3:'legs', 4:'push', 5:'pull', 6:'legs' };
 
-// 4-Phase system based on week number since programStart
+// 4-Phase system — controls sets/reps/rest progression. Weight is now 100% free-input (see below).
 function getPhase(week) {
   const w = Math.max(1, week);
-  if (w <= 6)  return {phase:'Foundation',           phaseNum:1, repsLo:10, repsHi:15, sets:3, wMult:0.85, restSec:90,  note:'Form + consistency. Huwag muna mag-ego lift.'};
-  if (w <= 16) return {phase:'Progressive Overload', phaseNum:2, repsLo:8,  repsHi:12, sets:4, wMult:1.00, restSec:90,  note:'Dagdag weight kapag kaya mo max reps every session.'};
-  if (w <= 24) return {phase:'Strength Focus',       phaseNum:3, repsLo:5,  repsHi:8,  sets:4, wMult:1.18, restSec:150, note:'Lumakas para mas mabigat next cycle. 2–3 min rest.'};
-  return         {phase:'Hypertrophy Peak',          phaseNum:4, repsLo:8,  repsHi:15, sets:5, wMult:1.28, restSec:90,  note:'Max muscle size. Drop sets, slow tempo, supersets.'};
+  if (w <= 6)  return {phase:'Foundation',           phaseNum:1, repsLo:10, repsHi:15, sets:3, restSec:90,  note:'Form and consistency first. Don\'t ego-lift yet.'};
+  if (w <= 16) return {phase:'Progressive Overload', phaseNum:2, repsLo:8,  repsHi:12, sets:4, restSec:90,  note:'Add weight once you can hit max reps every session.'};
+  if (w <= 24) return {phase:'Strength Focus',       phaseNum:3, repsLo:5,  repsHi:8,  sets:4, restSec:150, note:'Build strength for a heavier next cycle. 2–3 min rest.'};
+  return         {phase:'Hypertrophy Peak',          phaseNum:4, repsLo:8,  repsHi:15, sets:5, restSec:90,  note:'Max muscle size. Drop sets, slow tempo, supersets.'};
 }
 
 function getWeekParams(week) {
   const p = getPhase(week);
-  return {sets:p.sets, repsLo:p.repsLo, repsHi:p.repsHi, phase:p.phase, wMult:p.wMult};
+  return {sets:p.sets, repsLo:p.repsLo, repsHi:p.repsHi, phase:p.phase};
+}
+
+// ── CUSTOM PROGRAMS — helpers ──
+// A custom program's "type" is the string "custom:<id>". Everywhere else in
+// the app (exercises, sets, sessions, history) treats it just like push/pull/
+// legs/fullbody — these helpers are the only place that need to know the
+// difference.
+function customProgramId(type) {
+  return (typeof type === 'string' && type.indexOf('custom:') === 0) ? type.slice(7) : null;
+}
+
+function typeClass(type) {
+  return (type === 'push' || type === 'pull' || type === 'legs' || type === 'fullbody') ? type : 'customprog';
+}
+
+function getWarmupList(type) {
+  if (WARMUPS[type]) return WARMUPS[type];
+  const pid = customProgramId(type);
+  if (pid && S.customPrograms[pid]) return S.customPrograms[pid].warmup || [];
+  return [];
+}
+
+// Sets/reps for a session: custom programs use their own fixed sets/reps
+// (they're not part of the Push/Pull/Legs periodization); everything else
+// keeps using the phase system.
+function getSessionParams(type, week) {
+  const pid = customProgramId(type);
+  if (pid && S.customPrograms[pid]) {
+    const p = S.customPrograms[pid];
+    return { sets: p.sets, repsLo: p.repsLo, repsHi: p.repsHi, phase: 'Custom Program' };
+  }
+  return getWeekParams(week);
 }
 
 // ─ PUSH DAY: Chest · Shoulders · Triceps ─
 const PUSH_EX = [
   {
     name:'DB Bench Press',
-    guide:'Mahiga sa bench o sahig. Hawak ang DB sa magkabilang kamay, 45° ang siko mula sa katawan. Ibaba hanggang dibdib level — 3 sec pababa, PAUSE 1 sec, itulak pataas. Chest ang nagtatrabaho, hindi balikat. Squeeze sa taas.',
+    guide:'Lie on a bench or the floor. Hold the DBs with elbows at 45° from your body. Lower to chest level — 3 sec down, PAUSE 1 sec, press up. Your chest should be doing the work, not your shoulders. Squeeze at the top.',
     baseKg:30, cat:'compound', restSec:120,
   },
   {
     name:'Push-Up',
-    guide:'Kamay shoulder-width, katawan tuwid — plank position. 3 sec pababa hanggang dibdib halos lumapat sa sahig, PAUSE 1 sec sa baba, explode pataas. Huwag i-sag ang bewang. Para mas mahirap: Slow tempo (4 sec down), feet elevated, o may backpack na may load.',
+    guide:'Hands shoulder-width, body straight — plank position. 3 sec down until your chest nearly touches the floor, PAUSE 1 sec at the bottom, explode up. Don\'t let your hips sag. To make it harder: slow tempo (4 sec down), elevate your feet, or add a weighted backpack.',
     baseKg:null, cat:'bodyweight', restSec:60,
   },
   {
     name:'DB Shoulder Press',
-    guide:'Umupo o tumayo. Hawak ang DB sa shoulder level, 90° ang siko. 2 sec pataas, 3 sec pababa. Core tight — huwag lumiit ang lower back. Hindi bababa sa teynga ang DB.',
+    guide:'Sit or stand. Hold the DBs at shoulder level, elbows at 90°. 2 sec up, 3 sec down. Keep your core tight — don\'t arch your lower back. Don\'t let the DBs drop below ear level.',
     baseKg:20, cat:'compound', restSec:90,
   },
   {
     name:'DB Lateral Raise',
-    guide:'Tumayo, slight bend sa siko. Itaas sa gilid — 2 sec pataas, hold 1 sec sa shoulder level, 3 sec pababa. Huwag i-swing. Ang mabagal na baba ang nagbu-build ng lateral delt.',
+    guide:'Stand with a slight bend in the elbow. Raise out to the sides — 2 sec up, hold 1 sec at shoulder level, 3 sec down. Don\'t swing. The slow lowering is what builds the lateral delt.',
     baseKg:10, cat:'isolation', restSec:60,
   },
   {
     name:'DB Tricep Overhead Extension',
-    guide:'Umupo o tumayo. Hawak ang isang DB sa magkabilang kamay sa likod ng ulo. 2 sec up, 3 sec down. I-keep ang siko pasulong, huwag palabas. Full stretch sa baba. Para sa long head ng tricep.',
+    guide:'Sit or stand. Hold one DB with both hands behind your head. 2 sec up, 3 sec down. Keep your elbows pointed forward, not flared out. Full stretch at the bottom — targets the long head of the tricep.',
     baseKg:18, cat:'isolation', restSec:60,
   },
   {
     name:'Diamond Push-Up',
-    guide:'Kamay diamond shape sa ilalim ng dibdib. 3 sec pababa, hold 1 sec sa baba, explode pataas. Kung madali na, dagdagan ng slow tempo — 4 sec pababa. Pinaka-effective na tricep at inner chest finisher.',
+    guide:'Hands in a diamond shape under your chest. 3 sec down, hold 1 sec at the bottom, explode up. Once it gets easy, add a slow tempo — 4 sec down. One of the best tricep and inner-chest finishers.',
     baseKg:null, cat:'bodyweight', restSec:60,
   },
 ];
@@ -576,32 +703,32 @@ const PUSH_EX = [
 const PULL_EX = [
   {
     name:'DB Bent-Over Row',
-    guide:'Yumukod 45°. Hilahin ang DB pataas — 1 sec up, squeeze ang likod 2 sec, 3 sec down. Full stretch sa baba. Ang LIKOD ang gumagalaw, hindi lang braso. Huwag i-jerk.',
+    guide:'Hinge forward 45°. Pull the DBs up — 1 sec up, squeeze your back for 2 sec, 3 sec down. Full stretch at the bottom. Your BACK should drive the movement, not just your arms. Don\'t jerk the weight.',
     baseKg:30, cat:'compound', restSec:120,
   },
   {
     name:'DB Single-Arm Row',
-    guide:'Suportahan ang kamay sa bench. Hilahin ang DB — siko past ang torso. Squeeze ng 2 sec sa taas. 3 sec pababa — full stretch. Isipin: sinisimot mo ang makina. Huwag i-twist ang katawan.',
+    guide:'Support your hand on a bench. Pull the DB up — elbow past your torso. Squeeze for 2 sec at the top. 3 sec down — full stretch. Think: you\'re starting a lawnmower. Don\'t twist your torso.',
     baseKg:28, cat:'compound', restSec:90,
   },
   {
     name:'DB Reverse Fly',
-    guide:'Yumukod halos parallel sa sahig. Itaas ang dalawang braso sa gilid — 2 sec up, hold 2 sec (rear delt squeeze), 3 sec down. Huwag i-swing. Para sa rear delts at upper back posture.',
+    guide:'Hinge forward until nearly parallel to the floor. Raise both arms out to the sides — 2 sec up, hold 2 sec (rear-delt squeeze), 3 sec down. Don\'t swing. Great for rear delts and upper-back posture.',
     baseKg:8, cat:'isolation', restSec:60,
   },
   {
     name:'DB Bicep Curl',
-    guide:'Tumayo nang tuwid. I-curl — 2 sec up, squeeze 1 sec sa taas, 3–4 sec MABAGAL down. Huwag ibaba nang buo (constant tension). Huwag i-swing. Ang eccentric (down) ang nagbu-build ng bicep.',
+    guide:'Stand tall. Curl up — 2 sec up, squeeze 1 sec at the top, 3–4 sec SLOW on the way down. Don\'t fully release at the bottom (keep constant tension). Don\'t swing. The eccentric (lowering) is what builds the bicep.',
     baseKg:14, cat:'isolation', restSec:60,
   },
   {
     name:'DB Hammer Curl',
-    guide:'Kamay nakaharap paloob — neutral grip. 2 sec up, 3 sec down. I-alternate ang braso. Targets brachialis at brachioradialis — para lumaki ang arms.',
+    guide:'Palms facing in — neutral grip. 2 sec up, 3 sec down. Alternate arms. Targets the brachialis and brachioradialis — builds bigger-looking arms.',
     baseKg:16, cat:'isolation', restSec:60,
   },
   {
     name:'DB Zottman Curl',
-    guide:'I-curl pataas palms-up. Sa taas, i-rotate ang kamay pababa. 3 sec mabagal pababa. I-rotate ulit sa baba bago magsimula. Trains bicep up + brachialis down. Best arm finisher.',
+    guide:'Curl up palms-up. At the top, rotate your hand palm-down. 3 sec slow on the way down. Rotate back before starting the next rep. Trains the bicep on the way up and the brachialis on the way down. Great arm finisher.',
     baseKg:12, cat:'isolation', restSec:60,
   },
 ];
@@ -610,32 +737,32 @@ const PULL_EX = [
 const LEGS_EX = [
   {
     name:'DB Goblet Squat',
-    guide:'Hawak ang DB sa dibdib — goblet style. Paa shoulder-width, daliri bahagyang palabas. 3–4 sec pababa, PAUSE 2 sec sa baba, explode pataas. Heel flat. Likod tuwid. Huwag kolektahin ang tuhod.',
+    guide:'Hold the DB at chest level — goblet style. Feet shoulder-width, toes slightly out. 3–4 sec down, PAUSE 2 sec at the bottom, explode up. Heels flat. Back straight. Don\'t let your knees cave in.',
     baseKg:32, cat:'compound', restSec:120,
   },
   {
     name:'DB Romanian Deadlift',
-    guide:'Hawak ang DB sa harap, tuwid ang katawan. I-hinge ang bewang — 3 sec pababa, HOLD sa pinakamababang punto (feel the hamstring stretch). Ituwid gamit ang glutes — squeeze sa taas. Huwag baluktot ang likod.',
+    guide:'Hold the DBs in front, torso straight. Hinge at the hips — 3 sec down, HOLD at the lowest point (feel the hamstring stretch). Drive back up with your glutes — squeeze at the top. Don\'t round your back.',
     baseKg:30, cat:'compound', restSec:120,
   },
   {
     name:'DB Front Lunge',
-    guide:'Tumayo, hawak ang DB sa magkabilang kamay. Humakbang pasulong — 2 sec pababa, front knee 90°, back knee halos sa sahig. Itulak gamit ang front heel pabalik sa simula. Alternating legs — L+R = 1 rep. Core tight, likod tuwid.',
+    guide:'Stand holding a DB in each hand. Step forward — 2 sec down, front knee at 90°, back knee nearly touching the floor. Push off the front heel back to start. Alternating legs — L+R = 1 rep. Core tight, back straight.',
     baseKg:22, cat:'compound', restSec:90,
   },
   {
     name:'DB Sumo Squat',
-    guide:'Malawak ang paa, daliri 45° palabas. Hawak ang DB sa gitna. 3 sec pababa, PAUSE 2 sec sa baba, itulak pataas. Squeeze ang inner thighs at glutes sa taas. Mas malalim = mas mahirap.',
+    guide:'Feet wide, toes out at 45°. Hold the DB in the center. 3 sec down, PAUSE 2 sec at the bottom, drive up. Squeeze your inner thighs and glutes at the top. Deeper = harder.',
     baseKg:35, cat:'compound', restSec:90,
   },
   {
     name:'DB Hip Thrust',
-    guide:'Likod sa bench, DB sa hita. Itaas ang balakang — SQUEEZE ang glutes ng 2–3 sec sa taas, 3 sec pababa. Huwag ibaba nang buo — hover lang sa sahig (constant tension). Pinaka-effective para sa glute growth.',
+    guide:'Back on a bench, DB on your hips. Raise your hips — SQUEEZE your glutes for 2–3 sec at the top, 3 sec down. Don\'t rest fully on the floor — hover for constant tension. One of the most effective glute-growth exercises.',
     baseKg:32, cat:'isolation', restSec:90,
   },
   {
     name:'DB Calf Raise',
-    guide:'Tumayo sa edge ng step o libro. Hawak ang DB o bodyweight lang sa simula. 1 sec pataas, HOLD 2 sec sa taas, 3 sec pababa hanggang max stretch. Ang stretch sa baba ay kritikal.',
+    guide:'Stand on the edge of a step or a book. Hold a DB, or just bodyweight to start. 1 sec up, HOLD 2 sec at the top, 3 sec down to a full stretch. The stretch at the bottom is critical.',
     baseKg:null, cat:'bodyweight', restSec:60,
   },
 ];
@@ -643,27 +770,27 @@ const LEGS_EX = [
 const FULLBODY_EX = [
   {
     name:'DB Thruster (squat to press)',
-    guide:'Hawak ang DB sa shoulder level. Squat pababa — full depth, 2 sec down. Mula sa baba, explode pataas habang itinutulak ang DB overhead sa parehong galaw. Buong katawan ang gumagana — legs, core, shoulders.',
+    guide:'Hold the DBs at shoulder level. Squat down — full depth, 2 sec down. From the bottom, explode up while pressing the DBs overhead in one motion. Full-body movement — legs, core, shoulders.',
     baseKg:14, cat:'compound', restSec:75, sets:3, repsLo:10, repsHi:10,
   },
   {
     name:'Renegade Row (plank position)',
-    guide:'Plank position, kamay sa DB. Hilahin ang isang DB pataas papunta sa baywang habang nakatayo ang katawan — wag mag-twist. Ibaba mabagal, ulitin sa kabilang braso. Core tight buong oras.',
+    guide:'Plank position, hands on DBs. Row one DB up toward your hip while staying stable — don\'t twist. Lower slowly, repeat on the other arm. Keep your core tight the whole time.',
     baseKg:10, cat:'compound', restSec:75, sets:3, repsLo:10, repsHi:10,
   },
   {
     name:'Plank with DB Drag',
-    guide:'Plank position, DB sa tabi ng isang kamay. Hilahin/i-drag ang DB papunta sa kabilang gilid sa ilalim ng katawan, tapos pabalik. Huwag babaan ang balakang. Core at obliques ang target.',
+    guide:'Plank position, DB beside one hand. Drag the DB under your body to the other side, then back. Don\'t let your hips drop. Targets the core and obliques.',
     baseKg:6, cat:'core', restSec:60, sets:3, repsLo:null, repsHi:null, durationSec:[30,45],
   },
   {
     name:'Burpees',
-    guide:'Mula tayo, squat-thrust pababa papunta sa plank, push-up (optional), jump feet pabalik sa squat, explode jump pataas. Full body cardio + strength finisher. Mabilis pero controlled.',
+    guide:'From standing, squat-thrust down into a plank, push-up (optional), jump your feet back to a squat, explode up into a jump. Full-body cardio + strength finisher. Fast but controlled.',
     baseKg:null, cat:'bodyweight', restSec:75, sets:3, repsLo:10, repsHi:12,
   },
   {
     name:'Mountain Climbers (cardio finisher)',
-    guide:'Plank position. Mabilis na palitan ang tuhod papunta sa dibdib, parang tumatakbo habang naka-plank. Core tight, balakang stable — huwag itaas ng masyado. Cardio finisher — go fast.',
+    guide:'Plank position. Quickly drive your knees toward your chest, like running in place while planking. Keep your core tight and hips stable — don\'t raise them too high. Cardio finisher — go fast.',
     baseKg:null, cat:'cardio', restSec:60, sets:3, repsLo:null, repsHi:null, durationSec:[30,45],
   },
 ];
@@ -671,8 +798,8 @@ const FULLBODY_EX = [
 const FULLBODY_WARMUP = [
   {name:'Jumping Jacks', detail:'30 sec — full body activation'},
   {name:'Arm Circles', detail:'20 sec forward + 20 sec backward'},
-  {name:'Bodyweight Squat', detail:'10 reps — mabagal, full depth'},
-  {name:'Hip Circle', detail:'10 reps bawat direksyon'},
+  {name:'Bodyweight Squat', detail:'10 reps — slow, full depth'},
+  {name:'Hip Circle', detail:'10 reps each direction'},
   {name:'High Knees', detail:'20 sec — light cardio warm-up'},
   {name:'Cat-Cow', detail:'8 reps — spine mobility'},
 ];
@@ -680,25 +807,25 @@ const FULLBODY_WARMUP = [
 const WARMUPS = {
   push:[
     {name:'Arm Circles', detail:'30s forward + 30s backward'},
-    {name:'Shoulder Roll', detail:'10 reps pataas, 10 pababa'},
-    {name:'Band/Towel Pull-Apart', detail:'15 reps — stretch ang chest'},
-    {name:'Wall Slide', detail:'10 reps — likod sa dingding'},
-    {name:'Light Push-Up', detail:'12 reps — mabilis, warm-up lang'},
-    {name:'Chest Opener', detail:'20 sec hold bawat gilid'},
+    {name:'Shoulder Roll', detail:'10 reps forward, 10 backward'},
+    {name:'Band/Towel Pull-Apart', detail:'15 reps — stretch the chest'},
+    {name:'Wall Slide', detail:'10 reps — back against the wall'},
+    {name:'Light Push-Up', detail:'12 reps — quick, just to warm up'},
+    {name:'Chest Opener', detail:'20 sec hold each side'},
   ],
   pull:[
     {name:'Cat-Cow', detail:'10 reps — spine mobility'},
-    {name:'Thoracic Rotation', detail:'8 reps bawat gilid'},
-    {name:'Scapular Retraction', detail:'10 reps — squeeze blades sabay'},
-    {name:'Doorway Row Stretch', detail:'20 sec — lean back, hawak ang frame'},
+    {name:'Thoracic Rotation', detail:'8 reps each side'},
+    {name:'Scapular Retraction', detail:'10 reps — squeeze the shoulder blades together'},
+    {name:'Doorway Row Stretch', detail:'20 sec — lean back holding a doorframe'},
     {name:'Band Face Pull / Towel', detail:'15 reps — rear delt activation'},
-    {name:'Dead Hang', detail:'20-30 sec kung may bar'},
+    {name:'Dead Hang', detail:'20-30 sec if you have a bar'},
   ],
   legs:[
-    {name:'Hip Circle', detail:'10 reps bawat direksyon'},
-    {name:'Leg Swing', detail:'10 reps bawat binti'},
-    {name:'Bodyweight Squat', detail:'15 reps — full depth, mabagal'},
-    {name:'Hip Flexor Stretch', detail:'30 sec bawat gilid — lunge position'},
+    {name:'Hip Circle', detail:'10 reps each direction'},
+    {name:'Leg Swing', detail:'10 reps each leg'},
+    {name:'Bodyweight Squat', detail:'15 reps — full depth, slow'},
+    {name:'Hip Flexor Stretch', detail:'30 sec each side — lunge position'},
     {name:'Glute Bridge Pulse', detail:'20 reps — bodyweight, fast'},
     {name:'Calf Raise Warm-Up', detail:'20 reps — bodyweight'},
   ],
@@ -706,14 +833,14 @@ const WARMUPS = {
 };
 
 const MOTIVATIONS = [
-  'Huminga. I-relax ang muscles. 💪',
-  'Shake out ang braso. Ikaw pa rin ang boss. 🔥',
-  'Ang pahinga ay bahagi ng programa. 💯',
-  'Hydrate! Uminom ng tubig. 💧',
-  'Huling ilang sets na lang. Huwag sayangin ang effort! 🏋️',
-  'Ang muscles ay nagtatayo NGAYON habang nagpapahinga ka. 😤',
-  'Visible abs? Nililinis ito sa bawat set. ✨',
-  'Kaya mo yan. Simulan mo na ang susunod. 🎯',
+  'Breathe. Relax the muscles. 💪',
+  'Shake out your arms. You\'re still the boss. 🔥',
+  'Rest is part of the program. 💯',
+  'Hydrate! Drink some water. 💧',
+  'Just a few more sets. Don\'t waste the effort! 🏋️',
+  'Your muscles are building RIGHT NOW while you rest. 😤',
+  'Visible abs? Built one set at a time. ✨',
+  'You\'ve got this. Start the next one. 🎯',
 ];
 
 // ══════════════════════════════════════════════════════════════════
@@ -730,7 +857,7 @@ const DEF_STATE = {
   streak: 0,
   theme: 'dark',
   customExercises: {},  // "push"|"pull"|"legs" -> [{name,guide,baseKg,cat,restSec}]
-  weightOverrides: {},  // "push|0" etc -> kg (user-set base weight)
+  weightOverrides: {},  // "push|name|0" etc -> custom exercise name overrides
   showAddForm: null,
   extraSets: {},        // "type|ei" -> count of extra sets added
   actualLogs: {},        // "YYYY-MM-DD-exIdx-setIdx" -> {kg, reps}
@@ -738,6 +865,12 @@ const DEF_STATE = {
   hiddenBaseEx: {},        // "push"|"pull"|"legs" -> [ei, ei, ...] hidden base exercise indices
   dayStatus: {},           // "YYYY-MM-DD" -> {status:'skip'|'rest'|'break', reason, comeback}
   selectedDayType: {},     // "YYYY-MM-DD" -> 'push'|'pull'|'legs'|'fullbody' manual override
+  challenges: {},          // id -> {name, unit, target, createdAt, logs:{ISO:value}}
+  showAddChallenge: false,
+  chalExpanded: {},
+  oneOffExercises: {},     // legacy field kept for backward-compat with older backups; no longer used
+  customPrograms: {},      // id -> {name, sets, repsLo, repsHi, warmup:[{name,detail}]} — user-defined workouts (e.g. "40 min Dumbbell")
+  showAddProgram: false,
 };
 
 let S = (() => {
@@ -758,6 +891,10 @@ if (!S.exerciseNotes) S.exerciseNotes = {};
 if (!S.hiddenBaseEx) S.hiddenBaseEx = {};
 if (!S.dayStatus) S.dayStatus = {};
 if (!S.selectedDayType) S.selectedDayType = {};
+if (!S.challenges) S.challenges = {};
+if (!S.chalExpanded) S.chalExpanded = {};
+if (!S.oneOffExercises) S.oneOffExercises = {};
+if (!S.customPrograms) S.customPrograms = {};
 if (!S.viewYear || !S.viewMonth) {
   const today = new Date();
   S.viewYear = today.getFullYear();
@@ -799,13 +936,9 @@ function importData(event) {
     try {
       const parsed = JSON.parse(e.target.result);
       if (!parsed || typeof parsed !== 'object') throw new Error('Invalid format');
-      if (!confirm('I-replace ang current data ng imported backup? Hindi na ito pwede i-undo.')) {
-        event.target.value = '';
-        return;
-      }
       S = Object.assign(JSON.parse(JSON.stringify(DEF_STATE)), parsed);
       save();
-      toast('⬆️ Backup na-restore! Nire-reload...');
+      toast('⬆️ Backup restored! Reloading...');
       setTimeout(() => location.reload(), 800);
     } catch(err) {
       toast('❌ Invalid backup file.');
@@ -863,31 +996,34 @@ function renderDaytypeRow() {
     { type:'legs', label:'LEGS', sub:'Quads/Glutes' },
     { type:'fullbody', label:'FULL BODY', sub:'Core+Cond' },
   ];
+  Object.keys(S.customPrograms || {}).forEach(pid => {
+    const p = S.customPrograms[pid];
+    items.push({ type: 'custom:'+pid, label: (p.name||'PROGRAM').toUpperCase(), sub: p.sub || 'Custom' });
+  });
 
-  row.innerHTML = items.map(it => `
-    <div class="daytype-pill ${it.type} ${active===it.type?'active':''}" onclick="selectDayType('${iso}','${it.type}')">
+  row.innerHTML = items.map(it => {
+    const pid = customProgramId(it.type);
+    return `
+    <div class="daytype-pill ${typeClass(it.type)} ${active===it.type?'active':''}" onclick="selectDayType('${iso}','${it.type}')">
+      ${pid ? `<button class="daytype-pill-del ${pendingDeleteProgramId===pid?'confirming':''}" onclick="deleteProgram('${pid}', event)" title="Delete program">${pendingDeleteProgramId===pid?'✓':'✕'}</button>` : ''}
       <div class="daytype-pill-label">${it.label}</div>
       <div class="daytype-pill-sub">${it.sub}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function getWeekNumber(dateISO) {
   return Math.floor(daysSinceStart(dateISO) / 7) + 1;
 }
 
-function getExercises(type) {
-  const base = type === 'push' ? PUSH_EX : type === 'pull' ? PULL_EX : type === 'legs' ? LEGS_EX : type === 'fullbody' ? FULLBODY_EX : [];
-  const custom = (S.customExercises && S.customExercises[type]) || [];
-  return [...base, ...custom];
+function getBaseArr(type) {
+  return type === 'push' ? PUSH_EX : type === 'pull' ? PULL_EX : type === 'legs' ? LEGS_EX : type === 'fullbody' ? FULLBODY_EX : [];
 }
 
-function getExBaseKg(type, ei) {
-  const exs = getExercises(type);
-  const ex = exs[ei];
-  if (!ex) return null;
-  const ovKey = type + '|' + ei;
-  if (S.weightOverrides && S.weightOverrides[ovKey] != null) return S.weightOverrides[ovKey];
-  return ex.baseKg;
+function getExercises(type) {
+  const base = getBaseArr(type);
+  const custom = (S.customExercises && S.customExercises[type]) || [];
+  return [...base, ...custom];
 }
 
 function getExName(type, ei) {
@@ -900,14 +1036,6 @@ function getExName(type, ei) {
 function getExSets(type, ei, baseSets) {
   const extra = (S.extraSets && S.extraSets[type + '|' + ei]) || 0;
   return baseSets + extra;
-}
-
-function calcWeight(ex, week, baseKgOverride) {
-  const base = baseKgOverride != null ? baseKgOverride : ex.baseKg;
-  if (!base) return null;
-  const p = getWeekParams(week);
-  const raw = base * p.wMult;
-  return nearestAvail(raw);
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -983,9 +1111,11 @@ function renderStats() {
   if (type && type !== 'rest' && type !== 'future') {
     const exs = getExercises(type);
     const week = getWeekNumber(S.selectedDate);
-    const {sets} = getWeekParams(week);
+    const {sets} = getSessionParams(type, week);
     let total = 0, done = 0;
+    const hiddenSetRS = new Set((S.hiddenBaseEx && S.hiddenBaseEx[type]) || []);
     exs.forEach((ex,ei) => {
+      if (hiddenSetRS.has(ei)) return;
       const sc = getExSets(type, ei, sets);
       total += sc;
       for (let s=0;s<sc;s++) { if (S.setChecks[`${S.selectedDate}-${ei}-${s}`]) done++; }
@@ -1046,9 +1176,9 @@ function openDayStatusForm(status) {
     <div class="daystat-form">
       <div class="daystat-form-title" style="color:${sc.color}">[${sc.label}]</div>
       <label>Reason</label>
-      <input type="text" id="ds-reason" placeholder="e.g. shoulder pain, trabaho, biyahe...">
+      <input type="text" id="ds-reason" placeholder="e.g. shoulder pain, work, travel...">
       <label>Comeback Plan</label>
-      <input type="text" id="ds-comeback" placeholder="e.g. bukas same time, light sets muna...">
+      <input type="text" id="ds-comeback" placeholder="e.g. tomorrow same time, light sets first...">
       <div class="daystat-form-actions">
         <button class="daystat-cancel" onclick="document.getElementById('daystat-form-wrap').innerHTML=''">Cancel</button>
         <button class="daystat-save" onclick="saveDayStatus('${status}')">SAVE</button>
@@ -1064,7 +1194,7 @@ function saveDayStatus(status) {
   save();
   renderCalendar();
   renderSession();
-  toast(`${STATUS_CODES[status].emoji} ${STATUS_CODES[status].label} naka-save.`);
+  toast(`${STATUS_CODES[status].emoji} ${STATUS_CODES[status].label} saved.`);
 }
 
 function clearDayStatus() {
@@ -1079,13 +1209,17 @@ function renderSession() {
   const wrap = document.getElementById('session-wrap');
   const type = getActiveDayType(S.selectedDate);
   const week = getWeekNumber(S.selectedDate);
-  const params = getWeekParams(week);
+  const params = getSessionParams(type, week);
   const isDone = !!S.completedSessions[S.selectedDate];
 
   renderDaytypeRow();
 
+  const addBtn = document.getElementById('daytype-add-btn');
+  if (addBtn) addBtn.style.display = (type === 'future') ? 'none' : '';
+  renderProgramFormIfNeeded();
+
   if (type === 'future') {
-    wrap.innerHTML = `<div class="rest-card"><div style="font-size:2rem">📅</div><h3>HINDI PA SIMULA</h3><div class="rest-tips"><div class="rest-tip">Ang program ay nagsimula sa ${S.programStart}. Piliin ang isang araw na kasama sa programa.</div></div></div>`;
+    wrap.innerHTML = `<div class="rest-card"><div style="font-size:2rem">📅</div><h3>NOT STARTED YET</h3><div class="rest-tips"><div class="rest-tip">The program started on ${S.programStart}. Pick a day that's part of the program.</div></div></div>`;
     return;
   }
 
@@ -1093,7 +1227,7 @@ function renderSession() {
     const statusEntry = S.dayStatus && S.dayStatus[S.selectedDate];
     wrap.innerHTML = `
       ${renderDayStatusWidget()}
-      ${!statusEntry ? `<div class="rest-card"><div style="font-size:2.2rem">🏋️</div><h3>PUMILI NG WORKOUT</h3><div class="rest-tips"><div class="rest-tip">Pindutin ang PUSH, PULL, LEGS, o FULL BODY sa itaas kung ano ang ginawa mo ngayong araw — o mark as Skip/Rest/Break.</div></div></div>` : ''}`;
+      ${!statusEntry ? `<div class="rest-card"><div style="font-size:2.2rem">🏋️</div><h3>CHOOSE A WORKOUT</h3><div class="rest-tips"><div class="rest-tip">Tap PUSH, PULL, LEGS, or FULL BODY above for what you did today — or mark it as Skip/Rest/Break.</div></div></div>` : ''}`;
     return;
   }
 
@@ -1111,29 +1245,38 @@ function renderSession() {
   const pct = totalSets ? Math.round(doneSets/totalSets*100) : 0;
   const allDone = doneSets === totalSets;
 
-  const typeLabel = type === 'push' ? 'PUSH DAY' : type === 'pull' ? 'PULL DAY' : type === 'legs' ? 'LEG DAY' : 'FULL BODY';
-  const typeSub = type === 'push' ? 'Chest · Shoulders · Triceps' : type === 'pull' ? 'Back · Biceps · Rear Delts' : type === 'legs' ? 'Quads · Hamstrings · Glutes · Calves' : 'Core · Conditioning · Full Body';
+  const pid = customProgramId(type);
+  const tCls = typeClass(type);
+  const progObj = pid ? S.customPrograms[pid] : null;
+  const typeLabel = pid ? (progObj?.name || 'CUSTOM PROGRAM').toUpperCase() : type === 'push' ? 'PUSH DAY' : type === 'pull' ? 'PULL DAY' : type === 'legs' ? 'LEG DAY' : 'FULL BODY';
+  const typeSub = type === 'push' ? 'Chest · Shoulders · Triceps' : type === 'pull' ? 'Back · Biceps · Rear Delts' : type === 'legs' ? 'Quads · Hamstrings · Glutes · Calves' : type === 'fullbody' ? 'Core · Conditioning · Full Body' : '';
 
   let html = `
-    <div class="hero ${type}">
-      <div class="hero-type ${type}">${typeLabel}</div>
-      <div class="hero-sub">${typeSub} · ${S.selectedDate}</div>
+    <div class="hero ${tCls}">
+      <div class="hero-type ${tCls}">${typeLabel}</div>
+      ${pid
+        ? `<div class="hero-sub-row">
+             <input class="hero-sub-input" value="${(progObj?.sub||'Custom').replace(/"/g,'&quot;')}" onclick="event.stopPropagation()" onchange="renameProgramSub('${pid}',this.value)" placeholder="e.g. Cardio, Arms...">
+             <span class="hero-sub-date">· ${S.selectedDate}</span>
+           </div>`
+        : `<div class="hero-sub">${typeSub} · ${S.selectedDate}</div>`}
       <div class="hero-tags">
-        <span class="htag accent">Week ${week} · ${phase}</span>
+        <span class="htag accent">${pid ? phase : `Week ${week} · ${phase}`}</span>
         <span class="htag">${sets} sets</span>
         <span class="htag">${repsLo}–${repsHi} reps</span>
         <span class="htag">${doneSets}/${totalSets} done</span>
         ${isDone ? '<span class="htag accent">✓ COMPLETED</span>' : ''}
       </div>
     </div>
+    ${pid ? `<button class="program-del-btn ${pendingDeleteProgramId===pid?'confirming':''}" onclick="deleteProgram('${pid}')">${pendingDeleteProgramId===pid ? '⚠️ Tap again to confirm' : '🗑 Delete This Program'}</button>` : ''}
     ${renderDayStatusWidget()}
     <div class="prog">
       <div class="prog-row"><span>Session Progress</span><span>${pct}%</span></div>
-      <div class="prog-track"><div class="prog-fill ${type}" id="prog-fill" style="width:${pct}%"></div></div>
+      <div class="prog-track"><div class="prog-fill ${tCls}" id="prog-fill" style="width:${pct}%"></div></div>
     </div>`;
 
-  // Warmup
-  const wu = WARMUPS[type];
+  // Warmup — custom programs get their own editable warm-up list
+  const wu = getWarmupList(type);
   const wuOpen = !!S.expanded[`wu-${S.selectedDate}`];
   html += `
     <div class="slabel"><span>🔥 Warm-Up</span></div>
@@ -1144,12 +1287,18 @@ function renderSession() {
         <div class="wu-chev ${wuOpen ? 'open' : ''}">▼</div>
       </div>
       <div class="wu-body ${wuOpen ? 'open' : ''}">
-        ${wu.map(w=>`<div class="wu-item"><div class="wu-dot"></div><div class="wu-name">${w.name}</div><div class="wu-detail">${w.detail}</div></div>`).join('')}
+        ${wu.map((w,wi)=>`<div class="wu-item"><div class="wu-dot"></div><div class="wu-name">${w.name}</div><div class="wu-detail">${w.detail||''}</div>${pid?`<button class="wu-item-del" onclick="event.stopPropagation();removeWarmupItem('${pid}',${wi})">✕</button>`:''}</div>`).join('')}
+        ${pid ? `
+        <div class="wu-add-row" onclick="event.stopPropagation()">
+          <input type="text" id="wu-name-${pid}" placeholder="Warm-up name...">
+          <input type="text" id="wu-detail-${pid}" placeholder="Detail (opt.)">
+          <button class="wu-add-btn" onclick="addWarmupItem('${pid}')">+ Add</button>
+        </div>` : ''}
       </div>
     </div>`;
 
   // Exercises
-  html += `<div class="slabel"><span>💪 Exercises</span></div><div class="${type}-s" id="ex-list-wrap">`;
+  html += `<div class="slabel"><span>💪 Exercises</span></div><div class="${tCls}-s" id="ex-list-wrap">`;
   exs.forEach((ex, ei) => {
     if (hiddenSet.has(ei)) return; // skip deleted/hidden exercise
     const expKey = `ex-${S.selectedDate}-${ei}`;
@@ -1158,37 +1307,32 @@ function renderSession() {
     let exDone = 0;
     for (let s=0;s<exSetCount;s++) { if (S.setChecks[`${S.selectedDate}-${ei}-${s}`]) exDone++; }
     const isExDone = exDone === exSetCount;
-    const ovKey = type + '|' + ei;
-    const baseKgOv = (S.weightOverrides && S.weightOverrides[ovKey] != null) ? S.weightOverrides[ovKey] : ex.baseKg;
     const nameOv = (S.weightOverrides && S.weightOverrides[type+'|name|'+ei]) || ex.name;
-    const kg = calcWeight(ex, week, baseKgOv);
-    const nextWeekKg = baseKgOv ? nearestAvail(baseKgOv * getWeekParams(week+2).wMult) : null;
-    const aiKey = type + '|ai|' + ei;
-    const aiResult = (S.weightOverrides && S.weightOverrides[aiKey]) || null;
-    const isCustom = ei >= (type === 'push' ? PUSH_EX : type === 'pull' ? PULL_EX : LEGS_EX).length;
+    const hasWeight = ex.baseKg !== null;
+    const isCustom = ei >= getBaseArr(type).length;
 
     let setsHtml = '';
     for (let s=0;s<exSetCount;s++) {
       const sk = `${S.selectedDate}-${ei}-${s}`;
       const checked = !!S.setChecks[sk];
       const log = (S.actualLogs && S.actualLogs[sk]) || {};
-      const logKg = log.kg != null ? log.kg : (kg != null ? kg : '');
+      const logKg = log.kg != null ? log.kg : '';
       const logReps = log.reps != null ? log.reps : '';
       setsHtml += `
         <div class="set-row ${checked?'done':''}" id="sr-${sk}">
           <div class="set-lbl">Set ${s+1}</div>
-          <div class="set-detail">${repsLo}–${repsHi} reps${kg ? ` · ${kg}kg` : ''}</div>
+          <div class="set-detail">${s===0 ? 'Set your weight/reps →' : `${repsLo}–${repsHi} reps target`}</div>
           <button class="set-btn ${checked?'done':''}" id="sb-${sk}" onclick="toggleSet('${sk}')" ${isDone&&!checked?'disabled':''}>✓</button>
         </div>
         <div class="actual-log-row">
           <div class="alog-field">
-            <label>Actual kg</label>
-            <input type="number" step="0.5" min="0" class="alog-input" value="${logKg}" placeholder="${kg||0}"
+            <label>${hasWeight ? 'Weight (kg)' : 'Load'}</label>
+            <input type="number" step="0.5" min="0" class="alog-input" value="${logKg}" placeholder="${hasWeight?'kg':'BW'}"
               id="alk-${sk}" onclick="event.stopPropagation()" onchange="saveActualLog('${sk}','kg',this.value)">
           </div>
           <div class="alog-field">
-            <label>Actual reps</label>
-            <input type="number" step="1" min="0" class="alog-input" value="${logReps}" placeholder="${repsHi}"
+            <label>Reps</label>
+            <input type="number" step="1" min="0" class="alog-input" value="${logReps}" placeholder="${repsHi||''}"
               id="alr-${sk}" onclick="event.stopPropagation()" onchange="saveActualLog('${sk}','reps',this.value)">
           </div>
         </div>`;
@@ -1204,18 +1348,18 @@ function renderSession() {
     const noteVal = (S.exerciseNotes && S.exerciseNotes[noteKey]) || '';
 
     html += `
-      <div class="ex-card ${type} ${isExDone?'done':''}" id="exc-${S.selectedDate}-${ei}">
+      <div class="ex-card ${tCls} ${isExDone?'done':''}" id="exc-${S.selectedDate}-${ei}">
         <div class="ex-hdr" onclick="toggleEx(${ei})">
           <div class="ex-num">${ei+1}</div>
           <div class="ex-info">
             <div class="ex-name">${nameOv}${isExDone?' ✓':''}</div>
-            <div class="ex-meta">${exSetCount} sets · ${repsLo}–${repsHi} reps${kg?` · ${kg}kg DB`:' · Bodyweight'}</div>
+            <div class="ex-meta">${exSetCount} sets · ${repsLo}–${repsHi} reps${hasWeight?' · Free weight':' · Bodyweight'}</div>
           </div>
           <div class="ex-chev ${isOpen?'open':''}">▼</div>
         </div>
         <div class="ex-body ${isOpen?'open':''}">
-          <div class="guide"><div class="guide-lbl">📋 Paano Gawin</div><div class="guide-txt">${ex.guide}</div></div>
-          
+          <div class="guide"><div class="guide-lbl">📋 How To Do It</div><div class="guide-txt">${ex.guide}</div></div>
+
           <!-- EDITABLE NAME -->
           <div style="margin-bottom:8px">
             <div style="font-size:.58rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--sub);font-weight:700;margin-bottom:4px">✏️ Exercise Name</div>
@@ -1224,37 +1368,18 @@ function renderSession() {
               onclick="event.stopPropagation()" placeholder="Exercise name...">
           </div>
 
-          <!-- EDITABLE WEIGHT + AI SUGGEST -->
-          ${ex.baseKg !== null ? `
-          <div class="weight-edit-row">
-            <label>Base Weight (kg):</label>
-            <input class="weight-input" type="number" min="0" step="0.5" 
-              value="${baseKgOv != null ? baseKgOv : ''}" 
-              id="wi-${type}-${ei}"
-              onclick="event.stopPropagation()"
-              onchange="saveBaseWeight('${type}',${ei},this.value)"
-              placeholder="kg">
-            <button class="weight-suggest-btn" onclick="event.stopPropagation();getWeightSuggestion('${type}',${ei})" id="wsb-${type}-${ei}">
-              📊 Progression
-            </button>
-          </div>
-          ${aiResult ? `<div class="ai-suggest" id="ai-${type}-${ei}"><div class="ai-lbl">📊 Weight Progression Guide</div>${aiResult}</div>` : `<div class="ai-suggest" id="ai-${type}-${ei}" style="display:none"></div>`}
-          ` : ''}
-
-          ${kg ? `<div class="wt-badge">🏋️ Week ${week} weight: <strong>${kg}kg</strong><span class="next">${nextWeekKg&&nextWeekKg!==kg?` → ${nextWeekKg}kg sa Week ${week+2}`:' (max progression)'}</span></div>` : ''}
           <div class="sets-wrap">${setsHtml}</div>
+          <div class="ol-note" style="font-size:.68rem">💡 Enter the weight/reps on <strong>Set 1</strong> — it auto-copies to every other set. You can still edit individual sets afterward.</div>
 
           <div class="ex-notes-wrap">
             <label class="ex-notes-lbl">📝 Notes (optional)</label>
-            <textarea class="ex-notes-input" placeholder="e.g. mahirap sa set 3, baba ang energy, masakit kamay..."
+            <textarea class="ex-notes-input" placeholder="e.g. tough on set 3, energy was low, wrist felt sore..."
               onclick="event.stopPropagation()" onchange="saveExerciseNote('${type}',${ei},this.value)">${noteVal}</textarea>
           </div>
 
           <div class="ol-note">🔥 <strong>Phase ${getPhase(week).phaseNum} — ${phase}:</strong> ${exSetCount} sets · ${repsLo}–${repsHi} reps · ${getPhase(week).note}
           </div>
-          ${isCustom
-            ? `<button class="ex-del-btn" onclick="event.stopPropagation();deleteCustomEx('${type}',${ei})">🗑 Tanggalin</button>`
-            : `<button class="ex-del-btn" onclick="event.stopPropagation();hideBaseEx('${type}',${ei})">🗑 Tanggalin</button>`}
+          <button class="ex-del-btn ${pendingDeleteExKey===(type+'|'+ei)?'confirming':''}" onclick="event.stopPropagation();deleteExercise('${type}',${ei},${isCustom})">${pendingDeleteExKey===(type+'|'+ei) ? '⚠️ Tap again to confirm' : '🗑 Delete'}</button>
         </div>
       </div>`;
   });
@@ -1262,10 +1387,10 @@ function renderSession() {
   // Add exercise form
   const showForm = S.showAddForm === type;
   const hiddenList = (S.hiddenBaseEx && S.hiddenBaseEx[type]) || [];
-  const allBaseExs = type === 'push' ? PUSH_EX : type === 'pull' ? PULL_EX : LEGS_EX;
+  const allBaseExs = getBaseArr(type);
   const restoreHtml = hiddenList.length ? `
   <div class="restore-wrap">
-    <div class="restore-lbl">Hidden exercises — tap para ibalik:</div>
+    <div class="restore-lbl">Hidden exercises — tap to restore:</div>
     <div class="restore-chips">
       ${hiddenList.map(ei => {
         const nameOv = (S.weightOverrides && S.weightOverrides[type+'|name|'+ei]) || (allBaseExs[ei] && allBaseExs[ei].name) || '';
@@ -1274,12 +1399,12 @@ function renderSession() {
     </div>
   </div>` : '';
   html += `</div>
-  <button class="add-ex-btn" onclick="toggleAddForm('${type}')">+ Mag-dagdag ng Exercise</button>
+  <button class="add-ex-btn" onclick="toggleAddForm('${type}')">+ Add Exercise</button>
   ${restoreHtml}
   ${showForm ? `
   <div class="add-ex-form">
     <div><label>Exercise Name</label><input type="text" id="aef-name" placeholder="e.g. DB Fly, Push-Up..." onclick="event.stopPropagation()"></div>
-    <div><label>Guide / Notes (optional)</label><textarea id="aef-guide" placeholder="Paano gawin..." onclick="event.stopPropagation()"></textarea></div>
+    <div><label>Guide / Notes (optional)</label><textarea id="aef-guide" placeholder="How to do it..." onclick="event.stopPropagation()"></textarea></div>
     <div class="aef-row">
       <div><label>Base Weight (kg)</label><input type="number" id="aef-kg" placeholder="0 = bodyweight" step="0.5" min="0" onclick="event.stopPropagation()"></div>
       <div><label>Rest (sec)</label><input type="number" id="aef-rest" value="60" step="15" min="30" onclick="event.stopPropagation()"></div>
@@ -1291,9 +1416,9 @@ function renderSession() {
   </div>` : ''}`;
 
   if (!isDone) {
-    html += `<button class="finish-btn ${type} ${allDone?'vis':''}" id="finish-btn" onclick="completeSession()">✓ TAPOS NA · SAVE SESSION</button>`;
+    html += `<button class="finish-btn ${type} ${allDone?'vis':''}" id="finish-btn" onclick="completeSession()">✓ DONE · SAVE SESSION</button>`;
   } else {
-    html += `<div style="margin-top:14px;padding:14px;background:var(--done);border:1px solid var(--doneb);border-radius:var(--r);text-align:center;font-size:.8rem;color:var(--legs)">✓ Session nai-save na. ${S.completedSessions[S.selectedDate].exercises ? S.completedSessions[S.selectedDate].exercises.length + ' exercises' : ''}</div>`;
+    html += `<div style="margin-top:14px;padding:14px;background:var(--done);border:1px solid var(--doneb);border-radius:var(--r);text-align:center;font-size:.8rem;color:var(--legs)">✓ Session saved. ${S.completedSessions[S.selectedDate].exercises ? S.completedSessions[S.selectedDate].exercises.length + ' exercises' : ''}</div>`;
   }
 
   wrap.innerHTML = html;
@@ -1303,7 +1428,7 @@ function renderHistory() {
   const wrap = document.getElementById('hist-wrap');
   const sessions = Object.entries(S.completedSessions).sort((a,b)=>b[0].localeCompare(a[0]));
   if (!sessions.length) {
-    wrap.innerHTML = `<div class="hist-empty">Wala pang natapos na session.<br>Magsimula ka na! 💪</div>`;
+    wrap.innerHTML = `<div class="hist-empty">No completed sessions yet.<br>Get started! 💪</div>`;
     return;
   }
 
@@ -1334,6 +1459,7 @@ function renderHistory() {
             <div class="hi-dot ${data.type}"></div>
             <div class="hi-title">${data.type?.toUpperCase()} DAY</div>
             <div class="hi-date">${dayNames[d.getDay()]}, ${date}</div>
+            <button class="hi-del-btn ${pendingDeleteHistoryDate===date?'confirming':''}" onclick="deleteHistoryEntry('${date}', event)" title="Delete this session">${pendingDeleteHistoryDate===date?'✓':'🗑'}</button>
           </div>
           <div class="hi-stats">
             <div class="hi-stat">Week ${data.week||'?'}</div>
@@ -1355,13 +1481,17 @@ function renderHistory() {
               const noteTxt = e.note ? `<div class="hi-note">📝 ${e.note}</div>` : '';
               return `<div class="hi-ex-block"><div class="hi-ex"><span>${e.name}</span><span>${plannedTxt}</span></div>${actualTxt}${noteTxt}</div>`;
             }).join('')}
+            ${(data.oneOff && data.oneOff.length) ? `<div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--sub);font-weight:700;margin:8px 0 4px">➕ Extra exercises</div>${data.oneOff.map(e=>{
+              const parts = e.sets.map((s,i)=> (s.kg==null&&s.reps==null) ? null : `S${i+1}: ${s.kg!=null?s.kg+'kg':''}${s.kg!=null&&s.reps!=null?'×':''}${s.reps!=null?s.reps+'r':''}`).filter(Boolean).join('  ');
+              return `<div class="hi-ex-block"><div class="hi-ex"><span>${e.name}</span><span>${e.sets.length} sets</span></div>${parts?`<div class="hi-actual">✓ ${parts}</div>`:''}</div>`;
+            }).join('')}` : ''}
           </div>
         </div>`;
     });
     html += '</div>';
   });
 
-  html += `<button class="hist-clear-btn" onclick="clearHistory()">🗑 I-clear ang history</button>`;
+  html += `<button class="hist-clear-btn ${pendingClearHistory?'confirming':''}" onclick="clearHistory()">${pendingClearHistory ? '⚠️ Tap again to confirm' : '🗑 Clear ALL history'}</button>`;
   wrap.innerHTML = html;
 }
 
@@ -1388,8 +1518,8 @@ function getAiInsights(sessions) {
   sessions.forEach(([date, data]) => {
     (data.exercises || []).forEach(ex => {
       if (!exHist[ex.name]) exHist[ex.name] = [];
-      // Effective weight: highest actual kg logged this session, fallback to planned kg
-      let effKg = ex.kg || null;
+      // Effective weight: highest actual kg logged this session
+      let effKg = null;
       if (ex.actualSets && ex.actualSets.length) {
         const loggedKgs = ex.actualSets.map(s => s.kg).filter(k => k != null);
         if (loggedKgs.length) effKg = Math.max(...loggedKgs);
@@ -1410,14 +1540,14 @@ function getAiInsights(sessions) {
         level: 'warn',
         icon: '🔴',
         title: `Plateau: ${name}`,
-        message: `Naka-stuck ka sa ${last2[0].effKg}kg for 3+ sessions. Oras na para taasan ang weight, dagdag ng set, o baguhin ang tempo.`,
+        message: `You've been stuck at ${last2[0].effKg}kg for 3+ sessions. Time to increase the weight, add a set, or change the tempo.`,
       });
     } else if (allSame2) {
       insights.push({
         level: 'caution',
         icon: '🟡',
         title: `Watch: ${name}`,
-        message: `Same weight (${last2[0].effKg}kg) sa last 2 sessions. Kapag kaya mo na ang max reps sa lahat ng sets next time, taas na ng weight.`,
+        message: `Same weight (${last2[0].effKg}kg) for the last 2 sessions. Once you can hit max reps on every set next time, bump the weight up.`,
       });
     }
   });
@@ -1426,7 +1556,6 @@ function getAiInsights(sessions) {
   Object.keys(exHist).forEach(name => {
     const notes = exHist[name].filter(h => h.note).slice(-6); // last 6 notes
     if (notes.length < 1) return;
-    // Simple keyword clustering: count repeated significant words across notes
     const painWords = ['sakit','masakit','pain','hirap','mahirap','pananakit','pigsa','pilay','inju','sprain'];
     const flagged = notes.filter(n => painWords.some(w => n.note.includes(w)));
     if (flagged.length >= 1) {
@@ -1435,8 +1564,8 @@ function getAiInsights(sessions) {
         icon: '⚠️',
         title: `Note flag: ${name}`,
         message: flagged.length >= 2
-          ? `${flagged.length} beses mong nabanggit ang discomfort/pain sa exercise na ito. Baka kailangan i-check ang form, bawasan ang weight, o magpahinga muna dito.`
-          : `Nabanggit mo ang discomfort/pain sa exercise na ito. I-monitor sa susunod na session.`,
+          ? `You've mentioned discomfort/pain on this exercise ${flagged.length} times. It might be worth checking your form, lowering the weight, or resting it for a bit.`
+          : `You mentioned discomfort/pain on this exercise. Keep an eye on it next session.`,
       });
     }
   });
@@ -1454,7 +1583,7 @@ function getAiInsights(sessions) {
         level: 'caution',
         icon: '📅',
         title: 'Skip Pattern Detected',
-        message: `${maxCount} beses mo nang na-skip ang workout tuwing ${dowNames[maxDow]}. Baka kailangan ibang schedule o mas maagang oras sa araw na ito.`,
+        message: `You've skipped your workout ${maxCount} times on ${dowNames[maxDow]}s. Might be worth a different schedule or an earlier time that day.`,
       });
     }
   }
@@ -1468,19 +1597,22 @@ function renderProgress() {
   const filtered = progFilter === 'all' ? sessions : sessions.filter(([,d])=>d.type===progFilter);
 
   if (sessions.length < 2) {
-    wrap.innerHTML = `<div class="prog-empty">Kumpletuhin ang kahit 2 sessions para makita ang progression.<br><br>💪 Keep going!</div>`;
+    wrap.innerHTML = `<div class="prog-empty">Complete at least 2 sessions to see your progression.<br><br>💪 Keep going!</div>`;
     return;
   }
 
-  // ── Overview cards ──
-  const totalVol = sessions.reduce((acc,[,d])=>{
-    (d.exercises||[]).forEach(e=>{ if(e.kg) acc += e.kg * e.sets * ((e.repsLo+e.repsHi)/2); });
-    return acc;
-  }, 0);
+  // ── Overview cards (volume derived from actual logged kg × logged reps) ──
+  function sessionVolume(d) {
+    return (d.exercises||[]).reduce((acc,e)=>{
+      if (!e.actualSets) return acc;
+      e.actualSets.forEach(a=>{ if (a.kg!=null && a.reps!=null) acc += a.kg*a.reps; });
+      return acc;
+    },0);
+  }
   const lastWeek = sessions.filter(([dt])=>{ const d=fromISO(dt); const now=new Date(); const diff=(now-d)/864e5; return diff<=7; });
   const prevWeek = sessions.filter(([dt])=>{ const d=fromISO(dt); const now=new Date(); const diff=(now-d)/864e5; return diff>7&&diff<=14; });
-  const lwVol = lastWeek.reduce((acc,[,d])=>{ (d.exercises||[]).forEach(e=>{ if(e.kg) acc+=e.kg*e.sets*((e.repsLo+e.repsHi)/2); }); return acc; },0);
-  const pwVol = prevWeek.reduce((acc,[,d])=>{ (d.exercises||[]).forEach(e=>{ if(e.kg) acc+=e.kg*e.sets*((e.repsLo+e.repsHi)/2); }); return acc; },0);
+  const lwVol = lastWeek.reduce((acc,[,d])=>acc+sessionVolume(d),0);
+  const pwVol = prevWeek.reduce((acc,[,d])=>acc+sessionVolume(d),0);
   const volChange = pwVol > 0 ? Math.round((lwVol-pwVol)/pwVol*100) : null;
   const streak = S.streak || 0;
   const totalSessions = sessions.length;
@@ -1499,7 +1631,7 @@ function renderProgress() {
     <div class="prog-ov-card">
       <div class="prog-ov-title">This Week Volume</div>
       <div class="prog-ov-val">${Math.round(lwVol).toLocaleString()}</div>
-      <div class="prog-ov-sub">kg lifted</div>
+      <div class="prog-ov-sub">kg lifted (logged)</div>
     </div>
     <div class="prog-ov-card">
       <div class="prog-ov-title">vs Last Week</div>
@@ -1525,8 +1657,8 @@ function renderProgress() {
     html += `<div class="insight-card">
       <div class="insight-icon">✅</div>
       <div class="insight-body">
-        <div class="insight-title">Walang detected issues</div>
-        <div class="insight-msg">Wala pang plateau, recurring pain notes, o skip pattern na na-detect. Kailangan pa ng ilang sessions bago lumabas ang mga insight — patuloy lang sa pag-log.</div>
+        <div class="insight-title">No issues detected</div>
+        <div class="insight-msg">No plateau, recurring pain notes, or skip pattern detected yet. Needs a few more sessions before insights show up — just keep logging.</div>
       </div>
     </div>`;
   }
@@ -1541,28 +1673,25 @@ function renderProgress() {
     <button class="prog-filter-btn ${progFilter==='fullbody'?'active':''}" onclick="setProgFilter('fullbody')">Full Body</button>
   </div>`;
 
-  // ── Per-exercise progression ──
-  // Collect all unique exercises from filtered sessions (weighted AND bodyweight)
-  const exMap = {}; // exName -> [{date, kg, sets, repsLo, repsHi, volume, type, actualSets}]
+  // ── Per-exercise progression (based on ACTUAL logged kg/reps, not planned) ──
+  const exMap = {}; // exName -> [{date, kg, reps, isBW, vol, type}]
   filtered.forEach(([date, data]) => {
     (data.exercises||[]).forEach(ex => {
       if (!exMap[ex.name]) exMap[ex.name] = [];
-      const isBW = !ex.kg;
-      const vol = isBW ? 0 : ex.kg * ex.sets * ((ex.repsLo + ex.repsHi) / 2);
-      // Count actual completed sets (from actualSets log) for bodyweight tracking
-      let setsCompleted = ex.sets;
-      let repsLogged = null;
-      if (ex.actualSets && ex.actualSets.length) {
-        const withReps = ex.actualSets.filter(s => s.reps != null);
-        if (withReps.length) repsLogged = Math.max(...withReps.map(s=>s.reps));
-      }
-      exMap[ex.name].push({ date, kg: ex.kg || 0, isBW, sets: ex.sets, repsLo: ex.repsLo, repsHi: ex.repsHi, vol, type: data.type, repsLogged, setsCompleted });
+      const loggedKgs = (ex.actualSets||[]).map(s=>s.kg).filter(k=>k!=null);
+      const loggedReps = (ex.actualSets||[]).map(s=>s.reps).filter(r=>r!=null);
+      const maxKg = loggedKgs.length ? Math.max(...loggedKgs) : null;
+      const maxReps = loggedReps.length ? Math.max(...loggedReps) : null;
+      const isBW = maxKg == null;
+      let vol = 0;
+      (ex.actualSets||[]).forEach(a=>{ if (a.kg!=null && a.reps!=null) vol += a.kg*a.reps; });
+      exMap[ex.name].push({ date, kg: maxKg||0, isBW, sets: ex.sets, repsLo: ex.repsLo, repsHi: ex.repsHi, vol, type: data.type, repsLogged: maxReps });
     });
   });
 
   const exNames = Object.keys(exMap).filter(n => exMap[n].length >= 1);
   if (!exNames.length) {
-    html += `<div class="prog-empty">Wala pang data para sa ${progFilter} sessions.</div>`;
+    html += `<div class="prog-empty">No data yet for ${progFilter} sessions.</div>`;
     wrap.innerHTML = html;
     return;
   }
@@ -1583,7 +1712,7 @@ function renderProgress() {
         const repVal = e.repsLogged || e.repsHi;
         const pct = maxReps > 0 ? Math.max(8, Math.round(repVal / maxReps * 100)) : 8;
         return `<div class="prog-bar-wrap">
-          <div class="prog-bar-val">${e.repsLogged ? e.repsLogged+'r' : '~'+e.repsHi+'r'}</div>
+          <div class="prog-bar-val">${e.repsLogged ? e.repsLogged+'r' : (e.repsHi?'~'+e.repsHi+'r':'—')}</div>
           <div class="prog-bar ${type}" style="height:${pct}%" title="${e.date}: ${e.sets} sets"></div>
           <div class="prog-bar-lbl">${e.date.slice(5)}</div>
         </div>`;
@@ -1591,18 +1720,18 @@ function renderProgress() {
 
       const repChange = (last.repsLogged || 0) - (first.repsLogged || 0);
       let trendText = '', trendClass = 'same';
-      if (last.repsLogged == null) { trendText = `I-log ang actual reps mo sa set inputs para makita ang progression dito.`; trendClass = 'same'; }
-      else if (repChange > 0) { trendText = `+${repChange} reps vs unang session! 🔥 Lumalakas ka.`; trendClass = 'up'; }
-      else if (repChange < 0) { trendText = `Bumaba ng ${Math.abs(repChange)} reps. Baka pagod o kailangan ng dagdag rest — ok lang yan.`; trendClass = 'down'; }
-      else if (entries.length === 1) { trendText = `Unang session pa lang — mag-log ng isa pa para makita ang trend.`; trendClass = 'same'; }
-      else { trendText = `Consistent ang reps mo. Pag kaya mo nang lampasan ang ${last.repsHi} reps, dagdagan ng set o gawing mas mahirap ang variation.`; trendClass = 'same'; }
+      if (last.repsLogged == null) { trendText = `Log your actual reps in the set inputs to see progression here.`; trendClass = 'same'; }
+      else if (repChange > 0) { trendText = `+${repChange} reps vs your first session! 🔥 You're getting stronger.`; trendClass = 'up'; }
+      else if (repChange < 0) { trendText = `Down ${Math.abs(repChange)} reps. Could be fatigue or needing more rest — that's okay.`; trendClass = 'down'; }
+      else if (entries.length === 1) { trendText = `Just your first session — log one more to see the trend.`; trendClass = 'same'; }
+      else { trendText = `Your reps are consistent. Once you can beat ${last.repsHi||'target'} reps, add a set or make the variation harder.`; trendClass = 'same'; }
 
       html += `<div class="prog-card">
         <div class="prog-card-name">${name} <span style="font-weight:400;color:var(--sub);font-size:.75rem">(${entries.length} sessions · bodyweight)</span></div>
         <div class="prog-chart" style="align-items:flex-end">${bars}</div>
         <div class="prog-summary">
           <div class="prog-stat">
-            <div class="prog-stat-val ${repChange>0?'up':repChange<0?'down':'same'}">${last.repsLogged || last.repsHi}</div>
+            <div class="prog-stat-val ${repChange>0?'up':repChange<0?'down':'same'}">${last.repsLogged || last.repsHi || '—'}</div>
             <div class="prog-stat-lbl">Reps</div>
           </div>
           <div class="prog-stat">
@@ -1614,7 +1743,7 @@ function renderProgress() {
             <div class="prog-stat-lbl">Sets</div>
           </div>
           <div class="prog-stat">
-            <div class="prog-stat-val">${last.repsLo}-${last.repsHi}</div>
+            <div class="prog-stat-val">${last.repsLo||'—'}-${last.repsHi||'—'}</div>
             <div class="prog-stat-lbl">Target</div>
           </div>
         </div>
@@ -1623,8 +1752,8 @@ function renderProgress() {
       return;
     }
 
-    // ── WEIGHTED EXERCISE CARD (existing logic) ──
-    const maxVol = Math.max(...entries.map(e=>e.vol));
+    // ── WEIGHTED EXERCISE CARD ──
+    const maxVol = Math.max(...entries.map(e=>e.vol), 1);
     const kgChange = last.kg - first.kg;
     const volChange = entries.length > 1 ? last.vol - entries[entries.length-2].vol : 0;
     const isUp = kgChange > 0 || (kgChange === 0 && volChange > 0);
@@ -1641,12 +1770,12 @@ function renderProgress() {
     }).join('');
 
     let trendText = '', trendClass = 'same';
-    if (kgChange > 0) { trendText = `+${kgChange}kg na ang weight mo vs unang session! 🔥 Progressive overload confirmed.`; trendClass = 'up'; }
-    else if (kgChange < 0) { trendText = `Bumaba ng ${Math.abs(kgChange)}kg ang weight. Baka deload week o injury prevention — ok lang yan.`; trendClass = 'down'; }
-    else if (volChange > 0) { trendText = `Same weight pero tumaas ang volume (+${Math.round(volChange)}kg vol). Volume progression — counts as overload! 💪`; trendClass = 'up'; }
-    else if (volChange < 0) { trendText = `Same weight, bumaba ang volume. Try adding 1 more set next session.`; trendClass = 'down'; }
-    else if (entries.length === 1) { trendText = `Unang session pa lang — mag-log ng isa pa para makita ang trend.`; trendClass = 'same'; }
-    else { trendText = `Consistent ang weight at volume. Pag kaya na ang ${last.repsHi} reps sa lahat ng sets, taas ng weight!`; trendClass = 'same'; }
+    if (kgChange > 0) { trendText = `+${kgChange}kg vs your first session! 🔥 Progressive overload confirmed.`; trendClass = 'up'; }
+    else if (kgChange < 0) { trendText = `Weight dropped by ${Math.abs(kgChange)}kg. Could be a deload week or injury prevention — that's okay.`; trendClass = 'down'; }
+    else if (volChange > 0) { trendText = `Same weight but volume went up (+${Math.round(volChange)}kg vol). Volume progression still counts as overload! 💪`; trendClass = 'up'; }
+    else if (volChange < 0) { trendText = `Same weight, volume dropped. Try adding 1 more set next session.`; trendClass = 'down'; }
+    else if (entries.length === 1) { trendText = `Just your first session — log one more to see the trend.`; trendClass = 'same'; }
+    else { trendText = `Weight and volume are steady. You're in charge of when to increase — you set the weight every week.`; trendClass = 'same'; }
 
     html += `<div class="prog-card">
       <div class="prog-card-name">${name} <span style="font-weight:400;color:var(--sub);font-size:.75rem">(${entries.length} sessions)</span></div>
@@ -1679,7 +1808,7 @@ function renderProgress() {
   html += `<div class="prog-section"><div class="prog-section-title">Recent Sessions</div>`;
   const recent = filtered.slice(-10).reverse();
   recent.forEach(([date, data]) => {
-    const vol = (data.exercises||[]).reduce((acc,e)=>acc+(e.kg?e.kg*e.sets*((e.repsLo+e.repsHi)/2):0),0);
+    const vol = sessionVolume(data);
     html += `<div class="prog-week-row">
       <div class="prog-week-dot ${data.type}"></div>
       <div style="flex:1;color:var(--text);font-weight:600">${data.type?.toUpperCase()} · ${date}</div>
@@ -1699,11 +1828,14 @@ function setProgFilter(f) {
 function switchTab(tab) {
   activeTab = tab;
   document.getElementById('pane-workout').style.display = tab === 'workout' ? '' : 'none';
+  document.getElementById('pane-challenge').style.display = tab === 'challenge' ? '' : 'none';
   document.getElementById('pane-history').style.display = tab === 'history' ? '' : 'none';
   document.getElementById('pane-progress').style.display = tab === 'progress' ? '' : 'none';
   document.getElementById('tab-workout').classList.toggle('active', tab === 'workout');
+  document.getElementById('tab-challenge').classList.toggle('active', tab === 'challenge');
   document.getElementById('tab-history').classList.toggle('active', tab === 'history');
   document.getElementById('tab-progress').classList.toggle('active', tab === 'progress');
+  if (tab === 'challenge') renderChallenges();
   if (tab === 'history') renderHistory();
   if (tab === 'progress') renderProgress();
 }
@@ -1745,7 +1877,7 @@ function toggleSet(sk) {
   const type = getActiveDayType(dateISO);
   const exs = getExercises(type);
   const week = getWeekNumber(dateISO);
-  const {sets, repsLo, repsHi} = getWeekParams(week);
+  const {sets, repsLo, repsHi} = getSessionParams(type, week);
 
   // Update button + row
   const btn = document.getElementById(`sb-${sk}`);
@@ -1768,7 +1900,8 @@ function toggleSet(sk) {
   // Total
   let totalSets = 0;
   let doneSets = 0;
-  exs.forEach((_,i2) => { const sc = getExSets(type, i2, sets); totalSets += sc; for (let s=0;s<sc;s++) { if (S.setChecks[`${dateISO}-${i2}-${s}`]) doneSets++; } });
+  const hiddenSetTS = new Set((S.hiddenBaseEx && S.hiddenBaseEx[type]) || []);
+  exs.forEach((_,i2) => { if (hiddenSetTS.has(i2)) return; const sc = getExSets(type, i2, sets); totalSets += sc; for (let s=0;s<sc;s++) { if (S.setChecks[`${dateISO}-${i2}-${s}`]) doneSets++; } });
   const pct = Math.round(doneSets/totalSets*100);
   const pf = document.getElementById('prog-fill');
   if (pf) pf.style.width = pct + '%';
@@ -1782,7 +1915,7 @@ function toggleSet(sk) {
     if (!allDone) startTimer(exs[ei].restSec || getPhase(week).restSec || 90);
     const fb = document.getElementById('finish-btn');
     if (fb) fb.classList.toggle('vis', allDone);
-    if (allDone) toast('🎉 Lahat ng sets tapos! I-tap ang SAVE button.');
+    if (allDone) toast('🎉 All sets done! Tap the SAVE button.');
   }
 }
 
@@ -1790,16 +1923,16 @@ function completeSession() {
   const type = getActiveDayType(S.selectedDate);
   const exs = getExercises(type);
   const week = getWeekNumber(S.selectedDate);
-  const params = getWeekParams(week);
+  const params = getSessionParams(type, week);
+  const hiddenSetCS = new Set((S.hiddenBaseEx && S.hiddenBaseEx[type]) || []);
+  const visibleExs = exs.map((ex,ei)=>({ex,ei})).filter(o=>!hiddenSetCS.has(o.ei));
 
   const sessionData = {
     type,
     week,
     phase: params.phase,
-    totalSets: exs.reduce((acc,_,ei)=>acc+getExSets(type,ei,params.sets),0),
-    exercises: exs.map((ex,ei) => {
-      const ovKey = type + '|' + ei;
-      const baseKgOv = (S.weightOverrides && S.weightOverrides[ovKey] != null) ? S.weightOverrides[ovKey] : ex.baseKg;
+    totalSets: visibleExs.reduce((acc,{ei})=>acc+getExSets(type,ei,params.sets),0),
+    exercises: visibleExs.map(({ex,ei}) => {
       const nameOv = (S.weightOverrides && S.weightOverrides[type+'|name|'+ei]) || ex.name;
       const setCount = getExSets(type, ei, params.sets);
       const actualSets = [];
@@ -1811,7 +1944,7 @@ function completeSession() {
       const noteKey = `${S.selectedDate}-${ei}`;
       return {
         name: nameOv,
-        kg: calcWeight(ex, week, baseKgOv),
+        kg: actualSets.find(a=>a.kg!=null)?.kg ?? null,
         sets: setCount,
         repsLo: params.repsLo,
         repsHi: params.repsHi,
@@ -1831,8 +1964,46 @@ function completeSession() {
   renderStats();
 }
 
+let pendingDeleteHistoryDate = null;
+let pendingDeleteHistoryTimer = null;
+
+function deleteHistoryEntry(date, ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  if (!S.completedSessions[date]) return;
+
+  if (pendingDeleteHistoryDate !== date) {
+    pendingDeleteHistoryDate = date;
+    clearTimeout(pendingDeleteHistoryTimer);
+    pendingDeleteHistoryTimer = setTimeout(() => { pendingDeleteHistoryDate = null; renderHistory(); }, 3000);
+    toast('⚠️ Tap again to delete this session');
+    renderHistory();
+    return;
+  }
+
+  clearTimeout(pendingDeleteHistoryTimer);
+  pendingDeleteHistoryDate = null;
+  delete S.completedSessions[date];
+  save();
+  toast('🗑 Session deleted.');
+  renderHistory();
+  renderCalendar();
+  renderStats();
+}
+
+let pendingClearHistory = false;
+let pendingClearHistoryTimer = null;
+
 function clearHistory() {
-  if (!confirm('I-clear lahat ng history? Hindi na ito mababalik.')) return;
+  if (!pendingClearHistory) {
+    pendingClearHistory = true;
+    clearTimeout(pendingClearHistoryTimer);
+    pendingClearHistoryTimer = setTimeout(() => { pendingClearHistory = false; renderHistory(); }, 3000);
+    toast('⚠️ I-tap ulit para i-clear ANG LAHAT ng history');
+    renderHistory();
+    return;
+  }
+  clearTimeout(pendingClearHistoryTimer);
+  pendingClearHistory = false;
   S.completedSessions = {};
   S.setChecks = {};
   S.streak = 0;
@@ -1840,18 +2011,49 @@ function clearHistory() {
 }
 
 // ══════════════════════════════════════════════════════════════════
-// EDITABLE EXERCISES & WEIGHT
+// EDITABLE EXERCISES & FREE WEIGHT/REPS INPUT
 // ══════════════════════════════════════════════════════════════════
 
+// When Set 1's kg or reps is entered, auto-fill the same value into every
+// other set of that exercise (still editable individually afterward).
 function saveActualLog(sk, field, val) {
   if (!S.actualLogs) S.actualLogs = {};
   if (!S.actualLogs[sk]) S.actualLogs[sk] = {};
   const num = parseFloat(val);
-  if (!isNaN(num) && num >= 0) {
+  const valid = !isNaN(num) && num >= 0;
+  if (valid) {
     S.actualLogs[sk][field] = num;
   } else {
     delete S.actualLogs[sk][field];
     if (Object.keys(S.actualLogs[sk]).length === 0) delete S.actualLogs[sk];
+  }
+  save();
+
+  // Parse sk = "YYYY-MM-DD-ei-si"
+  const parts = sk.split('-');
+  const si = parseInt(parts.pop());
+  const ei = parseInt(parts.pop());
+  const dateISO = parts.join('-');
+
+  // Only Set 1 (si === 0) auto-fills the rest
+  if (si !== 0) return;
+
+  const type = getActiveDayType(dateISO);
+  const week = getWeekNumber(dateISO);
+  const { sets } = getSessionParams(type, week);
+  const exSetCount = getExSets(type, ei, sets);
+
+  for (let s = 1; s < exSetCount; s++) {
+    const otherSk = `${dateISO}-${ei}-${s}`;
+    if (!S.actualLogs) S.actualLogs = {};
+    if (!S.actualLogs[otherSk]) S.actualLogs[otherSk] = {};
+    if (valid) S.actualLogs[otherSk][field] = num;
+    else delete S.actualLogs[otherSk][field];
+    if (Object.keys(S.actualLogs[otherSk]).length === 0) delete S.actualLogs[otherSk];
+
+    const inputId = field === 'kg' ? `alk-${otherSk}` : `alr-${otherSk}`;
+    const el = document.getElementById(inputId);
+    if (el) el.value = valid ? num : '';
   }
   save();
 }
@@ -1880,100 +2082,27 @@ function saveExName(type, ei, val) {
   }
 }
 
-function saveBaseWeight(type, ei, val) {
-  if (!S.weightOverrides) S.weightOverrides = {};
-  const kg = parseFloat(val);
-  if (!isNaN(kg) && kg >= 0) {
-    S.weightOverrides[type + '|' + ei] = kg;
-  } else {
-    delete S.weightOverrides[type + '|' + ei];
-  }
-  save();
-  // Re-render session to update weight badge + set details
-  renderSession();
-}
-
-function getWeightSuggestion(type, ei) {
-  if (!S.weightOverrides) S.weightOverrides = {};
-  const ovKey = type + '|' + ei;
-  const aiKey = type + '|ai|' + ei;
-  const exs = getExercises(type);
-  const ex = exs[ei];
-  if (!ex) return;
-
-  const currentBase = S.weightOverrides[ovKey] != null ? S.weightOverrides[ovKey] : ex.baseKg;
-  if (!currentBase) return;
-
-  const week = getWeekNumber(S.selectedDate);
-  const params = getWeekParams(week);
-  const nameOv = S.weightOverrides[type + '|name|' + ei] || ex.name;
-  const currentKg = calcWeight(ex, week, currentBase);
-  const exSetCount = getExSets(type, ei, params.sets);
-
-  const aiBox = document.getElementById('ai-' + type + '-' + ei);
-  const btn = document.getElementById('wsb-' + type + '-' + ei);
-  if (!aiBox) return;
-
-  // Find next available weight above current base
-  const nextWeights = AVAIL.filter(w => w > currentBase);
-  const nextBase = nextWeights.length ? nextWeights[0] : null;
-  const nextKg = nextBase ? calcWeight({baseKg: nextBase}, week, nextBase) : null;
-
-  // How many sessions to progress (based on phase)
-  const sessionsToProg = params.repsHi >= 12 ? 2 : params.repsHi >= 10 ? 3 : 4;
-
-  // Build suggestion text
-  let lines = [];
-
-  // Current status
-  lines.push(`<strong>Kasalukuyan:</strong> ${currentBase}kg base → <strong>${currentKg}kg</strong> working weight (Week ${week}, ${params.phase})`);
-
-  // Progression rule
-  if (nextBase) {
-    lines.push(`<strong>Susunod na weight:</strong> ${nextBase}kg base → <strong>${nextKg}kg</strong> working weight`);
-    lines.push(`<strong>Kailan mag-progress:</strong> Kapag kaya mo na ang ${params.repsHi} reps sa lahat ng ${exSetCount} sets nang ${sessionsToProg} sessions in a row — taas na ng weight.`);
-  } else {
-    lines.push(`<strong>Max na!</strong> ${currentBase}kg na ang pinakamataas sa iyong set. Mag-focus na sa reps, tempo, at form.`);
-  }
-
-  // Phase-specific tip
-  const tips = {
-    'Foundation': `Huwag muna mag-ego lift — form muna. Kapag malinis ang ${params.repsHi} reps, taas ng weight.`,
-    'Progressive Overload': `Dagdag weight kapag nakaka-${params.repsHi} reps ka sa lahat ng sets. Ito ang pinaka-importante ngayon.`,
-    'Strength Focus': `Mababa ang reps, mabigat ang weight. Kung hindi kaya ang ${params.repsLo} reps, bumaba ng isang level.`,
-    'Hypertrophy Peak': `Mag-focus sa slow eccentric (3-4 sec pababa). Kahit hindi tumaas ang weight, lalaki pa rin ang muscle kapag mabagal ang tempo.`,
-  };
-  const tip = tips[params.phase] || '';
-  if (tip) lines.push(`<strong>Tip (${params.phase}):</strong> ${tip}`);
-
-  const result = lines.join('<br>');
-  S.weightOverrides[aiKey] = result;
-  save();
-
-  aiBox.style.display = '';
-  aiBox.innerHTML = '<div class="ai-lbl">📊 Weight Progression Guide</div>' + result;
-}
-
 function addExtraSet(type, ei) {
   if (!S.extraSets) S.extraSets = {};
-if (!S.actualLogs) S.actualLogs = {};
-if (!S.exerciseNotes) S.exerciseNotes = {};
+  if (!S.actualLogs) S.actualLogs = {};
+  if (!S.exerciseNotes) S.exerciseNotes = {};
   const key = type + '|' + ei;
   S.extraSets[key] = (S.extraSets[key] || 0) + 1;
   save();
   renderSession();
+  renderStats();
   toast('Set added! 💪');
 }
 
 function removeExtraSet(type, ei) {
   if (!S.extraSets) S.extraSets = {};
-if (!S.actualLogs) S.actualLogs = {};
-if (!S.exerciseNotes) S.exerciseNotes = {};
+  if (!S.actualLogs) S.actualLogs = {};
+  if (!S.exerciseNotes) S.exerciseNotes = {};
   const key = type + '|' + ei;
   if (!S.extraSets[key] || S.extraSets[key] <= 0) return;
   // Uncheck the last set's checkbox before removing
   const week = getWeekNumber(S.selectedDate);
-  const baseSets = getWeekParams(week).sets;
+  const baseSets = getSessionParams(type, week).sets;
   const total = baseSets + S.extraSets[key];
   const lastSk = `${S.selectedDate}-${ei}-${total - 1}`;
   delete S.setChecks[lastSk];
@@ -1981,6 +2110,7 @@ if (!S.exerciseNotes) S.exerciseNotes = {};
   if (S.extraSets[key] === 0) delete S.extraSets[key];
   save();
   renderSession();
+  renderStats();
 }
 
 function toggleAddForm(type) {
@@ -1997,8 +2127,8 @@ function toggleAddForm(type) {
 
 function saveNewExercise(type) {
   const name = document.getElementById('aef-name')?.value?.trim();
-  if (!name) { toast('Lagyan ng pangalan ang exercise!'); return; }
-  const guide = document.getElementById('aef-guide')?.value?.trim() || 'Gawin nang tama at may full range of motion.';
+  if (!name) { toast('Please enter an exercise name!'); return; }
+  const guide = document.getElementById('aef-guide')?.value?.trim() || 'Perform with proper form and full range of motion.';
   const kgVal = parseFloat(document.getElementById('aef-kg')?.value);
   const restVal = parseInt(document.getElementById('aef-rest')?.value) || 60;
   const baseKg = (!isNaN(kgVal) && kgVal > 0) ? kgVal : null;
@@ -2009,22 +2139,53 @@ function saveNewExercise(type) {
   S.customExercises[type].push({ name, guide, baseKg, cat, restSec: restVal });
   S.showAddForm = null;
   save();
-  toast(`✅ "${name}" naidagdag na!`);
+  toast(`✅ "${name}" added!`);
   renderSession();
+  renderStats();
 }
 
-function hideBaseEx(type, ei) {
+let pendingDeleteExKey = null;
+let pendingDeleteExTimer = null;
+
+function deleteExercise(type, ei, isCustom) {
   const exs = getExercises(type);
   const ex = exs[ei];
   if (!ex) return;
+  const key = type + '|' + ei;
   const nameOv = (S.weightOverrides && S.weightOverrides[type+'|name|'+ei]) || ex.name;
-  if (!confirm(`Tanggalin ang "${nameOv}" sa ${type.toUpperCase()} day? Pwede mo pa rin ito ibalik later.`)) return;
-  if (!S.hiddenBaseEx) S.hiddenBaseEx = {};
-  if (!S.hiddenBaseEx[type]) S.hiddenBaseEx[type] = [];
-  if (!S.hiddenBaseEx[type].includes(ei)) S.hiddenBaseEx[type].push(ei);
+
+  if (pendingDeleteExKey !== key) {
+    // First tap — arm the confirmation (no window.confirm, which can be
+    // blocked/no-op in sandboxed preview contexts)
+    pendingDeleteExKey = key;
+    clearTimeout(pendingDeleteExTimer);
+    pendingDeleteExTimer = setTimeout(() => { pendingDeleteExKey = null; renderSession(); }, 3000);
+    toast(`Tap again to delete "${nameOv}"`);
+    renderSession();
+    return;
+  }
+
+  // Second tap within the window — actually delete
+  clearTimeout(pendingDeleteExTimer);
+  pendingDeleteExKey = null;
+
+  if (isCustom) {
+    const baseCount = getBaseArr(type).length;
+    const customIdx = ei - baseCount;
+    if (customIdx >= 0 && S.customExercises && S.customExercises[type]) {
+      S.customExercises[type].splice(customIdx, 1);
+      if (!S.weightOverrides) S.weightOverrides = {};
+      delete S.weightOverrides[type + '|name|' + ei];
+    }
+  } else {
+    if (!S.hiddenBaseEx) S.hiddenBaseEx = {};
+    if (!S.hiddenBaseEx[type]) S.hiddenBaseEx[type] = [];
+    if (!S.hiddenBaseEx[type].includes(ei)) S.hiddenBaseEx[type].push(ei);
+  }
   save();
   renderSession();
-  toast('🗑 Exercise natanggal sa list.');
+  renderStats();
+  toast(`Deleted "${nameOv}".`);
 }
 
 function restoreBaseEx(type, ei) {
@@ -2032,23 +2193,289 @@ function restoreBaseEx(type, ei) {
   S.hiddenBaseEx[type] = S.hiddenBaseEx[type].filter(i => i !== ei);
   save();
   renderSession();
-  toast('↩️ Exercise naibalik na.');
+  renderStats();
+  toast('Exercise restored.');
 }
 
-function deleteCustomEx(type, ei) {
-  const baseCount = type === 'push' ? PUSH_EX.length : type === 'pull' ? PULL_EX.length : LEGS_EX.length;
-  const customIdx = ei - baseCount;
-  if (customIdx < 0 || !S.customExercises?.[type]) return;
-  if (!confirm(`Tanggalin ang "${S.customExercises[type][customIdx]?.name}"?`)) return;
-  S.customExercises[type].splice(customIdx, 1);
-  // Clean up overrides for this index and shift higher ones
-  if (!S.weightOverrides) S.weightOverrides = {};
-  delete S.weightOverrides[type + '|' + ei];
-  delete S.weightOverrides[type + '|name|' + ei];
-  delete S.weightOverrides[type + '|ai|' + ei];
+// ══════════════════════════════════════════════════════════════════
+// CUSTOM PROGRAMS — create a full ad-hoc program (e.g. "40 Min Dumbbell
+// Workout") that behaves just like Push/Pull/Legs/Full Body: it gets its
+// own pill in the day-type selector, its own warm-up routine, and its
+// own exercises with sets/reps (using the same free-weight + Set-1
+// auto-fill logging as every other exercise in the app).
+// ══════════════════════════════════════════════════════════════════
+
+function renderProgramFormIfNeeded() {
+  const wrap = document.getElementById('program-top-wrap');
+  if (!wrap) return;
+  if (!S.showAddProgram) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = `
+    <div class="program-create-form">
+      <div class="program-create-title">🎯 BAGONG PROGRAM</div>
+      <label>Program Name</label>
+      <input type="text" id="prog-name" placeholder="e.g. 40 Min Dumbbell Workout">
+      <div class="chal-new-row">
+        <div><label>Sets</label><input type="number" id="prog-sets" value="3" min="1" step="1"></div>
+        <div><label>Reps (target)</label><input type="text" id="prog-reps" placeholder="e.g. 10-15" value="10-15"></div>
+      </div>
+      <div class="program-create-actions">
+        <button class="aef-cancel" onclick="toggleAddProgram()">Cancel</button>
+        <button class="aef-save" onclick="saveNewProgram()">SAVE</button>
+      </div>
+    </div>`;
+}
+
+function toggleAddProgram() {
+  S.showAddProgram = !S.showAddProgram;
+  save();
+  renderProgramFormIfNeeded();
+  if (S.showAddProgram) setTimeout(()=>{ const el=document.getElementById('prog-name'); if(el) el.focus(); },100);
+}
+
+function saveNewProgram() {
+  const name = document.getElementById('prog-name')?.value?.trim();
+  if (!name) { toast('Please enter a program name!'); return; }
+  const setsVal = parseInt(document.getElementById('prog-sets')?.value) || 3;
+  const repsRaw = document.getElementById('prog-reps')?.value?.trim() || '';
+  let repsLo = null, repsHi = null;
+  const m = repsRaw.match(/(\d+)\s*-\s*(\d+)/);
+  if (m) { repsLo = parseInt(m[1]); repsHi = parseInt(m[2]); }
+  else if (repsRaw) { const n = parseInt(repsRaw); if (!isNaN(n)) { repsLo = n; repsHi = n; } }
+
+  if (!S.customPrograms) S.customPrograms = {};
+  const id = 'p' + Date.now();
+  S.customPrograms[id] = { name, sets: setsVal, repsLo, repsHi, warmup: [] };
+  S.showAddProgram = false;
+  save();
+  toast(`✅ "${name}" added!`);
+  // Auto-select this new program as the active day type for the selected date
+  selectDayType(S.selectedDate, 'custom:' + id);
+}
+
+let pendingDeleteProgramId = null;
+let pendingDeleteProgramTimer = null;
+
+function deleteProgram(pid, ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  const p = S.customPrograms && S.customPrograms[pid];
+  if (!p) return;
+
+  if (pendingDeleteProgramId !== pid) {
+    // First tap — arm the confirmation instead of using window.confirm
+    // (blocked/no-op in some sandboxed preview contexts).
+    pendingDeleteProgramId = pid;
+    clearTimeout(pendingDeleteProgramTimer);
+    pendingDeleteProgramTimer = setTimeout(() => { pendingDeleteProgramId = null; renderDaytypeRow(); renderSession(); }, 3000);
+    toast(`⚠️ Tap again to delete "${p.name}"`);
+    renderDaytypeRow();
+    renderSession();
+    return;
+  }
+
+  // Second tap within the window — actually delete
+  clearTimeout(pendingDeleteProgramTimer);
+  pendingDeleteProgramId = null;
+  delete S.customPrograms[pid];
+  if (S.customExercises) delete S.customExercises['custom:'+pid];
+  if (S.selectedDayType) {
+    Object.keys(S.selectedDayType).forEach(d => { if (S.selectedDayType[d] === 'custom:'+pid) delete S.selectedDayType[d]; });
+  }
+  save();
+  toast(`🗑 "${p.name}" deleted.`);
+  renderDaytypeRow();
+  renderSession();
+  renderStats();
+}
+
+function renameProgramSub(pid, val) {
+  const p = S.customPrograms && S.customPrograms[pid];
+  if (!p) return;
+  p.sub = val.trim();
+  save();
+  renderDaytypeRow();
+}
+
+function addWarmupItem(pid) {
+  const p = S.customPrograms && S.customPrograms[pid];
+  if (!p) return;
+  const name = document.getElementById(`wu-name-${pid}`)?.value?.trim();
+  if (!name) { toast('Please enter a warm-up name.'); return; }
+  const detail = document.getElementById(`wu-detail-${pid}`)?.value?.trim() || '';
+  if (!p.warmup) p.warmup = [];
+  p.warmup.push({ name, detail });
   save();
   renderSession();
-  toast('🗑 Exercise natanggal.');
+}
+
+function removeWarmupItem(pid, wi) {
+  const p = S.customPrograms && S.customPrograms[pid];
+  if (!p || !p.warmup) return;
+  p.warmup.splice(wi, 1);
+  save();
+  renderSession();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// CHALLENGE TAB — freeform progressive-overload challenges
+// e.g. "Push-Up Challenge": log a value every day/session, watch it climb.
+// ══════════════════════════════════════════════════════════════════
+
+function renderChallenges() {
+  const wrap = document.getElementById('chal-wrap');
+  const ids = Object.keys(S.challenges || {});
+
+  let html = '';
+
+  if (!ids.length) {
+    html += `<div class="chal-empty">You don't have a challenge yet.<br>Create one — e.g. Push-Up Challenge — to track your progressive overload over time. 🎯</div>`;
+  } else {
+    ids.sort((a,b)=> (S.challenges[a].createdAt||'').localeCompare(S.challenges[b].createdAt||'')).forEach(id => {
+      const c = S.challenges[id];
+      const logEntries = Object.entries(c.logs || {}).sort((a,b)=>a[0].localeCompare(b[0]));
+      const todayVal = (c.logs && c.logs[todayISO()] != null) ? c.logs[todayISO()] : '';
+      const best = logEntries.length ? Math.max(...logEntries.map(([,v])=>v)) : null;
+      const first = logEntries.length ? logEntries[0][1] : null;
+      const last = logEntries.length ? logEntries[logEntries.length-1][1] : null;
+      const change = (first!=null && last!=null) ? last - first : null;
+      const isOpen = !!S.chalExpanded[id];
+
+      const barsSrc = logEntries.slice(-10);
+      const maxVal = barsSrc.length ? Math.max(...barsSrc.map(([,v])=>v), 1) : 1;
+      const bars = barsSrc.map(([date,val]) => {
+        const pct = Math.max(8, Math.round(val/maxVal*100));
+        return `<div class="prog-bar-wrap">
+          <div class="prog-bar-val">${val}${c.unit||''}</div>
+          <div class="prog-bar challenge" style="height:${pct}%" title="${date}: ${val}${c.unit||''}"></div>
+          <div class="prog-bar-lbl">${date.slice(5)}</div>
+        </div>`;
+      }).join('');
+
+      html += `
+      <div class="chal-card">
+        <div class="chal-hdr">
+          <div class="chal-name">${c.name}</div>
+          <button class="chal-del ${pendingDeleteChallengeId===id?'confirming':''}" onclick="deleteChallenge('${id}')">${pendingDeleteChallengeId===id?'✓':'🗑'}</button>
+        </div>
+        <div class="chal-sub">${c.target ? `Goal: ${c.target}${c.unit||''}` : 'Progressive overload tracker'} · ${logEntries.length} logs</div>
+
+        <div class="chal-today-row">
+          <div class="chal-today-field">
+            <label>Log today (${c.unit||'value'})</label>
+            <input type="number" step="0.5" min="0" id="chal-input-${id}" value="${todayVal}" placeholder="0">
+          </div>
+          <button class="chal-log-btn" onclick="logChallenge('${id}')">+ LOG</button>
+        </div>
+
+        ${logEntries.length ? `<div class="prog-chart" style="align-items:flex-end">${bars}</div>` : ''}
+
+        <div class="chal-stats">
+          <div class="chal-stat"><div class="chal-stat-val">${last ?? '—'}</div><div class="chal-stat-lbl">Latest</div></div>
+          <div class="chal-stat"><div class="chal-stat-val">${best ?? '—'}</div><div class="chal-stat-lbl">Best</div></div>
+          <div class="chal-stat"><div class="chal-stat-val" style="color:${change>0?'var(--legs)':change<0?'var(--push)':'var(--sub)'}">${change==null?'—':(change>0?'+':'')+change}</div><div class="chal-stat-lbl">Since Day 1</div></div>
+        </div>
+
+        ${c.target && last!=null ? `<div class="chal-goal-note">🎯 ${last >= c.target ? `You've hit your goal of ${c.target}${c.unit||''}! Time to set a new one.` : `${(c.target-last).toFixed(1)}${c.unit||''} to go to reach your goal of ${c.target}${c.unit||''}.`}</div>` : ''}
+
+        ${logEntries.length ? `<button class="chal-toggle-log" onclick="toggleChalLog('${id}')">${isOpen?'Hide':'View'} full log (${logEntries.length})</button>` : ''}
+        <div class="chal-log-list ${isOpen?'open':''}">
+          ${logEntries.slice().reverse().map(([date,val])=>`<div class="chal-log-item"><span>${date}</span><span>${val}${c.unit||''}</span></div>`).join('')}
+        </div>
+      </div>`;
+    });
+  }
+
+  const showForm = !!S.showAddChallenge;
+  html += `<button class="chal-new-btn" onclick="toggleAddChallenge()">+ Create New Challenge</button>`;
+  if (showForm) {
+    html += `
+    <div class="chal-new-form">
+      <label>Challenge Name</label>
+      <input type="text" id="cnf-name" placeholder="e.g. Push-Up Challenge, Plank Challenge...">
+      <div class="chal-new-row">
+        <div><label>Unit</label>
+          <select id="cnf-unit">
+            <option value=" reps">reps</option>
+            <option value="s">seconds</option>
+            <option value="kg">kg</option>
+            <option value=" min">minutes</option>
+          </select>
+        </div>
+        <div><label>Goal (optional)</label><input type="number" id="cnf-target" placeholder="e.g. 100" step="0.5" min="0"></div>
+      </div>
+      <div class="chal-new-actions">
+        <button class="chal-new-cancel" onclick="toggleAddChallenge()">Cancel</button>
+        <button class="chal-new-save" onclick="saveNewChallenge()">SAVE</button>
+      </div>
+    </div>`;
+  }
+
+  wrap.innerHTML = html;
+}
+
+function toggleAddChallenge() {
+  S.showAddChallenge = !S.showAddChallenge;
+  save();
+  renderChallenges();
+  if (S.showAddChallenge) setTimeout(()=>{ const el=document.getElementById('cnf-name'); if(el) el.focus(); },100);
+}
+
+function saveNewChallenge() {
+  const name = document.getElementById('cnf-name')?.value?.trim();
+  if (!name) { toast('Please enter a challenge name!'); return; }
+  const unit = document.getElementById('cnf-unit')?.value || ' reps';
+  const targetVal = parseFloat(document.getElementById('cnf-target')?.value);
+  const target = !isNaN(targetVal) && targetVal > 0 ? targetVal : null;
+
+  if (!S.challenges) S.challenges = {};
+  const id = 'c' + Date.now();
+  S.challenges[id] = { name, unit, target, createdAt: new Date().toISOString(), logs: {} };
+  S.showAddChallenge = false;
+  save();
+  toast(`🎯 "${name}" added!`);
+  renderChallenges();
+}
+
+function logChallenge(id) {
+  const c = S.challenges && S.challenges[id];
+  if (!c) return;
+  const val = parseFloat(document.getElementById(`chal-input-${id}`)?.value);
+  if (isNaN(val) || val < 0) { toast('Maglagay ng valid na number.'); return; }
+  if (!c.logs) c.logs = {};
+  c.logs[todayISO()] = val;
+  save();
+  toast(`✅ Logged: ${val}${c.unit||''} for "${c.name}"`);
+  renderChallenges();
+}
+
+let pendingDeleteChallengeId = null;
+let pendingDeleteChallengeTimer = null;
+
+function deleteChallenge(id) {
+  const c = S.challenges && S.challenges[id];
+  if (!c) return;
+
+  if (pendingDeleteChallengeId !== id) {
+    pendingDeleteChallengeId = id;
+    clearTimeout(pendingDeleteChallengeTimer);
+    pendingDeleteChallengeTimer = setTimeout(() => { pendingDeleteChallengeId = null; renderChallenges(); }, 3000);
+    toast(`⚠️ Tap again to delete "${c.name}"`);
+    renderChallenges();
+    return;
+  }
+
+  clearTimeout(pendingDeleteChallengeTimer);
+  pendingDeleteChallengeId = null;
+  delete S.challenges[id];
+  delete S.chalExpanded[id];
+  save();
+  toast(`🗑 "${c.name}" deleted.`);
+  renderChallenges();
+}
+
+function toggleChalLog(id) {
+  S.chalExpanded[id] = !S.chalExpanded[id];
+  save();
+  renderChallenges();
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -2124,7 +2551,6 @@ function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   const btn = document.getElementById('theme-btn');
   if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
-  // Update PWA theme-color meta
   const mc = document.querySelector('meta[name="theme-color"]');
   if (mc) mc.setAttribute('content', theme === 'dark' ? '#07070e' : '#f4f4f8');
 }
@@ -2144,22 +2570,18 @@ applyTheme(S.theme || 'dark');
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').then(reg => {
-      // Force check for updates every load
       reg.update().catch(()=>{});
-
       reg.addEventListener('updatefound', () => {
         const newWorker = reg.installing;
         if (!newWorker) return;
         newWorker.addEventListener('statechange', () => {
           if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            // New version ready — activate it immediately
             newWorker.postMessage('SKIP_WAITING');
           }
         });
       });
     }).catch(() => {});
 
-    // Auto-reload once when the new service worker takes control
     let refreshed = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
       if (refreshed) return;
@@ -2183,7 +2605,7 @@ function showInstallBanner() {
   banner.id = 'install-banner';
   banner.innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
-      <span>📲 I-install ang app para sa offline access</span>
+      <span>📲 Install the app for offline access</span>
       <div style="display:flex;gap:8px;flex-shrink:0">
         <button onclick="installApp()" style="background:var(--accent);border:none;border-radius:8px;padding:7px 14px;color:#07070e;font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:1px;cursor:pointer">INSTALL</button>
         <button onclick="dismissBanner()" style="background:transparent;border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--sub);cursor:pointer;font-size:.8rem">✕</button>
@@ -2199,7 +2621,7 @@ async function installApp() {
   const { outcome } = await deferredPrompt.userChoice;
   deferredPrompt = null;
   dismissBanner();
-  if (outcome === 'accepted') toast('✅ App naka-install na! Hanapin sa home screen. 📱');
+  if (outcome === 'accepted') toast('✅ App installed! Find it on your home screen. 📱');
 }
 
 function dismissBanner() {
