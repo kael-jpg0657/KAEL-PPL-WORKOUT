@@ -410,8 +410,28 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .hist-item{background:var(--s1);border-radius:var(--r2);padding:14px 16px;margin-bottom:6px;cursor:pointer;transition:all .2s}
 .hist-item:active{opacity:.8}
 .hi-row{display:flex;align-items:center;gap:10px}
-.hi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.hi-dot{display:inline-block;width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .hi-dot.push{background:var(--push)}.hi-dot.pull{background:var(--pull)}.hi-dot.legs{background:var(--legs)}
+/* v2 history card */
+.hi-datebox{width:46px;flex-shrink:0;text-align:center;background:var(--s2);border-radius:12px;padding:6px 0}
+.hi-datebox .dd{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;line-height:1;letter-spacing:1px;color:var(--text)}
+.hi-datebox .mm{font-size:.52rem;text-transform:uppercase;letter-spacing:1px;color:var(--sub);font-weight:700;margin-top:2px}
+.hi-main{flex:1;min-width:0}
+.hi-main .hi-title{display:flex;align-items:center;gap:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi-sub{font-size:.66rem;color:var(--sub);font-weight:500;margin-top:3px}
+.hi-totals{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
+.hi-total{background:var(--s2);border-radius:12px;padding:9px 6px;text-align:center}
+.hi-total b{display:block;font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:1px;color:var(--text);line-height:1.1}
+.hi-total small{display:block;font-size:.5rem;text-transform:uppercase;letter-spacing:1px;color:var(--sub);font-weight:700;margin-top:3px}
+.hi-total.hl b{color:var(--accent)}
+.hi-more{font-size:.62rem;color:var(--sub);font-weight:600;text-align:center;margin-top:10px}
+.hi-exn{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.78rem;font-weight:700;color:var(--text)}
+.hi-exn em{font-style:normal;font-size:.62rem;color:var(--accent);font-weight:700;white-space:nowrap}
+.hi-sets{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.hi-setchip{font-size:.64rem;font-weight:600;color:var(--sub);background:var(--s1);border-radius:8px;padding:4px 8px}
+.hi-setchip b{color:var(--text);font-weight:700}
+.hi-ex2{background:var(--s2);border-radius:12px;padding:10px 12px;margin-bottom:6px}
+.hi-ex2 .hi-note{background:transparent;padding:6px 0 0;margin:0}
 .hi-title{font-size:.88rem;font-weight:700;flex:1;letter-spacing:-.1px}
 .hi-date{font-size:.68rem;color:var(--sub);font-weight:500}
 .hi-stats{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
@@ -466,6 +486,31 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .chal-new-save{flex:1;padding:12px;background:var(--accent);border:none;border-radius:14px;color:#000;font-family:'Inter',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer}
 .chal-new-cancel{padding:12px 18px;background:var(--s2);border:none;border-radius:14px;color:var(--sub);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer}
 .chal-goal-note{font-size:.7rem;color:var(--sub);padding:8px 10px;background:rgba(255,214,10,.06);border-radius:10px;margin-top:8px;line-height:1.6}
+/* ── 30-DAY STREAK CHALLENGE ── */
+.chal-stats4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0 10px}
+.cs-bar{height:8px;background:var(--s2);border-radius:6px;overflow:hidden}
+.cs-target{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,214,10,.1);border-radius:12px;padding:10px 12px;margin:2px 0 10px}
+.cs-target-lbl{font-size:.55rem;letter-spacing:1.2px;font-weight:800;color:var(--sub);margin:0 8px 0 4px;text-transform:uppercase}
+.cs-target b{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;color:var(--accent);vertical-align:-2px}
+.cs-target-edit{background:var(--s2);border:none;border-radius:10px;color:var(--sub);font-size:.8rem;padding:7px 10px;cursor:pointer}
+.cs-target-row{display:flex;gap:8px;margin:-4px 0 10px}
+.cs-target-row input{flex:1;background:var(--s2);border:none;border-radius:12px;color:var(--text);font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;padding:10px 12px;outline:none;-webkit-appearance:none}
+.cs-bar>div{height:100%;background:linear-gradient(90deg,var(--accent),#ffe55c);border-radius:6px;transition:width .3s}
+.cs-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:12px 0}
+.cs-cell{aspect-ratio:1;border-radius:11px;background:var(--s2);color:var(--sub);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;cursor:pointer;border:1.5px solid transparent;line-height:1.15}
+.cs-cell small{font-size:.55rem;font-weight:700;min-height:.7rem}
+.cs-cell.done{background:var(--legs);color:#000}
+.cs-cell.partial{background:rgba(255,159,10,.2);color:var(--warm)}
+.cs-cell.missed{background:rgba(255,61,92,.12);color:var(--push)}
+.cs-cell.future{opacity:.35;cursor:default}
+.cs-cell.today{border-color:var(--accent)}
+.cs-cell.sel{box-shadow:0 0 0 2px var(--text)}
+.cs-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.58rem;color:var(--sub);font-weight:600;margin-bottom:10px}
+.cs-legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.cs-sellbl{font-size:.7rem;font-weight:700;color:var(--text);margin-bottom:8px}
+.cs-banner{background:rgba(48,209,88,.12);color:var(--legs);border-radius:12px;padding:11px 12px;font-size:.76rem;font-weight:700;margin-top:10px;line-height:1.5;text-align:center}
+.cs-check-btn{width:100%;padding:13px;border:none;border-radius:12px;background:var(--accent);color:#000;font-family:'Inter',sans-serif;font-size:.86rem;font-weight:800;cursor:pointer}
+.cs-check-btn.undo{background:var(--s2);color:var(--sub)}
 
 /* ── TOAST ── */
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--s3);border-radius:20px;padding:11px 22px;font-size:.8rem;font-weight:700;z-index:900;transition:all .3s cubic-bezier(.4,0,.2,1);white-space:nowrap;pointer-events:none;color:var(--text);opacity:0;letter-spacing:.2px}
@@ -645,6 +690,33 @@ function customProgramId(type) {
 function typeClass(type) {
   return (type === 'push' || type === 'pull' || type === 'legs' || type === 'fullbody') ? type : 'customprog';
 }
+
+// Display name of a finished session: "PUSH DAY"... or the custom workout's own name.
+function sessionLabel(data) {
+  const t = data && data.type;
+  if (t === 'push') return 'PUSH DAY';
+  if (t === 'pull') return 'PULL DAY';
+  if (t === 'legs') return 'LEG DAY';
+  if (t === 'fullbody') return 'FULL BODY';
+  const pid = customProgramId(t);
+  const live = pid && S.customPrograms && S.customPrograms[pid] ? S.customPrograms[pid].name : null;
+  return String(live || (data && data.programName) || 'CUSTOM WORKOUT').toUpperCase();
+}
+
+// Totals of a finished session: sets, reps and weight lifted (kg × reps), incl. extra exercises.
+function sessionTotals(data) {
+  let sets = 0, reps = 0, vol = 0;
+  const addSet = a => {
+    if (!a) return;
+    if (a.reps != null) { reps += a.reps; sets++; if (a.kg != null) vol += a.kg * a.reps; }
+    else if (a.kg != null) { sets++; }
+  };
+  (data.exercises || []).forEach(e => (e.actualSets || []).forEach(addSet));
+  (data.oneOff || []).forEach(e => (e.sets || []).forEach(addSet));
+  return { sets, reps, vol: Math.round(vol * 10) / 10 };
+}
+function fmtNum(n) { return Number(n).toLocaleString(undefined, { maximumFractionDigits: 1 }); }
+function escHtml(t) { return String(t == null ? '' : t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function getWarmupList(type) {
   if (WARMUPS[type]) return WARMUPS[type];
@@ -1470,39 +1542,49 @@ function renderHistory() {
       const expKey = `hist-${date}`;
       const isOpen = !!S.expanded[expKey];
       const exList = data.exercises || [];
+      const tot = sessionTotals(data);
+      const mon3 = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
+      const hasLogs = tot.reps > 0;
+      const totalSetsShown = hasLogs ? tot.sets : (data.totalSets || 0);
+      const subParts = [dayNames[d.getDay()]];
+      if (data.week) subParts.push('Week ' + data.week);
+      if (data.duration) subParts.push(data.duration + ' min');
+      const setChips = arr => (arr || []).map((a,i)=> (a.kg==null && a.reps==null) ? '' :
+        `<span class="hi-setchip">S${i+1} <b>${a.kg!=null ? a.kg+'kg' : 'BW'}${a.reps!=null ? ' × '+a.reps : ''}</b></span>`).join('');
+      const exHtml = exList.map(e=>{
+        const aSets = e.actualSets || [];
+        const exReps = aSets.reduce((acc,a)=>acc+(a.reps||0),0);
+        const exVol = aSets.reduce((acc,a)=>acc+((a.kg!=null&&a.reps!=null)?a.kg*a.reps:0),0);
+        const chips = setChips(aSets);
+        const summary = exReps ? `${exReps} reps${exVol ? ' · '+fmtNum(Math.round(exVol*10)/10)+'kg' : ''}` : `${e.sets}×${e.repsLo!=null?e.repsLo:'?'}${e.repsHi!=null&&e.repsHi!==e.repsLo?'–'+e.repsHi:''}`;
+        const noteTxt = e.note ? `<div class="hi-note">📝 ${escHtml(e.note)}</div>` : '';
+        return `<div class="hi-ex2"><div class="hi-exn"><span>${escHtml(e.name)}</span><em>${summary}</em></div>${chips ? `<div class="hi-sets">${chips}</div>` : ''}${noteTxt}</div>`;
+      }).join('');
+      const extraHtml = (data.oneOff && data.oneOff.length) ? `<div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--sub);font-weight:700;margin:10px 0 6px">➕ Extra exercises</div>${data.oneOff.map(e=>{
+        const r = (e.sets||[]).reduce((acc,a)=>acc+(a.reps||0),0);
+        const v = (e.sets||[]).reduce((acc,a)=>acc+((a.kg!=null&&a.reps!=null)?a.kg*a.reps:0),0);
+        const chips = setChips(e.sets);
+        return `<div class="hi-ex2"><div class="hi-exn"><span>${escHtml(e.name)}</span><em>${r ? r+' reps'+(v?' · '+fmtNum(Math.round(v*10)/10)+'kg':'') : (e.sets||[]).length+' sets'}</em></div>${chips ? `<div class="hi-sets">${chips}</div>` : ''}</div>`;
+      }).join('')}` : '';
       html += `
         <div class="hist-item" onclick="toggleHistItem('${date}')">
           <div class="hi-row">
-            <div class="hi-dot ${data.type}"></div>
-            <div class="hi-title">${data.type?.toUpperCase()} DAY</div>
-            <div class="hi-date">${dayNames[d.getDay()]}, ${date}</div>
+            <div class="hi-datebox"><div class="dd">${d.getDate()}</div><div class="mm">${mon3}</div></div>
+            <div class="hi-main">
+              <div class="hi-title"><span class="hi-dot ${typeClass(data.type)}"></span>${escHtml(sessionLabel(data))}</div>
+              <div class="hi-sub">${subParts.join(' · ')}</div>
+            </div>
             <button class="hi-del-btn ${pendingDeleteHistoryDate===date?'confirming':''}" onclick="deleteHistoryEntry('${date}', event)" title="Delete this session">${pendingDeleteHistoryDate===date?'✓':'🗑'}</button>
           </div>
-          <div class="hi-stats">
-            <div class="hi-stat">Week ${data.week||'?'}</div>
-            <div class="hi-stat">${data.totalSets||0} sets done</div>
-            <div class="hi-stat">${data.phase||''}</div>
-            ${data.duration ? `<div class="hi-stat">${data.duration} min</div>` : ''}
+          <div class="hi-totals">
+            <div class="hi-total"><b>${totalSetsShown}</b><small>Sets</small></div>
+            <div class="hi-total"><b>${hasLogs ? fmtNum(tot.reps) : '—'}</b><small>Total Reps</small></div>
+            <div class="hi-total hl"><b>${tot.vol ? fmtNum(tot.vol) : '—'}</b><small>Total kg</small></div>
           </div>
           <div class="hi-exlist ${isOpen?'open':''}">
-            ${exList.map(e=>{
-              const plannedTxt = `${e.kg?e.kg+'kg ·':''} ${e.sets}×${e.repsLo}–${e.repsHi}`;
-              let actualTxt = '';
-              if (e.actualSets && e.actualSets.some(a=>a.kg!=null||a.reps!=null)) {
-                const parts = e.actualSets.map((a,i)=> {
-                  if (a.kg==null && a.reps==null) return null;
-                  return `S${i+1}: ${a.kg!=null?a.kg+'kg':''}${a.kg!=null&&a.reps!=null?'×':''}${a.reps!=null?a.reps+'r':''}`;
-                }).filter(Boolean).join('  ');
-                actualTxt = `<div class="hi-actual">✓ Actual: ${parts}</div>`;
-              }
-              const noteTxt = e.note ? `<div class="hi-note">📝 ${e.note}</div>` : '';
-              return `<div class="hi-ex-block"><div class="hi-ex"><span>${e.name}</span><span>${plannedTxt}</span></div>${actualTxt}${noteTxt}</div>`;
-            }).join('')}
-            ${(data.oneOff && data.oneOff.length) ? `<div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--sub);font-weight:700;margin:8px 0 4px">➕ Extra exercises</div>${data.oneOff.map(e=>{
-              const parts = e.sets.map((s,i)=> (s.kg==null&&s.reps==null) ? null : `S${i+1}: ${s.kg!=null?s.kg+'kg':''}${s.kg!=null&&s.reps!=null?'×':''}${s.reps!=null?s.reps+'r':''}`).filter(Boolean).join('  ');
-              return `<div class="hi-ex-block"><div class="hi-ex"><span>${e.name}</span><span>${e.sets.length} sets</span></div>${parts?`<div class="hi-actual">✓ ${parts}</div>`:''}</div>`;
-            }).join('')}` : ''}
+            ${exHtml}${extraHtml}
           </div>
+          <div class="hi-more">${isOpen ? '▲ Hide details' : '▼ Tap for exercise details'}</div>
         </div>`;
     });
     html += '</div>';
@@ -1827,8 +1909,8 @@ function renderProgress() {
   recent.forEach(([date, data]) => {
     const vol = sessionVolume(data);
     html += `<div class="prog-week-row">
-      <div class="prog-week-dot ${data.type}"></div>
-      <div style="flex:1;color:var(--text);font-weight:600">${data.type?.toUpperCase()} · ${date}</div>
+      <div class="prog-week-dot ${typeClass(data.type)}"></div>
+      <div style="flex:1;color:var(--text);font-weight:600">${escHtml(sessionLabel(data))} · ${date}</div>
       <div style="color:var(--sub);font-size:.7rem">${data.totalSets||0} sets · ${Math.round(vol).toLocaleString()}kg vol</div>
     </div>`;
   });
@@ -2352,6 +2434,7 @@ function renderChallenges() {
   } else {
     ids.sort((a,b)=> (S.challenges[a].createdAt||'').localeCompare(S.challenges[b].createdAt||'')).forEach(id => {
       const c = S.challenges[id];
+      if (c.days) { html += streakCardHtml(id, c); return; }
       const logEntries = Object.entries(c.logs || {}).sort((a,b)=>a[0].localeCompare(b[0]));
       const todayVal = (c.logs && c.logs[todayISO()] != null) ? c.logs[todayISO()] : '';
       const best = logEntries.length ? Math.max(...logEntries.map(([,v])=>v)) : null;
@@ -2413,16 +2496,29 @@ function renderChallenges() {
       <label>Challenge Name</label>
       <input type="text" id="cnf-name" placeholder="e.g. Push-Up Challenge, Plank Challenge...">
       <div class="chal-new-row">
+        <div><label>Duration</label>
+          <select id="cnf-days">
+            <option value="7">7 days</option>
+            <option value="14">14 days</option>
+            <option value="21">21 days</option>
+            <option value="30" selected>30 days</option>
+            <option value="60">60 days</option>
+            <option value="90">90 days</option>
+            <option value="0">Free (no limit)</option>
+          </select>
+        </div>
         <div><label>Unit</label>
           <select id="cnf-unit">
+            <option value="check">✔ check-in only</option>
             <option value=" reps">reps</option>
             <option value="s">seconds</option>
             <option value="kg">kg</option>
             <option value=" min">minutes</option>
           </select>
         </div>
-        <div><label>Goal (optional)</label><input type="number" id="cnf-target" placeholder="e.g. 100" step="0.5" min="0"></div>
       </div>
+      <label>Target per day (e.g. 10 pull-ups)</label>
+      <input type="number" id="cnf-target" placeholder="e.g. 10" step="0.5" min="0">
       <div class="chal-new-actions">
         <button class="chal-new-cancel" onclick="toggleAddChallenge()">Cancel</button>
         <button class="chal-new-save" onclick="saveNewChallenge()">SAVE</button>
@@ -2431,6 +2527,142 @@ function renderChallenges() {
   }
 
   wrap.innerHTML = html;
+}
+
+// ── 30-DAY STREAK CHALLENGE helpers (local dates, no UTC shift) ──
+const chalSel = {};
+const chalEditT = {};
+function localISO(d) { d = d || new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function addDaysISO(iso, n) { const [y,m,d]=iso.split('-').map(Number); return new Date(Date.UTC(y,m-1,d+n)).toISOString().slice(0,10); }
+function diffDaysISO(a, b) { const A=a.split('-').map(Number), B=b.split('-').map(Number); return Math.round((Date.UTC(B[0],B[1]-1,B[2])-Date.UTC(A[0],A[1]-1,A[2]))/864e5); }
+function chalUnitTxt(c) { return c.unit === 'check' ? '' : (c.unit || ''); }
+function chalIsDone(c, date) {
+  const v = c.logs && c.logs[date];
+  if (v == null) return false;
+  if (c.unit === 'check') return v > 0;
+  return c.target ? v >= c.target : v > 0;
+}
+function chalStats(c) {
+  const N = c.days, today = localISO();
+  const dates = Array.from({length:N}, (_,i)=>addDaysISO(c.start, i));
+  const idxToday = diffDaysISO(c.start, today);
+  const doneArr = dates.map(d => chalIsDone(c, d));
+  const doneCount = doneArr.filter(Boolean).length;
+  let best = 0, run = 0;
+  doneArr.forEach(x => { run = x ? run+1 : 0; if (run > best) best = run; });
+  let cur = 0;
+  let k = Math.min(idxToday, N-1);
+  if (k >= 0 && !doneArr[k] && idxToday <= N-1) k--;   // today not done yet → streak still alive
+  while (k >= 0 && doneArr[k]) { cur++; k--; }
+  const finished = idxToday >= N || doneCount === N;
+  const dayNo = Math.min(Math.max(idxToday+1,1), N);
+  const daysLeft = Math.max(0, N - (idxToday+1));
+  const missed = dates.filter((d,i)=> i < idxToday && !doneArr[i]).length;
+  return { N, today, dates, idxToday, doneArr, doneCount, best, cur, finished, dayNo, daysLeft, missed };
+}
+function streakCardHtml(id, c) {
+  const st = chalStats(c);
+  const u = chalUnitTxt(c);
+  const isOpen = !!S.chalExpanded[id];
+  let sel = chalSel[id];
+  if (!sel || sel < c.start || sel > st.dates[st.N-1] || sel > st.today) sel = (st.idxToday >= st.N) ? st.dates[st.N-1] : st.today;
+  const selIdx = diffDaysISO(c.start, sel);
+
+  const cells = st.dates.map((d,i)=>{
+    const isFuture = d > st.today;
+    const v = c.logs && c.logs[d];
+    let cls = 'cs-cell', mark = '';
+    if (isFuture) { cls += ' future'; }
+    else if (st.doneArr[i]) { cls += ' done'; mark = '✓'; }
+    else if (v != null) { cls += ' partial'; mark = v + (u && String(u).trim().length<=3 ? '' : ''); }
+    else if (d === st.today) { mark = '•'; }
+    else { cls += ' missed'; mark = '✕'; }
+    if (d === st.today) cls += ' today';
+    if (d === sel) cls += ' sel';
+    return `<div class="${cls}" ${isFuture?'':`onclick="selectChalDay('${id}','${d}')"`}><span>${i+1}</span><small>${mark}</small></div>`;
+  }).join('');
+
+  const curVal = (c.logs && c.logs[sel] != null) ? c.logs[sel] : '';
+  const selDone = chalIsDone(c, sel);
+  const logRow = c.unit === 'check'
+    ? `<button class="cs-check-btn ${selDone?'undo':''}" onclick="logStreakDay('${id}')">${selDone ? '↩ UNDO DAY '+(selIdx+1) : '✓ MARK DAY '+(selIdx+1)+' DONE'}</button>`
+    : `<div class="chal-today-row" style="margin-bottom:0">
+         <div class="chal-today-field"><label>Log day ${selIdx+1} (${u.trim()||'value'})</label>
+           <input type="number" step="0.5" min="0" id="chal-input-${id}" value="${curVal}" placeholder="${c.target||0}"></div>
+         <button class="chal-log-btn" onclick="logStreakDay('${id}')">✓ LOG</button>
+       </div>`;
+
+  const goalTxt = c.unit === 'check' ? 'Check in every day' : (c.target ? `Goal: ≥ ${c.target}${u} / day` : 'Log something every day');
+  const logEntries = Object.entries(c.logs || {}).filter(([d])=>d>=c.start && d<=st.dates[st.N-1]).sort((a,b)=>a[0].localeCompare(b[0]));
+  const pct = Math.round(st.doneCount / st.N * 100);
+  const tgtU = c.unit === 'check' ? '' : u;
+  const tgtBanner = `<div class="cs-target"><div>🎯<span class="cs-target-lbl">Target / day</span><b>${c.target ? c.target + tgtU : 'Not set'}</b></div><button class="cs-target-edit" onclick="editChalTarget('${id}')">✏️ ${c.target ? 'Edit' : 'Set'}</button></div>`
+    + (chalEditT[id] ? `<div class="cs-target-row"><input type="number" step="0.5" min="0" id="chal-target-${id}" value="${c.target||''}" placeholder="e.g. 10"><button class="chal-log-btn" onclick="saveChalTarget('${id}')">SAVE</button></div>` : '');
+  const banner = st.finished
+    ? `<div class="cs-banner">🏆 Challenge complete! ${st.doneCount}/${st.N} days done · Best streak ${st.best} 🔥${st.doneCount===st.N?'<br>PERFECT RUN! 💯':''}</div>` : '';
+
+  return `
+  <div class="chal-card">
+    <div class="chal-hdr">
+      <div class="chal-name">${escHtml(c.name)}</div>
+      <button class="chal-del ${pendingDeleteChallengeId===id?'confirming':''}" onclick="deleteChallenge('${id}')">${pendingDeleteChallengeId===id?'✓':'🗑'}</button>
+    </div>
+    <div class="chal-sub">${st.finished ? 'Finished' : 'Day '+st.dayNo+' of '+st.N} · ${goalTxt}</div>
+    ${tgtBanner}
+    <div class="cs-bar"><div style="width:${pct}%"></div></div>
+    <div class="chal-stats4">
+      <div class="chal-stat"><div class="chal-stat-val">🔥 ${st.cur}</div><div class="chal-stat-lbl">Streak</div></div>
+      <div class="chal-stat"><div class="chal-stat-val">${st.best}</div><div class="chal-stat-lbl">Best streak</div></div>
+      <div class="chal-stat"><div class="chal-stat-val">${st.doneCount}/${st.N}</div><div class="chal-stat-lbl">Done</div></div>
+      <div class="chal-stat"><div class="chal-stat-val">${st.daysLeft}</div><div class="chal-stat-lbl">Days left</div></div>
+    </div>
+    <div class="cs-grid">${cells}</div>
+    <div class="cs-legend"><span><i style="background:var(--legs)"></i>Done</span>${c.unit!=='check'&&c.target?'<span><i style="background:rgba(255,159,10,.5)"></i>Below goal</span>':''}<span><i style="background:rgba(255,61,92,.4)"></i>Missed (${st.missed})</span><span><i style="border:1.5px solid var(--accent);width:6px;height:6px"></i>Today</span></div>
+    <div class="cs-sellbl">${sel===st.today ? 'Today' : sel} · Day ${selIdx+1}${selDone?' ✓':''}${c.unit!=='check' && c.target ? ' · '+(curVal===''?0:curVal)+' / '+c.target+u : ''}</div>
+    ${logRow}
+    ${banner}
+    ${c.unit!=='check' && logEntries.length ? `<button class="chal-toggle-log" onclick="toggleChalLog('${id}')">${isOpen?'Hide':'View'} full log (${logEntries.length})</button>
+    <div class="chal-log-list ${isOpen?'open':''}">${logEntries.slice().reverse().map(([date,val])=>`<div class="chal-log-item"><span>Day ${diffDaysISO(c.start,date)+1} · ${date}</span><span>${val}${u}</span></div>`).join('')}</div>` : ''}
+  </div>`;
+}
+function editChalTarget(id) { chalEditT[id] = !chalEditT[id]; renderChallenges(); if (chalEditT[id]) setTimeout(()=>{ const el=document.getElementById('chal-target-'+id); if(el) el.focus(); },80); }
+function saveChalTarget(id) {
+  const c = S.challenges && S.challenges[id];
+  if (!c) return;
+  const v = parseFloat(document.getElementById('chal-target-'+id)?.value);
+  c.target = (!isNaN(v) && v > 0) ? v : null;
+  chalEditT[id] = false;
+  save();
+  toast(c.target ? `🎯 Target: ${c.target}${c.unit==='check'?'':chalUnitTxt(c)} / day` : 'Target removed.');
+  renderChallenges();
+}
+function selectChalDay(id, date) { chalSel[id] = date; renderChallenges(); }
+function logStreakDay(id) {
+  const c = S.challenges && S.challenges[id];
+  if (!c || !c.days) return;
+  const st0 = chalStats(c);
+  let sel = chalSel[id];
+  if (!sel || sel < c.start || sel > st0.dates[st0.N-1] || sel > st0.today) sel = (st0.idxToday >= st0.N) ? st0.dates[st0.N-1] : st0.today;
+  if (!c.logs) c.logs = {};
+  if (c.unit === 'check') {
+    if (chalIsDone(c, sel)) delete c.logs[sel]; else c.logs[sel] = 1;
+  } else {
+    const raw = document.getElementById(`chal-input-${id}`)?.value;
+    if (raw === '' || raw == null) { delete c.logs[sel]; }
+    else {
+      const val = parseFloat(raw);
+      if (isNaN(val) || val < 0) { toast('Maglagay ng valid na number.'); return; }
+      c.logs[sel] = val;
+    }
+  }
+  save();
+  const st = chalStats(c);
+  if (chalIsDone(c, sel)) {
+    toast(st.doneCount === st.N ? `🏆 ${c.name} COMPLETE! Perfect run!` : `🔥 Day ${diffDaysISO(c.start, sel)+1} done · Streak ${st.cur}`);
+  } else if (c.logs[sel] != null) {
+    toast(`Naka-log, pero below goal pa (${c.target}${chalUnitTxt(c)}).`);
+  } else { toast('Binura ang log ng araw na ito.'); }
+  renderChallenges();
 }
 
 function toggleAddChallenge() {
@@ -2443,13 +2675,14 @@ function toggleAddChallenge() {
 function saveNewChallenge() {
   const name = document.getElementById('cnf-name')?.value?.trim();
   if (!name) { toast('Please enter a challenge name!'); return; }
-  const unit = document.getElementById('cnf-unit')?.value || ' reps';
+  const unit = document.getElementById('cnf-unit')?.value || 'check';
   const targetVal = parseFloat(document.getElementById('cnf-target')?.value);
   const target = !isNaN(targetVal) && targetVal > 0 ? targetVal : null;
 
   if (!S.challenges) S.challenges = {};
   const id = 'c' + Date.now();
-  S.challenges[id] = { name, unit, target, createdAt: new Date().toISOString(), logs: {} };
+  const daysVal = parseInt(document.getElementById('cnf-days')?.value) || 0;
+  S.challenges[id] = { name, unit, target, createdAt: new Date().toISOString(), logs: {}, days: daysVal > 0 ? daysVal : null, start: localISO() };
   S.showAddChallenge = false;
   save();
   toast(`🎯 "${name}" added!`);
