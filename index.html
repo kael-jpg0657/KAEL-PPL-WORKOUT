@@ -425,6 +425,17 @@ html,body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-
 .hi-total small{display:block;font-size:.5rem;text-transform:uppercase;letter-spacing:1px;color:var(--sub);font-weight:700;margin-top:3px}
 .hi-total.hl b{color:var(--accent)}
 .hi-more{font-size:.62rem;color:var(--sub);font-weight:600;text-align:center;margin-top:10px}
+.he-banner{background:rgba(255,214,10,.1);color:var(--accent);border-radius:10px;padding:8px 10px;font-size:.66rem;font-weight:700;margin-bottom:8px;text-align:center}
+.he-fill{display:flex;gap:6px;align-items:center;margin-top:8px}
+.he-fill span{font-size:.58rem;color:var(--sub);font-weight:700;text-transform:uppercase;letter-spacing:.8px;white-space:nowrap}
+.he-in{width:100%;min-width:0;background:var(--s1);border:1.5px solid transparent;border-radius:9px;color:var(--text);font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;padding:8px 6px;text-align:center;outline:none;-webkit-appearance:none}
+.he-in:focus{border-color:var(--accent)}
+.he-row{display:grid;grid-template-columns:26px 1fr 22px 1fr 32px 28px;gap:5px;align-items:center;margin-top:6px;font-size:.62rem;color:var(--sub);font-weight:700}
+.he-btn{background:var(--s1);border:none;border-radius:9px;color:var(--text);font-family:'Inter',sans-serif;font-size:.68rem;font-weight:700;padding:8px 10px;cursor:pointer;white-space:nowrap}
+.he-btn.main{background:var(--accent);color:#000}
+.he-x{background:transparent;border:none;color:var(--sub);font-size:.8rem;cursor:pointer;padding:4px}
+.he-actions{display:flex;gap:8px;margin-top:10px}
+.he-actions .he-btn{flex:1;padding:12px;font-size:.78rem;border-radius:12px}
 .hi-exn{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.78rem;font-weight:700;color:var(--text)}
 .hi-exn em{font-style:normal;font-size:.62rem;color:var(--accent);font-weight:700;white-space:nowrap}
 .hi-sets{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
@@ -976,7 +987,87 @@ if (!S.selectedDate) {
   S.selectedDate = toISO(new Date());
 }
 
-function save() { try { localStorage.setItem('kael_ppl_v1', JSON.stringify(S)); } catch(e){} }
+// ── CLOUD SAVE (only active inside the Claude artifact; GitHub/PWA uses localStorage only) ──
+const cloud = { db: null, uid: null, ready: false, touched: false, timer: null, writing: false, dirty: false };
+let storageWarned = false, localFail = false;
+function save() {
+  S._ts = Date.now();
+  if (!cloud.ready) cloud.touched = true;
+  try { localStorage.setItem('kael_ppl_v1', JSON.stringify(S)); }
+  catch(e) {
+    localFail = true;
+    if (!storageWarned && !window.claude) { storageWarned = true; try { toast('⚠️ Hindi nagse-save ang browser storage dito. I-export ang backup o gamitin ang GitHub version.'); } catch(_) {} }
+  }
+  cloudSchedule();
+}
+function cloudSchedule() {
+  if (!cloud.db || !cloud.ready) return;
+  clearTimeout(cloud.timer);
+  cloud.timer = setTimeout(cloudWrite, 1000);
+}
+async function cloudWrite() {
+  if (!cloud.db || !cloud.uid) return;
+  if (cloud.writing) { cloud.dirty = true; return; }
+  cloud.writing = true; cloud.dirty = false;
+  try {
+    const str = JSON.stringify(S), ts = S._ts || Date.now(), SIZE = 100000;
+    const n = Math.max(1, Math.ceil(str.length / SIZE));
+    const base = 'data/users/' + cloud.uid + '/';
+    for (let i = 0; i < n; i++) await cloud.db.doc(base + 'kael-c' + i).set({ t: str.slice(i * SIZE, (i + 1) * SIZE) });
+    await cloud.db.doc(base + 'kael-meta').set({ n, ts });
+  } catch (e) {
+    try { toast('⚠️ Hindi na-save sa cloud (' + ((e && e.code) || 'error') + '). I-export ang backup.'); } catch (_) {}
+  }
+  cloud.writing = false;
+  if (cloud.dirty) cloudWrite();
+}
+async function cloudInit() {
+  try {
+    if (!window.claude || !window.claude.use) return;
+    const [db, user] = await Promise.all([window.claude.use('db'), window.claude.use('user')]);
+    const uid = user ? await user.id() : null;
+    if (!db || !uid) {
+      if (localFail && !storageWarned) { storageWarned = true; toast('⚠️ Hindi nagse-save dito. I-export ang backup o gamitin ang GitHub version.'); }
+      return;
+    }
+    cloud.db = db; cloud.uid = uid;
+    const base = 'data/users/' + uid + '/';
+    const meta = await db.doc(base + 'kael-meta').get();
+    let restored = false;
+    if (meta.exists) {
+      const m = meta.data() || {};
+      if ((m.ts || 0) > (S._ts || 0) || cloud.touched) {
+        let str = '';
+        for (let i = 0; i < (m.n || 0); i++) {
+          const c = await db.doc(base + 'kael-c' + i).get();
+          if (!c.exists) throw new Error('missing chunk');
+          str += c.data().t;
+        }
+        const remote = JSON.parse(str);
+        if (cloud.touched) {   // user already did something before cloud loaded: keep both
+          remote.completedSessions = Object.assign({}, remote.completedSessions || {}, S.completedSessions || {});
+          remote.challenges = Object.assign({}, remote.challenges || {}, S.challenges || {});
+        }
+        Object.keys(S).forEach(k => { delete S[k]; });
+        Object.assign(S, remote);
+        restored = true;
+      }
+    }
+    cloud.ready = true;
+    if (restored) {
+      if (cloud.touched) S._ts = Date.now();
+      try { localStorage.setItem('kael_ppl_v1', JSON.stringify(S)); } catch (e) {}
+      try { render(); applyTheme(S.theme || 'dark'); } catch (e) {}
+      toast('☁️ Na-load ang naka-save mong data.');
+    }
+    if (!meta.exists || cloud.touched || (S._ts || 0) > ((meta.data() || {}).ts || 0)) cloudWrite();
+  } catch (e) {
+    if (localFail && !storageWarned) { storageWarned = true; try { toast('⚠️ Hindi nagse-save dito. I-export ang backup o gamitin ang GitHub version.'); } catch (_) {} }
+  }
+}
+function isPersisted(date) {
+  try { const d = JSON.parse(localStorage.getItem('kael_ppl_v1')); return !!(d && d.completedSessions && d.completedSessions[date]); } catch(e) { return false; }
+}
 
 // ══════════════════════════════════════════════════════════════════
 // BACKUP — EXPORT / IMPORT
@@ -1574,6 +1665,7 @@ function renderHistory() {
               <div class="hi-title"><span class="hi-dot ${typeClass(data.type)}"></span>${escHtml(sessionLabel(data))}</div>
               <div class="hi-sub">${subParts.join(' · ')}</div>
             </div>
+            <button class="hi-del-btn" onclick="startHistEdit('${date}', event)" title="Edit sets">✏️</button>
             <button class="hi-del-btn ${pendingDeleteHistoryDate===date?'confirming':''}" onclick="deleteHistoryEntry('${date}', event)" title="Delete this session">${pendingDeleteHistoryDate===date?'✓':'🗑'}</button>
           </div>
           <div class="hi-totals">
@@ -1581,8 +1673,8 @@ function renderHistory() {
             <div class="hi-total"><b>${hasLogs ? fmtNum(tot.reps) : '—'}</b><small>Total Reps</small></div>
             <div class="hi-total hl"><b>${tot.vol ? fmtNum(tot.vol) : '—'}</b><small>Total kg</small></div>
           </div>
-          <div class="hi-exlist ${isOpen?'open':''}">
-            ${exHtml}${extraHtml}
+          <div class="hi-exlist ${(isOpen||histEditDate===date)?'open':''}">
+            ${histEditDate===date ? histEditorHtml(date, data) : exHtml + extraHtml}
           </div>
           <div class="hi-more">${isOpen ? '▲ Hide details' : '▼ Tap for exercise details'}</div>
         </div>`;
@@ -1960,6 +2052,90 @@ function toggleEx(ei) {
   S.expanded[k] = !S.expanded[k]; save(); renderSession();
 }
 
+// ── EDIT HISTORY (kg / reps per set) ──
+let histEditDate = null;
+let histDraft = null;
+function startHistEdit(date, ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  const data = S.completedSessions[date];
+  if (!data) return;
+  histEditDate = date;
+  histDraft = {
+    exercises: (data.exercises || []).map(e => ({ sets: (e.actualSets && e.actualSets.length ? e.actualSets : Array.from({length: e.sets || 0}, () => ({kg:null, reps:null}))).map(a => ({ kg: a.kg != null ? a.kg : null, reps: a.reps != null ? a.reps : null })) })),
+    oneOff: (data.oneOff || []).map(e => ({ sets: (e.sets || []).map(a => ({ kg: a.kg != null ? a.kg : null, reps: a.reps != null ? a.reps : null })) }))
+  };
+  renderHistory();
+}
+function cancelHistEdit(ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  histEditDate = null; histDraft = null;
+  renderHistory();
+}
+function histArr(kind, ei) { return kind === 'e' ? histDraft.exercises[ei].sets : histDraft.oneOff[ei].sets; }
+function histSet(kind, ei, si, field, val) {
+  const v = parseFloat(val);
+  histArr(kind, ei)[si][field] = (val === '' || isNaN(v) || v < 0) ? null : v;
+}
+function histFill(kind, ei, val, ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  const v = parseFloat(val);
+  if (isNaN(v) || v < 0) { toast('Maglagay ng kg muna.'); return; }
+  histArr(kind, ei).forEach(a => { a.kg = v; });
+  renderHistory();
+}
+function histAddSet(kind, ei, ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  const arr = histArr(kind, ei);
+  const last = arr[arr.length - 1];
+  arr.push({ kg: last ? last.kg : null, reps: null });
+  renderHistory();
+}
+function histDelSet(kind, ei, si, ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  histArr(kind, ei).splice(si, 1);
+  renderHistory();
+}
+function histEditorHtml(date, data) {
+  const block = (kind, ei, name) => {
+    const sets = histArr(kind, ei);
+    const rows = sets.map((a, si) => `<div class="he-row"><span>S${si+1}</span>
+      <input class="he-in" type="number" inputmode="decimal" step="0.5" min="0" placeholder="kg" value="${a.kg != null ? a.kg : ''}" oninput="histSet('${kind}',${ei},${si},'kg',this.value)">
+      <span>kg ×</span>
+      <input class="he-in" type="number" inputmode="numeric" step="1" min="0" placeholder="reps" value="${a.reps != null ? a.reps : ''}" oninput="histSet('${kind}',${ei},${si},'reps',this.value)">
+      <span>reps</span>
+      <button class="he-x" onclick="histDelSet('${kind}',${ei},${si},event)" title="Remove set">✕</button></div>`).join('');
+    return `<div class="hi-ex2"><div class="hi-exn"><span>${escHtml(name)}</span></div>
+      <div class="he-fill"><span>Weight sa lahat</span><input class="he-in" type="number" inputmode="decimal" step="0.5" min="0" placeholder="kg" style="max-width:80px"><button class="he-btn" onclick="histFill('${kind}',${ei},this.previousElementSibling.value,event)">Apply</button></div>
+      ${rows}
+      <div style="margin-top:8px"><button class="he-btn" onclick="histAddSet('${kind}',${ei},event)">＋ Set</button></div></div>`;
+  };
+  const base = (data.exercises || []).map((e, ei) => block('e', ei, e.name)).join('');
+  const extra = (data.oneOff || []).length ? `<div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--sub);font-weight:700;margin:10px 0 6px">➕ Extra exercises</div>` + (data.oneOff || []).map((e, ei) => block('o', ei, e.name)).join('') : '';
+  return `<div onclick="event.stopPropagation()"><div class="he-banner">✏️ Editing — ayusin ang kg at reps, tapos i-save</div>${base}${extra}
+    <div class="he-actions"><button class="he-btn" onclick="cancelHistEdit(event)">Cancel</button><button class="he-btn main" onclick="saveHistEdit('${date}',event)">💾 Save changes</button></div></div>`;
+}
+function saveHistEdit(date, ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  const data = S.completedSessions[date];
+  if (!data || !histDraft) { cancelHistEdit(); return; }
+  (data.exercises || []).forEach((e, i) => {
+    const sets = histDraft.exercises[i].sets.map(a => ({ kg: a.kg, reps: a.reps }));
+    e.actualSets = sets;
+    e.sets = sets.length;
+    e.kg = (sets.find(a => a.kg != null) || {}).kg ?? null;
+  });
+  (data.oneOff || []).forEach((e, i) => {
+    e.sets = histDraft.oneOff[i].sets.map(a => ({ kg: a.kg, reps: a.reps }));
+  });
+  data.totalSets = (data.exercises || []).reduce((acc, e) => acc + (e.sets || 0), 0);
+  histEditDate = null; histDraft = null;
+  save();
+  toast('✅ Na-update ang history at progression mo.');
+  renderHistory();
+  try { renderStats(); } catch (e) {}
+  try { renderProgress(); } catch (e) {}
+}
+
 function toggleHistItem(date) {
   const k = `hist-${date}`;
   S.expanded[k] = !S.expanded[k]; save(); renderHistory();
@@ -2061,7 +2237,8 @@ function completeSession() {
   S.completedSessions[S.selectedDate] = sessionData;
   S.streak = (S.streak || 0) + 1;
   save();
-  toast('✅ Session saved! Magpahinga ka. 🙌');
+  toast((isPersisted(S.selectedDate) || cloud.ready) ? '✅ Session saved! Magpahinga ka. 🙌' : '⚠️ Lumabas sa screen pero HINDI na-save sa browser storage. I-export ang backup / gamitin ang GitHub version.');
+  try { renderHistory(); } catch(e) {}
   renderCalendar();
   renderSession();
   renderStats();
@@ -2819,6 +2996,7 @@ function toggleTheme() {
 // ══════════════════════════════════════════════════════════════════
 render();
 applyTheme(S.theme || 'dark');
+cloudInit();
 
 // ── PWA: Service Worker ──
 if ('serviceWorker' in navigator) {
