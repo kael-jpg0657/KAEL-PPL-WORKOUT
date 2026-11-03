@@ -722,7 +722,10 @@ function sessionTotals(data) {
     if (a.reps != null) { reps += a.reps; sets++; if (a.kg != null) vol += a.kg * a.reps; }
     else if (a.kg != null) { sets++; }
   };
-  (data.exercises || []).forEach(e => (e.actualSets || []).forEach(addSet));
+  (data.exercises || []).forEach(e => {
+    if (e.timed) { (e.actualSets || []).forEach(a => { if (a && a.reps != null) sets++; }); return; }
+    (e.actualSets || []).forEach(addSet);
+  });
   (data.oneOff || []).forEach(e => (e.sets || []).forEach(addSet));
   return { sets, reps, vol: Math.round(vol * 10) / 10 };
 }
@@ -852,29 +855,34 @@ const LEGS_EX = [
 
 const FULLBODY_EX = [
   {
-    name:'DB Thruster (squat to press)',
-    guide:'Hold the DBs at shoulder level. Squat down — full depth, 2 sec down. From the bottom, explode up while pressing the DBs overhead in one motion. Full-body movement — legs, core, shoulders.',
-    baseKg:14, cat:'compound', restSec:75, sets:3, repsLo:10, repsHi:10,
+    name:'DB Goblet Squat',
+    guide:'Hold the DB at chest level — goblet style. Feet shoulder-width, toes slightly out. 3 sec down, PAUSE 1 sec at the bottom, drive up. Heels flat, back straight, knees track over the toes.',
+    baseKg:32, cat:'compound', restSec:90, sets:3, repsLo:8, repsHi:12,
   },
   {
-    name:'Renegade Row (plank position)',
-    guide:'Plank position, hands on DBs. Row one DB up toward your hip while staying stable — don\'t twist. Lower slowly, repeat on the other arm. Keep your core tight the whole time.',
-    baseKg:10, cat:'compound', restSec:75, sets:3, repsLo:10, repsHi:10,
+    name:'Push-Up',
+    guide:'Hands slightly wider than the shoulders, body in one straight line. 2 sec down until the chest is almost on the floor, push up hard. Core and glutes tight — don\'t let the hips sag. Can swap for DB bench press.',
+    baseKg:null, cat:'bodyweight', restSec:75, sets:3, repsLo:8, repsHi:15,
   },
   {
-    name:'Plank with DB Drag',
-    guide:'Plank position, DB beside one hand. Drag the DB under your body to the other side, then back. Don\'t let your hips drop. Targets the core and obliques.',
-    baseKg:6, cat:'core', restSec:60, sets:3, repsLo:null, repsHi:null, durationSec:[30,45],
+    name:'DB Single-Arm Row',
+    guide:'One hand and knee on a bench or chair, back flat. Pull the DB toward your hip, squeeze the shoulder blade at the top, 3 sec down to a full stretch. Don\'t twist your torso. Can swap for inverted row or pull-ups.',
+    baseKg:28, cat:'compound', restSec:75, sets:3, repsLo:8, repsHi:12,
   },
   {
-    name:'Burpees',
-    guide:'From standing, squat-thrust down into a plank, push-up (optional), jump your feet back to a squat, explode up into a jump. Full-body cardio + strength finisher. Fast but controlled.',
-    baseKg:null, cat:'bodyweight', restSec:75, sets:3, repsLo:10, repsHi:12,
+    name:'DB Romanian Deadlift',
+    guide:'Hold the DBs in front, torso straight. Hinge at the hips — 3 sec down, feel the hamstring stretch. Drive back up with your glutes and squeeze at the top. Don\'t round your back. Can swap for hip hinge or glute bridge.',
+    baseKg:30, cat:'compound', restSec:90, sets:3, repsLo:8, repsHi:12,
   },
   {
-    name:'Mountain Climbers (cardio finisher)',
-    guide:'Plank position. Quickly drive your knees toward your chest, like running in place while planking. Keep your core tight and hips stable — don\'t raise them too high. Cardio finisher — go fast.',
-    baseKg:null, cat:'cardio', restSec:60, sets:3, repsLo:null, repsHi:null, durationSec:[30,45],
+    name:'DB Overhead Press',
+    guide:'Stand with the DBs at shoulder level, core tight, ribs down. Press straight overhead until the arms lock out, 3 sec down. Don\'t arch your lower back. Can swap for pike push-up.',
+    baseKg:20, cat:'compound', restSec:75, sets:3, repsLo:8, repsHi:12,
+  },
+  {
+    name:'Plank',
+    guide:'Forearms on the floor, elbows under the shoulders. Body in a straight line from head to heels — squeeze the glutes and abs, don\'t let the hips drop or rise. Breathe steadily. Hold 30–60 sec.',
+    baseKg:null, cat:'core', restSec:60, sets:3, repsLo:null, repsHi:null, durationSec:[30,60],
   },
 ];
 
@@ -1157,7 +1165,7 @@ function renderDaytypeRow() {
     { type:'push', label:'PUSH', sub:'Chest/Sh/Tri' },
     { type:'pull', label:'PULL', sub:'Back/Bi' },
     { type:'legs', label:'LEGS', sub:'Quads/Glutes' },
-    { type:'fullbody', label:'FULL BODY', sub:'Core+Cond' },
+    { type:'fullbody', label:'FULL BODY', sub:'Total Body' },
   ];
   Object.keys(S.customPrograms || {}).forEach(pid => {
     const p = S.customPrograms[pid];
@@ -1429,7 +1437,7 @@ function renderSession() {
   const tCls = typeClass(type);
   const progObj = pid ? S.customPrograms[pid] : null;
   const typeLabel = pid ? (progObj?.name || 'CUSTOM PROGRAM').toUpperCase() : type === 'push' ? 'PUSH DAY' : type === 'pull' ? 'PULL DAY' : type === 'legs' ? 'LEG DAY' : 'FULL BODY';
-  const typeSub = type === 'push' ? 'Chest · Shoulders · Triceps' : type === 'pull' ? 'Back · Biceps · Rear Delts' : type === 'legs' ? 'Quads · Hamstrings · Glutes · Calves' : type === 'fullbody' ? 'Core · Conditioning · Full Body' : '';
+  const typeSub = type === 'push' ? 'Chest · Shoulders · Triceps' : type === 'pull' ? 'Back · Biceps · Rear Delts' : type === 'legs' ? 'Quads · Hamstrings · Glutes · Calves' : type === 'fullbody' ? 'Squat · Push · Pull · Hinge · Core' : '';
 
   let html = `
     <div class="hero ${tCls}">
@@ -1490,6 +1498,10 @@ function renderSession() {
     const nameOv = (S.weightOverrides && S.weightOverrides[type+'|name|'+ei]) || ex.name;
     const hasWeight = ex.baseKg !== null;
     const isCustom = ei >= getBaseArr(type).length;
+    const exLo = ex.repsLo != null ? ex.repsLo : repsLo;
+    const exHi = ex.repsHi != null ? ex.repsHi : repsHi;
+    const isTimed = Array.isArray(ex.durationSec);
+    const tgtTxt = isTimed ? `${ex.durationSec[0]}–${ex.durationSec[1]} sec` : `${exLo}–${exHi} reps`;
 
     let setsHtml = '';
     for (let s=0;s<exSetCount;s++) {
@@ -1501,7 +1513,7 @@ function renderSession() {
       setsHtml += `
         <div class="set-row ${checked?'done':''}" id="sr-${sk}">
           <div class="set-lbl">Set ${s+1}</div>
-          <div class="set-detail">${s===0 ? 'Set your weight/reps →' : `${repsLo}–${repsHi} reps target`}</div>
+          <div class="set-detail">${s===0 ? 'Set your weight/reps →' : `${tgtTxt} target`}</div>
           <button class="set-btn ${checked?'done':''}" id="sb-${sk}" onclick="toggleSet('${sk}')" ${isDone&&!checked?'disabled':''}>✓</button>
         </div>
         <div class="actual-log-row">
@@ -1511,8 +1523,8 @@ function renderSession() {
               id="alk-${sk}" onclick="event.stopPropagation()" onchange="saveActualLog('${sk}','kg',this.value)">
           </div>
           <div class="alog-field">
-            <label>Reps</label>
-            <input type="number" step="1" min="0" class="alog-input" value="${logReps}" placeholder="${repsHi||''}"
+            <label>${isTimed ? 'Seconds' : 'Reps'}</label>
+            <input type="number" step="1" min="0" class="alog-input" value="${logReps}" placeholder="${isTimed ? ex.durationSec[1] : (exHi||'')}"
               id="alr-${sk}" onclick="event.stopPropagation()" onchange="saveActualLog('${sk}','reps',this.value)">
           </div>
         </div>`;
@@ -1533,7 +1545,7 @@ function renderSession() {
           <div class="ex-num">${ei+1}</div>
           <div class="ex-info">
             <div class="ex-name">${nameOv}${isExDone?' ✓':''}</div>
-            <div class="ex-meta">${exSetCount} sets · ${repsLo}–${repsHi} reps${hasWeight?' · Free weight':' · Bodyweight'}</div>
+            <div class="ex-meta">${exSetCount} sets · ${tgtTxt}${hasWeight?' · Free weight':' · Bodyweight'}</div>
           </div>
           <div class="ex-chev ${isOpen?'open':''}">▼</div>
         </div>
@@ -1640,14 +1652,14 @@ function renderHistory() {
       const subParts = [dayNames[d.getDay()]];
       if (data.week) subParts.push('Week ' + data.week);
       if (data.duration) subParts.push(data.duration + ' min');
-      const setChips = arr => (arr || []).map((a,i)=> (a.kg==null && a.reps==null) ? '' :
-        `<span class="hi-setchip">S${i+1} <b>${a.kg!=null ? a.kg+'kg' : 'BW'}${a.reps!=null ? ' × '+a.reps : ''}</b></span>`).join('');
+      const setChips = (arr, timed) => (arr || []).map((a,i)=> (a.kg==null && a.reps==null) ? '' :
+        `<span class="hi-setchip">S${i+1} <b>${a.kg!=null ? a.kg+'kg' : 'BW'}${a.reps!=null ? (timed ? ' · '+a.reps+'s' : ' × '+a.reps) : ''}</b></span>`).join('');
       const exHtml = exList.map(e=>{
         const aSets = e.actualSets || [];
         const exReps = aSets.reduce((acc,a)=>acc+(a.reps||0),0);
         const exVol = aSets.reduce((acc,a)=>acc+((a.kg!=null&&a.reps!=null)?a.kg*a.reps:0),0);
-        const chips = setChips(aSets);
-        const summary = exReps ? `${exReps} reps${exVol ? ' · '+fmtNum(Math.round(exVol*10)/10)+'kg' : ''}` : `${e.sets}×${e.repsLo!=null?e.repsLo:'?'}${e.repsHi!=null&&e.repsHi!==e.repsLo?'–'+e.repsHi:''}`;
+        const chips = setChips(aSets, e.timed);
+        const summary = e.timed ? (exReps ? exReps+' sec' : e.sets+' sets') : exReps ? `${exReps} reps${exVol ? ' · '+fmtNum(Math.round(exVol*10)/10)+'kg' : ''}` : `${e.sets}×${e.repsLo!=null?e.repsLo:'?'}${e.repsHi!=null&&e.repsHi!==e.repsLo?'–'+e.repsHi:''}`;
         const noteTxt = e.note ? `<div class="hi-note">📝 ${escHtml(e.note)}</div>` : '';
         return `<div class="hi-ex2"><div class="hi-exn"><span>${escHtml(e.name)}</span><em>${summary}</em></div>${chips ? `<div class="hi-sets">${chips}</div>` : ''}${noteTxt}</div>`;
       }).join('');
@@ -2098,11 +2110,12 @@ function histDelSet(kind, ei, si, ev) {
 function histEditorHtml(date, data) {
   const block = (kind, ei, name) => {
     const sets = histArr(kind, ei);
+    const timed = kind === 'e' && !!(data.exercises[ei] && data.exercises[ei].timed);
     const rows = sets.map((a, si) => `<div class="he-row"><span>S${si+1}</span>
       <input class="he-in" type="number" inputmode="decimal" step="0.5" min="0" placeholder="kg" value="${a.kg != null ? a.kg : ''}" oninput="histSet('${kind}',${ei},${si},'kg',this.value)">
       <span>kg ×</span>
-      <input class="he-in" type="number" inputmode="numeric" step="1" min="0" placeholder="reps" value="${a.reps != null ? a.reps : ''}" oninput="histSet('${kind}',${ei},${si},'reps',this.value)">
-      <span>reps</span>
+      <input class="he-in" type="number" inputmode="numeric" step="1" min="0" placeholder="${timed?'sec':'reps'}" value="${a.reps != null ? a.reps : ''}" oninput="histSet('${kind}',${ei},${si},'reps',this.value)">
+      <span>${timed?'sec':'reps'}</span>
       <button class="he-x" onclick="histDelSet('${kind}',${ei},${si},event)" title="Remove set">✕</button></div>`).join('');
     return `<div class="hi-ex2"><div class="hi-exn"><span>${escHtml(name)}</span></div>
       <div class="he-fill"><span>Weight sa lahat</span><input class="he-in" type="number" inputmode="decimal" step="0.5" min="0" placeholder="kg" style="max-width:80px"><button class="he-btn" onclick="histFill('${kind}',${ei},this.previousElementSibling.value,event)">Apply</button></div>
@@ -2225,8 +2238,9 @@ function completeSession() {
         name: nameOv,
         kg: actualSets.find(a=>a.kg!=null)?.kg ?? null,
         sets: setCount,
-        repsLo: params.repsLo,
-        repsHi: params.repsHi,
+        repsLo: ex.repsLo != null ? ex.repsLo : params.repsLo,
+        repsHi: ex.repsHi != null ? ex.repsHi : params.repsHi,
+        timed: Array.isArray(ex.durationSec),
         actualSets,
         note: (S.exerciseNotes && S.exerciseNotes[noteKey]) || '',
       };
